@@ -40,7 +40,7 @@ const Chart = () => {
     const currentBarLastLowPE = useRef(100);
     const currentBarTimePE = useRef(null);
 
-    const socket = new WebSocket('ws://192.168.1.9:8765');
+    const socket = new WebSocket('ws://localhost:8765');
     socket.onopen = () => {
         console.log('WebSocket connection opened');
     };
@@ -221,7 +221,7 @@ const Chart = () => {
 
     const onReset = (event) => {
         event.preventDefault();
-        fetch('http://192.168.1.9:9060/simtrading/reset', {
+        fetch('http://localhost:9060/simtrading/reset', {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here

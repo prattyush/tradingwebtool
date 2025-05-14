@@ -13,7 +13,7 @@ const InputPage = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('http://192.168.1.9:9060/simtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
+        fetch('http://localhost:9060/simtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
             + '&pe=' + peStrikeprice +'&speed=' + replaySpeed, {
             method: 'POST',
             body: JSON.stringify({

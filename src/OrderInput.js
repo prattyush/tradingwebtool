@@ -21,7 +21,7 @@ const OrderInput = () => {
         let targetvalue = "0.0";
         if (ratiocommands.length > 1)
             targetvalue = ratiocommands[1]
-        fetch('http://192.168.1.9:9060/simtrading/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue, {
+        fetch('http://localhost:9060/simtrading/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -41,7 +41,7 @@ const OrderInput = () => {
     }
     const onTdManagementCommandPlaced = (event) => {
         event.preventDefault();
-        fetch('http://192.168.1.9:9060/simtrading/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdInputMngTd, {
+        fetch('http://localhost:9060/simtrading/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdInputMngTd, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -63,7 +63,7 @@ const OrderInput = () => {
 
     const onTdInfoCommandPlaced = (event) => {
         event.preventDefault();
-        fetch('http://192.168.1.9:9060/simtrading/tradeinfo?command=' + tdInfoCmd, {
+        fetch('http://localhost:9060/simtrading/tradeinfo?command=' + tdInfoCmd, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -85,7 +85,7 @@ const OrderInput = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            fetch('http://192.168.1.9:9060/simtrading/orderstate/', {
+            fetch('http://localhost:9060/simtrading/orderstate/', {
                 method: 'POST',
                 body: JSON.stringify({
                     // Add parameters here
@@ -111,7 +111,7 @@ const OrderInput = () => {
 
     const onOrderInfo = (event) => {
         event.preventDefault();
-        fetch('http://192.168.1.9:9060/simtrading/orderstate/', {
+        fetch('http://localhost:9060/simtrading/orderstate/', {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
