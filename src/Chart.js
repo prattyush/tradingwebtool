@@ -105,6 +105,12 @@ const Chart = () => {
 
         chartPE.current.applyOptions(chartOptions);
         chartPE.current.timeScale().fitContent();
+
+        window.addEventListener("load", () => {
+            chartNifty.current.resize(window.innerWidth*0.59, window.innerHeight*0.4)
+            chartCE.current.resize(window.innerWidth*0.29, window.innerHeight*0.4)
+            chartPE.current.resize(window.innerWidth*0.29, window.innerHeight*0.4)
+        });
         return () => {
             chartNifty.current.remove();
             chartCE.current.remove();
