@@ -239,9 +239,11 @@ const Chart = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                socket.close()
                 // Handle data
-            }).then()
+            }).then(() => socket.close())
             .catch((err) => {
+                socket.close()
                 console.log(err.message);
             });
         navigate('/');
