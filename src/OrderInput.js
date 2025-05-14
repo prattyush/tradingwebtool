@@ -148,6 +148,8 @@ const OrderInput = () => {
                 <option>R</option>
                 <option>RO</option>
                 <option>RT</option>
+                <option>RL</option>
+                <option>COD</option>
             </select>
             <input style={{clear:"both", float:"left", marginTop:'1%'}}
                 type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
