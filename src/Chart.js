@@ -6,6 +6,10 @@ import {useLocation} from 'react-router-dom';
 
 const Chart = () => {
 
+    const location = useLocation();
+    const ipAddress = location.state['ipAddress'];
+    const tradingStyle = location.state['tradingStyle'];
+
     const navigate = useNavigate();
     const chartContainerNifty = useRef(null);
     const chartContainerCE = useRef(null);
@@ -40,7 +44,7 @@ const Chart = () => {
     const currentBarLastLowPE = useRef(100);
     const currentBarTimePE = useRef(null);
 
-    const socket = new WebSocket('ws://localhost:8765');
+    const socket = new WebSocket('ws://' + ipAddress + ':8765');
     socket.onopen = () => {
         console.log('WebSocket connection opened');
     };
@@ -227,7 +231,7 @@ const Chart = () => {
 
     const onReset = (event) => {
         event.preventDefault();
-        fetch('http://localhost:9060/simtrading/reset', {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -263,7 +267,7 @@ const Chart = () => {
                         title="Return">Reset</button>
                 </div>
             </div>
-            <div style={{float:"left", width:'25%', height:'90%'}} ><OrderInput/></div>
+            <div style={{float:"left", width:'25%', height:'90%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress}/></div>
         </div>
     );
 

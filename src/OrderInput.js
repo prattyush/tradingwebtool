@@ -3,7 +3,7 @@ import Chart from "./Chart";
 import { useNavigate } from 'react-router-dom';
 import Select from "react-dropdown-select";
 
-const OrderInput = () => {
+const OrderInput = ({tradingStyle, ipAddress}) => {
     const [orderType, setOrderType] = useState("R")
     const [stoploss, setStoploss] = useState("")
     const [ratio, setRatio] = useState("l")
@@ -21,13 +21,13 @@ const OrderInput = () => {
         let targetvalue = "0.0";
         if (ratiocommands.length > 1)
             targetvalue = ratiocommands[1]
-        fetch('http://localhost:9060/simtrading/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue, {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
             }),
             headers: {
-                'Content-type': 'application/json; charset=UTF-8',
+                'Content-type': 'application/json; charset=UTF-8'
             },
         })
             .then((response) => response.json())
@@ -41,7 +41,7 @@ const OrderInput = () => {
     }
     const onTdManagementCommandPlaced = (event) => {
         event.preventDefault();
-        fetch('http://localhost:9060/simtrading/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdInputMngTd, {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdInputMngTd, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -63,7 +63,7 @@ const OrderInput = () => {
 
     const onTdInfoCommandPlaced = (event) => {
         event.preventDefault();
-        fetch('http://localhost:9060/simtrading/tradeinfo?command=' + tdInfoCmd, {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/tradeinfo?command=' + tdInfoCmd, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -85,7 +85,7 @@ const OrderInput = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            fetch('http://localhost:9060/simtrading/orderstate/', {
+            fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderstate/', {
                 method: 'POST',
                 body: JSON.stringify({
                     // Add parameters here
@@ -111,7 +111,7 @@ const OrderInput = () => {
 
     const onOrderInfo = (event) => {
         event.preventDefault();
-        fetch('http://localhost:9060/simtrading/orderstate/', {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderstate/', {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
