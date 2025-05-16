@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import {useRef, useEffect, useState} from "react";
 import {createChart, HistogramSeries, CandlestickSeries, LineStyle} from "lightweight-charts";
 import { useNavigate } from 'react-router-dom';
 import OrderInput from "./OrderInput";
@@ -9,6 +9,8 @@ const Chart = () => {
     const location = useLocation();
     const ipAddress = location.state['ipAddress'];
     const tradingStyle = location.state['tradingStyle'];
+    const [ceStrikePrice, setCeStrikePrice] = useState(location.state['ceStrikePrice']);
+    const [peStrikePrice, setPeStrikePrice] = useState(location.state['peStrikePrice']);
 
     const navigate = useNavigate();
     const chartContainerNifty = useRef(null);
@@ -152,6 +154,7 @@ const Chart = () => {
             const ceDataArray = data['prev_data']['ce']
             const peDataArray = data['prev_data']['pe']
 
+            currentBarLastOpenNifty.current = 0
             candlestickSeriesNifty.current.setData(stockDataArray)
             candlestickSeriesCE.current.setData(ceDataArray)
             candlestickSeriesPE.current.setData(peDataArray)
@@ -160,6 +163,12 @@ const Chart = () => {
             const ceData = data['ce']
             const peData = data['pe']
 
+            if (ceStrikePrice === 0) {
+                setCeStrikePrice(ceData['strike_price'])
+            }
+            if (peStrikePrice === 0) {
+                setPeStrikePrice(peData['strike_price'])
+            }
             const barEpochTime = stockData['time']
             const barTimeDate = new Date(barEpochTime * 1000)
 
@@ -258,6 +267,7 @@ const Chart = () => {
             <div style={{float:"left", marginLeft:'1%', width:'65%', height:'90%'}}>
                 <h4>Chart</h4>
                 <div style={{float:"left", marginLeft:'1%', width:'90%', height:'35%'}} ref={chartContainerNifty}></div>
+                <h4 style={{clear:"both", float:"left"}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%'}} ref={chartContainerCE}></div>
                 <div style={{float:"left", marginTop:'1%'}} ref={chartContainerPE}></div>
                 <p></p>
