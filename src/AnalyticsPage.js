@@ -147,10 +147,11 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsCandlestickSeriesCE.current.setData(ceDataArray)
             analyticsCandlestickSeriesPE.current.setData(peDataArray)
 
-
             const orderStockMarkers = []
             const orderCEMarkers = []
             const orderPEMarkers = []
+            const markerSize = 0.1;
+
             for (let i = 0; i < ordersData.length; i++) {
                 let shape = 'circle'
                 let color = '#e91e63'
@@ -165,7 +166,7 @@ const AnalyticsPage = ({ipAddress}) => {
                     price: ordersData[i]['stock_price'],
                     position: 'atPriceMiddle',
                     color: color,
-                    size: 2,
+                    size: markerSize,
                     shape: shape,
                     text: text
                 })
@@ -175,7 +176,7 @@ const AnalyticsPage = ({ipAddress}) => {
                         price: ordersData[i]['price'],
                         position: 'atPriceMiddle',
                         color: color,
-                        size: 2,
+                        size: markerSize,
                         shape: shape,
                         text: text
                     })
@@ -185,7 +186,7 @@ const AnalyticsPage = ({ipAddress}) => {
                         price: ordersData[i]['price'],
                         position: 'atPriceMiddle',
                         color: color,
-                        size: 2,
+                        size: markerSize,
                         shape: shape,
                         text: text
                     })

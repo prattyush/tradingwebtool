@@ -280,6 +280,7 @@ const Chart = () => {
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
             },
         })
             .then((response) => response.json())
@@ -301,8 +302,8 @@ const Chart = () => {
                 <h4>Chart</h4>
                 <div style={{float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%'}} ref={chartContainerCE}></div>
-                <div style={{float:"left", marginTop:'1%'}} ref={chartContainerPE}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%'}} ref={chartContainerCE}></div>
+                <div style={{float:"left"}} ref={chartContainerPE}></div>
                 <p></p>
                 <div style={{clear:"both", float:"left", borderLeft:-10, borderTop:-25, marginLeft:10, marginTop:20}}>
                     <button type="button"  onClick={onReset} title="Return">Reset</button>

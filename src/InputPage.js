@@ -112,10 +112,6 @@ const InputPage = () => {
                     <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
                     <button type="button" onClick={handlePaperTradingInfoSubmit} title="papertrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING</button>
                 </div>
-                <div style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>
-
-                    <button type="button" disabled={buttonState} onClick={gotoChart} title="Return" style={{float:"left", clear:"both", marginTop:"1%"}}>Goto Chart</button>
-                </div>
             </div>
             <div style={{float:"left", width:'98%', height:'75%'}}><AnalyticsPage ipAddress={ipAddress}/></div>
         </div>
