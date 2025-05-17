@@ -8,9 +8,10 @@ const Chart = () => {
 
     const location = useLocation();
     const ipAddress = location.state['ipAddress'];
-    const [tradingStyle, setTradingStyle] = useState(location.state['tradingStyle']);
-    const [ceStrikePrice, setCeStrikePrice] = useState(location.state['ceStrikePrice']);
-    const [peStrikePrice, setPeStrikePrice] = useState(location.state['peStrikePrice']);
+    const chartTime = useRef(null);
+    const tradingStyle = location.state['tradingStyle'];
+    const ceStrikePrice = location.state['ceStrikePrice'];
+    const peStrikePrice = location.state['peStrikePrice'];
 
     const nineEMALine = []
     const twentyOneEMALine = []
@@ -82,7 +83,6 @@ const Chart = () => {
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
         chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
 
-        //const histogramSeries = chartNifty.addSeries(HistogramSeries, { color: "#26a69a" });
         candlestickSeriesNifty.current = chartNifty.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
         candlestickSeriesCE.current = chartCE.current.addSeries(CandlestickSeries,
@@ -92,11 +92,6 @@ const Chart = () => {
 
         lineSeriesNineEMA.current = chartNifty.current.addSeries(LineSeries, { color: '#2962FF', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
         lineSeriesTwentyOneEMA.current = chartNifty.current.addSeries(LineSeries, { color: '#26a69a', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
-
-        //currentBarLastCloseNifty.current = 10.96 + Math.random();
-        //candlestickSeriesNifty.current.setData(candleData);
-
-        //histogramSeries.setData(initialData);
 
         const chartOptions = {
             timeScale: {
@@ -135,29 +130,6 @@ const Chart = () => {
         };
     }, []);
 
-   /** useEffect(() => {
-        const intervalId = setInterval(() => {
-
-            const min = -1;
-            const max = 1;
-            const openrand = previousBarClose.current;
-            const closerand = currentBarLastCloseNifty.current + min + Math.random() * (max - min);
-
-            currentBarLastHighNifty.current = Math.max(currentBarLastHighNifty.current, Math.max(openrand, closerand));
-            currentBarLastLow.current = Math.min(currentBarLastLow.current, Math.min(openrand, closerand));
-            latestTimestamp.current = latestTimestamp.current;
-
-            const candleDataUpdate =
-                {open: openrand, high: currentBarLastHighNifty.current, low: currentBarLastLow.current, close: closerand, time: latestTimestamp.current};
-            candlestickSeriesNifty.current.update(candleDataUpdate, false);
-            currentBarLastCloseNifty.current = closerand;
-            //chartNifty.current.timeScale().fitContent();
-            //previousClose.current = closerand;
-
-        }, 1000);
-        return () => clearInterval(intervalId);
-    }, []); **/
-
     socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.hasOwnProperty('prev_data')) {
@@ -187,15 +159,10 @@ const Chart = () => {
             const ceData = data['ce']
             const peData = data['pe']
 
-            if (ceStrikePrice === 0) {
-                setCeStrikePrice(ceData['strike_price'])
-            }
-            if (peStrikePrice === 0) {
-                setPeStrikePrice(peData['strike_price'])
-            }
             const barEpochTime = stockData['time']
             const barTimeDate = new Date(barEpochTime * 1000)
             console.log(barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds())
+            chartTime.current = barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds()
 
             const oldTime = new Date(currentBarTimeNifty.current * 1000)
             if ((currentBarLastOpenNifty.current === 0) ||

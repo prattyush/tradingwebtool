@@ -10,14 +10,12 @@ const InputPage = () => {
     const [peStrikeprice, setPEStrikePrice] = useState(0)
     const [replaySpeed, setReplaySpeed] = useState(".3")
     const [forwardMinutes, setForwardMinutes] = useState(0)
-    const [buttonState, setButtonState] = useState(true)
     const navigate = useNavigate();
     const [tradingStyle, setTradingStyle] = useState("simtrading");
-    const [ipAddress, setIpAddress] = useState("192.168.1.16");
+    const [ipAddress, setIpAddress] = useState("192.168.1.9");
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
-        setButtonState(true)
         setTradingStyle("simtrading")
         fetch('http://' + ipAddress + ':9060/simtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
             + '&pe=' + peStrikeprice +'&speed=' + replaySpeed + '&forward=' + forwardMinutes, {
@@ -30,18 +28,10 @@ const InputPage = () => {
                 'Access-Control-Allow-Origin':'true'
             },
         })
-            .then((response) => {
-                response.json();
-                setButtonState(false)
-                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:ceStrikeprice, peStrikePrice:peStrikeprice}});
-            })
+            .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                setButtonState(false)
-                //setCEStrikePrice(data['response']['ce_strike_price']);
-                //setPEStrikePrice(data['response']['pe_strike_price']);
-                console.log(data['response']);
-                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:ceStrikeprice, peStrikePrice:peStrikeprice}});
+                const option_info_data = data['response']
+                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price']}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -51,7 +41,6 @@ const InputPage = () => {
     }
     const handlePaperTradingInfoSubmit = (event) => {
         event.preventDefault();
-        setButtonState(true)
         setTradingStyle("papertrading")
         fetch('http://' + ipAddress + ':9060/papertrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
             + '&pe=' + peStrikeprice +'&speed=1&forward=0', {
@@ -61,29 +50,19 @@ const InputPage = () => {
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
             },
         })
-            .then((response) => {
-                response.json();
-                setButtonState(false)
-                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:ceStrikeprice, peStrikePrice:peStrikeprice}});
-            })
+            .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                setButtonState(false)
-                //setCEStrikePrice(data['ce_strike_price']);
-                //setPEStrikePrice(data['pe_strike_price']);
+                const option_info_data = data['response']
+                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price']}});
                 // Handle data
             }).then()
             .catch((err) => {
                 console.log(err.message);
             });
 
-    }
-
-    const gotoChart = (event) => {
-        event.preventDefault();
-        navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:ceStrikeprice, peStrikePrice:peStrikeprice}});
     }
 
     return (
