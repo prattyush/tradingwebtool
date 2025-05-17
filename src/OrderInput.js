@@ -41,7 +41,8 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
     }
     const onTdManagementCommandPlaced = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdInputMngTd, {
+        const cmdParams = cmdInputMngTd.replace(" ", "|");
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdParams, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
