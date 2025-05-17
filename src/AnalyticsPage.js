@@ -154,21 +154,33 @@ const AnalyticsPage = ({ipAddress}) => {
 
             for (let i = 0; i < ordersData.length; i++) {
                 let shape = 'circle'
-                let color = '#e91e63'
+                let color = '#2196F3'
                 let text = 'Buy'
+                let stockText = 'Buy'
+                let stockColor = '#2196F3'
                 if (ordersData[i]['action'] === 'Sell') {
                     shape = 'circle';
-                    color = '#2196F3'
+                    color = '#e91e63'
+                    stockColor = '#e91e63'
                     text = 'Sell'
+                    stockText = 'Sell'
+                }
+                if (ordersData[i]['action'] === 'Sell' && ordersData[i]['type'] === 'Put') {
+                    stockColor = '#2196F3'
+                    stockText = 'Buy'
+                }
+                if (ordersData[i]['action'] === 'Buy' && ordersData[i]['type'] === 'Put') {
+                    stockColor = '#e91e63'
+                    stockText = 'Sell'
                 }
                 orderStockMarkers.push({
                     time: ordersData[i]['time'],
                     price: ordersData[i]['stock_price'],
                     position: 'atPriceMiddle',
-                    color: color,
+                    color: stockColor,
                     size: markerSize,
                     shape: shape,
-                    text: text
+                    text: stockText
                 })
                 if (ordersData[i]['type'] === 'Call') {
                     orderCEMarkers.push({
