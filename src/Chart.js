@@ -185,10 +185,10 @@ const Chart = () => {
                 const nineEMAValue = stockData['close'] * multiplierNineEMA + nineEMALine[nineEMALine.length-1]['value'] * (1-multiplierNineEMA)
                 const twentyOneEMAValue = stockData['close'] * multiplierTwentyOneEMA + twentyOneEMALine[twentyOneEMALine.length-1]['value'] * (1-multiplierTwentyOneEMA)
 
-                nineEMALine.push({time:currentBarTimeNifty.current + 19800, value: nineEMAValue})
-                twentyOneEMALine.push({time:currentBarTimeNifty.current + 19800, value: twentyOneEMAValue})
-                lineSeriesNineEMA.current.update({time:currentBarTimeNifty.current  + 19800, value: nineEMAValue}, false)
-                lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current + 19800, value: twentyOneEMAValue}, false)
+                nineEMALine.push({time:currentBarTimeNifty.current, value: nineEMAValue})
+                twentyOneEMALine.push({time:currentBarTimeNifty.current, value: twentyOneEMAValue})
+                lineSeriesNineEMA.current.update({time:currentBarTimeNifty.current, value: nineEMAValue}, false)
+                lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current, value: twentyOneEMAValue}, false)
             }
 
             currentBarLastCloseNifty.current = stockData['close']
@@ -204,7 +204,7 @@ const Chart = () => {
             currentBarLastLowPE.current = Math.min(currentBarLastLowPE.current, peData['low'])
             currentBarLastHighPE.current = Math.max(currentBarLastHighPE.current, peData['high'])
 
-            const displayTime = currentBarTimeNifty.current + 19800
+            const displayTime = currentBarTimeNifty.current
 
             const candleDataUpdateNifty =
                 {
