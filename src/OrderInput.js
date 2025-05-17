@@ -152,11 +152,8 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
                 <option>COD</option>
             </select>
             <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
-            <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}}
-                   type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
-            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button"
-                    onClick={onOrderPlaced}
-                    title="PlaceOrder">PlaceOrder</button>
+            <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
+            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
 
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
@@ -170,9 +167,7 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
                 <option>ABS</option>
             </select>
             <input style={{clear:"both", float:"left", marginTop:'1%',  width:'24%'}} type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
-            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button"
-                    onClick={onTdManagementCommandPlaced}
-                    title="ManageTrade">ManageTrade</button>
+            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
             <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
@@ -181,10 +176,8 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
                 <option>R</option>
                 <option>RS</option>
             </select>
-            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button"
-                    onClick={onTdInfoCommandPlaced}
-                    title="TradeInfo">TradeInfo</button>
-            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
+            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdInfoCommandPlaced} title="TradeInfo">TradeInfo</button>
+            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
         </div>
     );
 };

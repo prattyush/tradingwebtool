@@ -1,5 +1,5 @@
 import {useRef, useEffect, useState} from "react";
-import {createChart, HistogramSeries, CandlestickSeries, LineStyle} from "lightweight-charts";
+import {createChart, LineSeries, CandlestickSeries, LineStyle} from "lightweight-charts";
 import { useNavigate } from 'react-router-dom';
 import OrderInput from "./OrderInput";
 import {useLocation} from 'react-router-dom';
@@ -11,6 +11,13 @@ const Chart = () => {
     const [tradingStyle, setTradingStyle] = useState(location.state['tradingStyle']);
     const [ceStrikePrice, setCeStrikePrice] = useState(location.state['ceStrikePrice']);
     const [peStrikePrice, setPeStrikePrice] = useState(location.state['peStrikePrice']);
+
+    const nineEMALine = []
+    const twentyOneEMALine = []
+    const multiplierNineEMA = 2 / (9 + 1)
+    const multiplierTwentyOneEMA = 2 / (21 + 1)
+    const lineSeriesNineEMA = useRef(null);
+    const lineSeriesTwentyOneEMA = useRef(null);
 
     const navigate = useNavigate();
     const chartContainerNifty = useRef(null);
@@ -82,6 +89,9 @@ const Chart = () => {
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
         candlestickSeriesPE.current = chartPE.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
+
+        lineSeriesNineEMA.current = chartNifty.current.addSeries(LineSeries, { color: '#2962FF', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
+        lineSeriesTwentyOneEMA.current = chartNifty.current.addSeries(LineSeries, { color: '#26a69a', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
 
         //currentBarLastCloseNifty.current = 10.96 + Math.random();
         //candlestickSeriesNifty.current.setData(candleData);
@@ -155,10 +165,23 @@ const Chart = () => {
             const ceDataArray = data['prev_data']['ce']
             const peDataArray = data['prev_data']['pe']
 
+            nineEMALine.push({time:stockDataArray[0]['time'], value: stockDataArray[0]['close']})
+            twentyOneEMALine.push({time:stockDataArray[0]['time'], value: stockDataArray[0]['close']})
+
+            for (let i = 1; i < stockDataArray.length; i++) {
+                const nineEMAValue = stockDataArray[i]['close'] * multiplierNineEMA + nineEMALine[i-1]['value'] * (1-multiplierNineEMA)
+                const twentyOneEMAValue = stockDataArray[i]['close'] * multiplierTwentyOneEMA + twentyOneEMALine[i-1]['value'] * (1-multiplierTwentyOneEMA)
+                nineEMALine.push({time:stockDataArray[i]['time'], value: nineEMAValue})
+                twentyOneEMALine.push({time:stockDataArray[i]['time'], value: twentyOneEMAValue})
+            }
+
             currentBarLastOpenNifty.current = 0
             candlestickSeriesNifty.current.setData(stockDataArray)
             candlestickSeriesCE.current.setData(ceDataArray)
             candlestickSeriesPE.current.setData(peDataArray)
+
+            lineSeriesNineEMA.current.setData(nineEMALine)
+            lineSeriesTwentyOneEMA.current.setData(twentyOneEMALine)
         } else {
             const stockData = data['stock']
             const ceData = data['ce']
@@ -172,7 +195,7 @@ const Chart = () => {
             }
             const barEpochTime = stockData['time']
             const barTimeDate = new Date(barEpochTime * 1000)
-            console.log(barTimeDate)
+            console.log(barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds())
 
             const oldTime = new Date(currentBarTimeNifty.current * 1000)
             if ((currentBarLastOpenNifty.current === 0) ||
@@ -191,6 +214,14 @@ const Chart = () => {
                 currentBarLastOpenPE.current = peData['open']
                 currentBarLastLowPE.current = peData['low']
                 currentBarLastHighPE.current = peData['high']
+
+                const nineEMAValue = stockData['close'] * multiplierNineEMA + nineEMALine[nineEMALine.length-1]['value'] * (1-multiplierNineEMA)
+                const twentyOneEMAValue = stockData['close'] * multiplierTwentyOneEMA + twentyOneEMALine[twentyOneEMALine.length-1]['value'] * (1-multiplierTwentyOneEMA)
+
+                nineEMALine.push({time:currentBarTimeNifty.current + 19800, value: nineEMAValue})
+                twentyOneEMALine.push({time:currentBarTimeNifty.current + 19800, value: twentyOneEMAValue})
+                lineSeriesNineEMA.current.update({time:currentBarTimeNifty.current  + 19800, value: nineEMAValue}, false)
+                lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current + 19800, value: twentyOneEMAValue}, false)
             }
 
             currentBarLastCloseNifty.current = stockData['close']
@@ -269,14 +300,12 @@ const Chart = () => {
             <div style={{float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
                 <h4>Chart</h4>
                 <div style={{float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
-                <h4 style={{clear:"both", float:"left"}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
+                <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%'}} ref={chartContainerCE}></div>
                 <div style={{float:"left", marginTop:'1%'}} ref={chartContainerPE}></div>
                 <p></p>
                 <div style={{clear:"both", float:"left", borderLeft:-10, borderTop:-25, marginLeft:10, marginTop:20}}>
-                    <button type="button"
-                        onClick={onReset}
-                        title="Return">Reset</button>
+                    <button type="button"  onClick={onReset} title="Return">Reset</button>
                 </div>
             </div>
             <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress}/></div>
