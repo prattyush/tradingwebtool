@@ -151,9 +151,8 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
                 <option>RL</option>
                 <option>COD</option>
             </select>
-            <input style={{clear:"both", float:"left", marginTop:'1%'}}
-                type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
-            <input style={{float:"left", marginLeft: '1%', marginTop:'1%'}}
+            <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
+            <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}}
                    type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button"
                     onClick={onOrderPlaced}
@@ -170,8 +169,7 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
                 <option>QT</option>
                 <option>ABS</option>
             </select>
-            <input style={{clear:"both", float:"left", marginTop:'1%'}}
-                   type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
+            <input style={{clear:"both", float:"left", marginTop:'1%',  width:'24%'}} type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button"
                     onClick={onTdManagementCommandPlaced}
                     title="ManageTrade">ManageTrade</button>

@@ -8,7 +8,7 @@ const Chart = () => {
 
     const location = useLocation();
     const ipAddress = location.state['ipAddress'];
-    const tradingStyle = location.state['tradingStyle'];
+    const [tradingStyle, setTradingStyle] = useState(location.state['tradingStyle']);
     const [ceStrikePrice, setCeStrikePrice] = useState(location.state['ceStrikePrice']);
     const [peStrikePrice, setPeStrikePrice] = useState(location.state['peStrikePrice']);
 
@@ -56,8 +56,7 @@ const Chart = () => {
             textColor: "white",
             background: { type: "solid", color: "black" }
         },
-        width: '1200',
-        height: '480',
+        autosize: true,
     };
 
     const chartPropertiesOptions = {
@@ -65,14 +64,16 @@ const Chart = () => {
             textColor: "white",
             background: { type: "solid", color: "black" },
         },
-        width: '594',
-        height: '480',
+        autosize: true,
     };
 
     useEffect(() => {
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
+        chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
         chartCE.current = createChart(chartContainerCE.current, chartPropertiesOptions);
+        chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
+        chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
 
         //const histogramSeries = chartNifty.addSeries(HistogramSeries, { color: "#26a69a" });
         candlestickSeriesNifty.current = chartNifty.current.addSeries(CandlestickSeries,
@@ -113,9 +114,9 @@ const Chart = () => {
         chartPE.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
-            chartNifty.current.resize(window.innerWidth*0.59, window.innerHeight*0.4)
-            chartCE.current.resize(window.innerWidth*0.29, window.innerHeight*0.4)
-            chartPE.current.resize(window.innerWidth*0.29, window.innerHeight*0.4)
+            chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
+            chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
+            chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
         });
         return () => {
             chartNifty.current.remove();
@@ -171,11 +172,12 @@ const Chart = () => {
             }
             const barEpochTime = stockData['time']
             const barTimeDate = new Date(barEpochTime * 1000)
+            console.log(barTimeDate)
 
             const oldTime = new Date(currentBarTimeNifty.current * 1000)
             if ((currentBarLastOpenNifty.current === 0) ||
                 (((barTimeDate.getMinutes() % 3) === 0) && (barTimeDate.getMinutes() !== oldTime.getMinutes()))) {
-                currentBarTimeNifty.current = barEpochTime
+                currentBarTimeNifty.current = Math.floor(barEpochTime/180)*180
                 currentBarLastOpenNifty.current = stockData['open']
                 currentBarLastLowNifty.current = stockData['low']
                 currentBarLastHighNifty.current = stockData['high']
@@ -264,9 +266,9 @@ const Chart = () => {
 
     return (
         <div>
-            <div style={{float:"left", marginLeft:'1%', width:'65%', height:'90%'}}>
+            <div style={{float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
                 <h4>Chart</h4>
-                <div style={{float:"left", marginLeft:'1%', width:'90%', height:'35%'}} ref={chartContainerNifty}></div>
+                <div style={{float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <h4 style={{clear:"both", float:"left"}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%'}} ref={chartContainerCE}></div>
                 <div style={{float:"left", marginTop:'1%'}} ref={chartContainerPE}></div>
@@ -277,7 +279,7 @@ const Chart = () => {
                         title="Return">Reset</button>
                 </div>
             </div>
-            <div style={{float:"left", width:'25%', height:'90%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress}/></div>
+            <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress}/></div>
         </div>
     );
 

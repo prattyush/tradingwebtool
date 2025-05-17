@@ -1,17 +1,19 @@
 import { useRef, useState } from "react";
 import Chart from "./Chart";
 import { useNavigate } from 'react-router-dom';
+import OrderInput from "./OrderInput";
+import AnalyticsPage from "./AnalyticsPage";
 
 const InputPage = () => {
-    const [tradeDate, setTradeDate] = useState("")
+    const [tradeDate, setTradeDate] = useState("19-03-2025")
     const [ceStrikeprice, setCEStrikePrice] = useState(0)
     const [peStrikeprice, setPEStrikePrice] = useState(0)
-    const [replaySpeed, setReplaySpeed] = useState("")
+    const [replaySpeed, setReplaySpeed] = useState(".3")
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const [buttonState, setButtonState] = useState(true)
     const navigate = useNavigate();
     const [tradingStyle, setTradingStyle] = useState("simtrading");
-    const [ipAddress, setIpAddress] = useState("localhost");
+    const [ipAddress, setIpAddress] = useState("192.168.1.16");
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
@@ -86,83 +88,36 @@ const InputPage = () => {
 
     return (
         <div>
-            <div style={{float:"left", marginTop:'1%', marginBottom:'1%'}}>
-                <h3>SIMULATION TRADING</h3>
-                <form name="simulationtrading" onSubmit={handleSimulationInfoSubmit} style={{float:"left"}}>
-                    <label style={{float:"left"}}>Enter Trade Date:
-                        <input
-                            type="text"
-                            value={tradeDate}
-                            onChange={(e) => setTradeDate(e.target.value)}
-                        />
+            <div style={{float:"left", marginBottom:'1%', width:'90%', height:'20%'}}>
+                <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'60%' }}>
+                    <h4>TRADING DETAILS</h4>
+                    <label style={{float:"left", marginLeft:'1%'}}>Enter Trade Date:
+                        <input type="text" value={tradeDate} style={{width:'30%'}} onChange={(e) => setTradeDate(e.target.value)}/>
                     </label>
-                    <label style={{clear:"both", float:"left"}}>Enter CE StrikePrice :
-                        <input
-                            type="text"
-                            value={ceStrikeprice}
-                            onChange={(e) => setCEStrikePrice(e.target.value)}
-                        />
+                    <label style={{float:"left", marginLeft:'1%'}}>Enter CE StrikePrice :
+                        <input type="text" value={ceStrikeprice} style={{width:'30%'}} onChange={(e) => setCEStrikePrice(e.target.value)}/>
                     </label>
-                    <label style={{clear:"both", float:"left"}}>Enter PE StrikePrice :
-                        <input
-                            type="text"
-                            value={peStrikeprice}
-                            onChange={(e) => setPEStrikePrice(e.target.value)}
-                        />
+                    <label style={{float:"left", marginLeft:'1%'}}>Enter PE StrikePrice :
+                        <input type="text" value={peStrikeprice} style={{width:'30%'}} onChange={(e) => setPEStrikePrice(e.target.value)}/>
                     </label>
-                    <label style={{clear:"both", float:"left"}}>Enter Replay Speed :
-                        <input
-                            type="text"
-                            value={replaySpeed}
-                            onChange={(e) => setReplaySpeed(e.target.value)}
-                        />
-                    </label><label style={{clear:"both", float:"left"}}>Enter Forward Minutes :
+                    <label style={{clear:"both", float:"left", marginLeft:'1%'}}>Enter Replay Speed :
+                        <input type="text" value={replaySpeed} style={{width:'15%'}} onChange={(e) => setReplaySpeed(e.target.value)}/>
+                    </label><label style={{float:"left", marginLeft:'1%'}}>Enter Forward Minutes :
                     <input
-                        type="text"
-                        value={forwardMinutes}
-                        onChange={(e) => setForwardMinutes(e.target.value)}
-                    />
-                </label>
-                    <input style={{clear:"both", float:"left"}} type="submit"/>
-                </form>
-            </div>
-            <div style={{clear:"both", float:"left", marginTop:'1%'}}>
-                <h3>PAPER TRADING</h3>
-                <form name="papertrading" onSubmit={handlePaperTradingInfoSubmit} style={{float:"left"}}>
-                    <label style={{float:"left"}}>Enter Trade Date:
-                        <input
-                            type="text"
-                            value={tradeDate}
-                            onChange={(e) => setTradeDate(e.target.value)}
-                        />
+                        type="text" value={forwardMinutes} style={{width:'15%'}} onChange={(e) => setForwardMinutes(e.target.value)}/>
                     </label>
-                    <label style={{clear:"both", float:"left"}}>Enter CE StrikePrice :
-                        <input
-                            type="text"
-                            value={ceStrikeprice}
-                            onChange={(e) => setCEStrikePrice(e.target.value)}
-                        />
+                    <label style={{float:"left", marginLeft:'1%'}}>Enter IP Address:
+                        <input type="text" value={ipAddress} style={{width:'30%'}} onChange={(e) => setIpAddress(e.target.value)}/>
                     </label>
-                    <label style={{clear:"both", float:"left"}}>Enter PE StrikePrice :
-                        <input
-                            type="text"
-                            value={peStrikeprice}
-                            onChange={(e) => setPEStrikePrice(e.target.value)}
-                        />
-                    </label>
-                    <input style={{clear:"both", float:"left"}} type="submit"/>
-                </form>
+                    <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
+                    <button type="button" onClick={handlePaperTradingInfoSubmit} title="papertrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING</button>
+                </div>
+                <div style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>
+
+                    <button type="button" disabled={buttonState} onClick={gotoChart} title="Return" style={{float:"left", clear:"both", marginTop:"1%"}}>Goto Chart</button>
+                </div>
             </div>
-            <div  style={{clear:"both", float:"left", marginTop:'1%'}}>
-                <label style={{float:"left"}}>Enter IP Address:
-                    <input
-                        type="text"
-                        value={ipAddress}
-                        onChange={(e) => setIpAddress(e.target.value)}
-                    />
-                </label>
-                <button type="button" disabled={buttonState} onClick={gotoChart} title="Return" style={{float:"left", clear:"both", marginTop:"1%"}}>Goto Chart</button>
-            </div>
+            <div style={{float:"left", width:'98%', height:'75%'}}><AnalyticsPage ipAddress={ipAddress}/></div>
         </div>
 
     );
