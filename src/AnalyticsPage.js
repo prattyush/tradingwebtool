@@ -106,6 +106,7 @@ const AnalyticsPage = ({ipAddress}) => {
 
     const handleAnalyticsRequestSubmitted = (event) => {
         event.preventDefault();
+        setButtonState(true)
         fetch('http://' + ipAddress + ':9060/analytics/orderchart?tradedate=' + tradeDate + '&tradingstyle=' + analyticsTradingStyle, {
             method: 'POST',
             body: JSON.stringify({

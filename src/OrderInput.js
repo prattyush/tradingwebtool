@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
     const [orderType, setOrderType] = useState("R")
     const [stoploss, setStoploss] = useState("")
-    const [ratio, setRatio] = useState("l")
+    const [ratio, setRatio] = useState("m")
     const [cmdInputMngTd, setCmdInputMngTd] = useState("")
     const [tdMngmtCmd, setTdMngmtCmd] = useState("L")
     const [tdInfoCmd, setTdInfoCmd] = useState("P")
