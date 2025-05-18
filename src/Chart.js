@@ -1,4 +1,4 @@
-import {useRef, useEffect, useState} from "react";
+import {useRef, useEffect} from "react";
 import {createChart, LineSeries, CandlestickSeries, LineStyle} from "lightweight-charts";
 import { useNavigate } from 'react-router-dom';
 import OrderInput from "./OrderInput";
@@ -12,6 +12,7 @@ const Chart = () => {
     const tradingStyle = location.state['tradingStyle'];
     const ceStrikePrice = location.state['ceStrikePrice'];
     const peStrikePrice = location.state['peStrikePrice'];
+    const replaySpeed = location.state['replaySpeed'];
 
     const nineEMALine = []
     const twentyOneEMALine = []
@@ -161,7 +162,6 @@ const Chart = () => {
 
             const barEpochTime = stockData['time']
             const barTimeDate = new Date(barEpochTime * 1000)
-            console.log(barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds())
             chartTime.current = barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds()
 
             const oldTime = new Date(currentBarTimeNifty.current * 1000)
@@ -276,7 +276,7 @@ const Chart = () => {
                     <button type="button"  onClick={onReset} title="Return">Reset</button>
                 </div>
             </div>
-            <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress}/></div>
+            <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed}/></div>
         </div>
     );
 

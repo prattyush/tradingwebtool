@@ -1,9 +1,6 @@
-import { useRef, useState, useEffect } from "react";
-import Chart from "./Chart";
-import { useNavigate } from 'react-router-dom';
-import Select from "react-dropdown-select";
+import { useState, useEffect } from "react";
 
-const OrderInput = ({tradingStyle, ipAddress}) => {
+const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
     const [orderType, setOrderType] = useState("R")
     const [stoploss, setStoploss] = useState("")
     const [ratio, setRatio] = useState("l")
@@ -13,6 +10,7 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
     const [optionsType, setOptionsType] = useState("CE")
     const [orderInfo, setOrderInfo] = useState("OrderInfo")
     const [tradeInfo, setTradeInfo] = useState("TradeInfo")
+    const [timeInfo, setTimeInfo] = useState("")
 
     const onOrderPlaced = (event) => {
         event.preventDefault();
@@ -86,7 +84,35 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
     }
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const timeInfoInterval = setInterval(() => {
+            fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/timeinfo/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    // Add parameters here
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    'Access-Control-Allow-Origin':'true'
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    const barTimeDate = new Date((data['response']['time']-19800) * 1000)
+                    const barTime = barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds()
+                    setTimeInfo(barTime)
+                    // Handle data
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+            console.log('This will be called every 12 seconds');
+        }, replaySpeed*1000*10)
+
+        return () => clearInterval(timeInfoInterval);
+    }, []);
+
+    useEffect(() => {
+        const orderStateInterval = setInterval(() => {
             fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderstate/', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -108,7 +134,7 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
             console.log('This will be called every 12 seconds');
         }, 12000);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(orderStateInterval);
     }, []);
 
     const onOrderInfo = (event) => {
@@ -135,6 +161,7 @@ const OrderInput = ({tradingStyle, ipAddress}) => {
 
     return (
         <div>
+            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={1} cols={6} value={timeInfo} readOnly={true}>timeInfo</textarea>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}

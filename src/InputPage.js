@@ -1,7 +1,5 @@
-import { useRef, useState } from "react";
-import Chart from "./Chart";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import OrderInput from "./OrderInput";
 import AnalyticsPage from "./AnalyticsPage";
 
 const InputPage = () => {
@@ -31,7 +29,7 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 const option_info_data = data['response']
-                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price']}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:replaySpeed}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -56,7 +54,7 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 const option_info_data = data['response']
-                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price']}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
                 // Handle data
             }).then()
             .catch((err) => {
