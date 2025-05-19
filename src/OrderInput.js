@@ -161,7 +161,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
 
     return (
         <div>
-            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={1} cols={6} value={timeInfo} readOnly={true}>timeInfo</textarea>
+            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={1} cols={9} value={timeInfo} readOnly={true}>timeInfo</textarea>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}
