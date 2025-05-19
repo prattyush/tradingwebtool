@@ -38,8 +38,8 @@ const InputPage = () => {
 
     }
     const handlePaperTradingInfoSubmit = (event) => {
-        event.preventDefault();
         setTradingStyle("papertrading")
+        event.preventDefault();
         fetch('http://' + ipAddress + ':9060/papertrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
             + '&pe=' + peStrikeprice +'&speed=1&forward=0', {
             method: 'POST',
