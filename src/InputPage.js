@@ -14,7 +14,6 @@ const InputPage = () => {
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
-        setTradingStyle("simtrading")
         fetch('http://' + ipAddress + ':9060/simtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
             + '&pe=' + peStrikeprice +'&speed=' + replaySpeed + '&forward=' + forwardMinutes, {
             method: 'POST',
@@ -28,6 +27,7 @@ const InputPage = () => {
         })
             .then((response) => response.json())
             .then((data) => {
+                setTradingStyle("simtrading")
                 const option_info_data = data['response']
                 navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:replaySpeed}});
                 // Handle data
@@ -38,7 +38,6 @@ const InputPage = () => {
 
     }
     const handlePaperTradingInfoSubmit = (event) => {
-        setTradingStyle("papertrading")
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/papertrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
             + '&pe=' + peStrikeprice +'&speed=1&forward=0', {
@@ -53,6 +52,7 @@ const InputPage = () => {
         })
             .then((response) => response.json())
             .then((data) => {
+                setTradingStyle("papertrading")
                 const option_info_data = data['response']
                 console.log(tradingStyle)
                 navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
