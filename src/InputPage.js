@@ -54,6 +54,7 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 const option_info_data = data['response']
+                console.log(tradingStyle)
                 navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
                 // Handle data
             }).then()
