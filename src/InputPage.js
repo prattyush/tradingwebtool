@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useRef, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import AnalyticsPage from "./AnalyticsPage";
 
@@ -9,7 +9,7 @@ const InputPage = () => {
     const [replaySpeed, setReplaySpeed] = useState(".3")
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const navigate = useNavigate();
-    const [tradingStyle, setTradingStyle] = useState("simtrading");
+    const tradingStyle = useRef("simtrading")
     const [ipAddress, setIpAddress] = useState("192.168.1.9");
 
     const handleSimulationInfoSubmit = (event) => {
@@ -27,9 +27,9 @@ const InputPage = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setTradingStyle("simtrading")
+                tradingStyle.current = "simtrading"
                 const option_info_data = data['response']
-                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:replaySpeed}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:replaySpeed}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -52,10 +52,10 @@ const InputPage = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setTradingStyle("papertrading")
+                tradingStyle.current = "papertrading"
                 const option_info_data = data['response']
-                console.log(tradingStyle)
-                navigate("/chart", {state: {tradingStyle:tradingStyle, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
+                console.log(tradingStyle.current)
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
                 // Handle data
             }).then()
             .catch((err) => {
