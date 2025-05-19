@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {useLocation} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const OrderInputCommand = () => {
 
@@ -10,6 +11,7 @@ const OrderInputCommand = () => {
     const peStrikePrice = location.state['peStrikePrice'];
     const replaySpeed = location.state['replaySpeed'];
 
+    const navigate = useNavigate();
     const [orderType, setOrderType] = useState("R")
     const [stoploss, setStoploss] = useState("")
     const [ratio, setRatio] = useState("m")
@@ -168,6 +170,29 @@ const OrderInputCommand = () => {
             });
     }
 
+    const onReset = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+        navigate('/');
+    }
+
     return (
         <div>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={1} cols={9} value={timeInfo} readOnly={true}>timeInfo</textarea>
@@ -193,7 +218,7 @@ const OrderInputCommand = () => {
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
 
-            <p></p>
+            <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
             <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
                 <option>L</option>
@@ -216,6 +241,9 @@ const OrderInputCommand = () => {
             </select>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdInfoCommandPlaced} title="TradeInfo">TradeInfo</button>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
+            <div style={{clear:"both", float:"left", borderLeft:-10, borderTop:-25, marginLeft:10, marginTop:20}}>
+                <button type="button"  onClick={onReset} title="Return">Reset</button>
+            </div>
         </div>
     );
 };
