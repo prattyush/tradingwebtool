@@ -38,21 +38,21 @@ const Chart = () => {
     const currentBarLastOpenNifty = useRef(0);
     const currentBarLastCloseNifty = useRef(null);
     const currentBarLastHighNifty = useRef(0);
-    const currentBarLastLowNifty = useRef(100);
+    const currentBarLastLowNifty = useRef(1000000);
     const currentBarTimeNifty = useRef(null);
 
 
     const currentBarLastOpenCE = useRef(0);
     const currentBarLastCloseCE = useRef(null);
     const currentBarLastHighCE = useRef(0);
-    const currentBarLastLowCE = useRef(100);
+    const currentBarLastLowCE = useRef(100000);
     const currentBarTimeCE = useRef(null);
 
 
     const currentBarLastOpenPE = useRef(0);
     const currentBarLastClosePE = useRef(null);
     const currentBarLastHighPE = useRef(0);
-    const currentBarLastLowPE = useRef(100);
+    const currentBarLastLowPE = useRef(100000);
     const currentBarTimePE = useRef(null);
 
     const socket = new WebSocket('ws://' + ipAddress + ':8765');
@@ -163,6 +163,7 @@ const Chart = () => {
             const barEpochTimeStock = stockData['time']
             const barEpochTimeCE = ceData['time']
             const barEpochTimePE = peData['time']
+
             const barTimeDateStock = new Date(barEpochTimeStock * 1000)
             const barTimeDateCE = new Date(barEpochTimeCE * 1000)
             const barTimeDatePE = new Date(barEpochTimePE * 1000)
@@ -170,7 +171,7 @@ const Chart = () => {
             chartTime.current = barTimeDateStock.getHours() + ":" + barTimeDateStock.getMinutes() + ":" + barTimeDateStock.getSeconds()
 
             const oldTimeStock = new Date(currentBarTimeNifty.current * 1000)
-            if ((currentBarLastOpenNifty.current === 0) || (((barTimeDateStock.getMinutes() % 3) === 0) && (barTimeDateStock.getMinutes() !== oldTimeStock.getMinutes()))) {
+            if ((currentBarLastOpenNifty.current === 0) || (Math.floor(barTimeDateStock.getMinutes()/3) !== Math.floor(oldTimeStock.getMinutes()/3))) {
                 currentBarTimeNifty.current = Math.floor(barEpochTimeStock/180)*180
                 currentBarLastOpenNifty.current = stockData['open']
                 currentBarLastLowNifty.current = stockData['low']
@@ -185,7 +186,7 @@ const Chart = () => {
                 lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current, value: twentyOneEMAValue}, false)
             }
             const oldTimeCE = new Date(currentBarTimeCE.current * 1000)
-            if ((currentBarLastOpenCE.current === 0) || (((barTimeDateCE.getMinutes() % 3) === 0) && (barTimeDateCE.getMinutes() !== oldTimeCE.getMinutes()))) {
+            if ((currentBarLastOpenCE.current === 0) || (Math.floor(barTimeDateCE.getMinutes()/3) !== Math.floor(oldTimeCE.getMinutes()/3))) {
                 currentBarTimeCE.current = Math.floor(barEpochTimeCE/180)*180
                 currentBarLastOpenCE.current = ceData['open']
                 currentBarLastLowCE.current = ceData['low']
@@ -193,8 +194,8 @@ const Chart = () => {
             }
 
             const oldTimePE = new Date(currentBarTimePE.current * 1000)
-            if ((currentBarLastOpenPE.current === 0) || (((barTimeDatePE.getMinutes() % 3) === 0) && (barTimeDatePE.getMinutes() !== oldTimePE.getMinutes()))) {
-                currentBarTimePE.current = Math.floor(barTimeDatePE/180)*180
+            if ((currentBarLastOpenPE.current === 0) || (Math.floor(barTimeDatePE.getMinutes()/3) !== Math.floor(oldTimePE.getMinutes()/3))) {
+                currentBarTimePE.current = Math.floor(barEpochTimePE/180)*180
                 currentBarLastOpenPE.current = peData['open']
                 currentBarLastLowPE.current = peData['low']
                 currentBarLastHighPE.current = peData['high']
@@ -227,16 +228,6 @@ const Chart = () => {
                 };
             candlestickSeriesNifty.current.update(candleDataUpdateNifty, false);
 
-            const candleDataUpdateCE =
-                {
-                    open: currentBarLastOpenCE.current,
-                    high: currentBarLastHighCE.current,
-                    low: currentBarLastLowCE.current,
-                    close: currentBarLastCloseCE.current,
-                    time: displayTimeCE
-                };
-            candlestickSeriesCE.current.update(candleDataUpdateCE, false);
-
             const candleDataUpdatePE =
                 {
                     open: currentBarLastOpenPE.current,
@@ -246,6 +237,16 @@ const Chart = () => {
                     time: displayTimePE
                 };
             candlestickSeriesPE.current.update(candleDataUpdatePE, false);
+
+            const candleDataUpdateCE =
+                {
+                    open: currentBarLastOpenCE.current,
+                    high: currentBarLastHighCE.current,
+                    low: currentBarLastLowCE.current,
+                    close: currentBarLastCloseCE.current,
+                    time: displayTimeCE
+                };
+            candlestickSeriesCE.current.update(candleDataUpdateCE, false);
         }
     };
 
