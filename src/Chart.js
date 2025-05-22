@@ -160,27 +160,21 @@ const Chart = () => {
             const ceData = data['ce']
             const peData = data['pe']
 
-            const barEpochTime = stockData['time']
-            const barTimeDate = new Date(barEpochTime * 1000)
-            chartTime.current = barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds()
+            const barEpochTimeStock = stockData['time']
+            const barEpochTimeCE = ceData['time']
+            const barEpochTimePE = peData['time']
+            const barTimeDateStock = new Date(barEpochTimeStock * 1000)
+            const barTimeDateCE = new Date(barEpochTimeCE * 1000)
+            const barTimeDatePE = new Date(barEpochTimePE * 1000)
 
-            const oldTime = new Date(currentBarTimeNifty.current * 1000)
-            if ((currentBarLastOpenNifty.current === 0) ||
-                (((barTimeDate.getMinutes() % 3) === 0) && (barTimeDate.getMinutes() !== oldTime.getMinutes()))) {
-                currentBarTimeNifty.current = Math.floor(barEpochTime/180)*180
+            chartTime.current = barTimeDateStock.getHours() + ":" + barTimeDateStock.getMinutes() + ":" + barTimeDateStock.getSeconds()
+
+            const oldTimeStock = new Date(currentBarTimeNifty.current * 1000)
+            if ((currentBarLastOpenNifty.current === 0) || (((barTimeDateStock.getMinutes() % 3) === 0) && (barTimeDateStock.getMinutes() !== oldTimeStock.getMinutes()))) {
+                currentBarTimeNifty.current = Math.floor(barEpochTimeStock/180)*180
                 currentBarLastOpenNifty.current = stockData['open']
                 currentBarLastLowNifty.current = stockData['low']
                 currentBarLastHighNifty.current = stockData['high']
-
-                currentBarTimeCE.current = barEpochTime
-                currentBarLastOpenCE.current = ceData['open']
-                currentBarLastLowCE.current = ceData['low']
-                currentBarLastHighCE.current = ceData['high']
-
-                currentBarTimePE.current = barEpochTime
-                currentBarLastOpenPE.current = peData['open']
-                currentBarLastLowPE.current = peData['low']
-                currentBarLastHighPE.current = peData['high']
 
                 const nineEMAValue = stockData['close'] * multiplierNineEMA + nineEMALine[nineEMALine.length-1]['value'] * (1-multiplierNineEMA)
                 const twentyOneEMAValue = stockData['close'] * multiplierTwentyOneEMA + twentyOneEMALine[twentyOneEMALine.length-1]['value'] * (1-multiplierTwentyOneEMA)
@@ -189,6 +183,21 @@ const Chart = () => {
                 twentyOneEMALine.push({time:currentBarTimeNifty.current, value: twentyOneEMAValue})
                 lineSeriesNineEMA.current.update({time:currentBarTimeNifty.current, value: nineEMAValue}, false)
                 lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current, value: twentyOneEMAValue}, false)
+            }
+            const oldTimeCE = new Date(currentBarTimeCE.current * 1000)
+            if ((currentBarLastOpenCE.current === 0) || (((barTimeDateCE.getMinutes() % 3) === 0) && (barTimeDateCE.getMinutes() !== oldTimeCE.getMinutes()))) {
+                currentBarTimeCE.current = Math.floor(barEpochTimeCE/180)*180
+                currentBarLastOpenCE.current = ceData['open']
+                currentBarLastLowCE.current = ceData['low']
+                currentBarLastHighCE.current = ceData['high']
+            }
+
+            const oldTimePE = new Date(currentBarTimePE.current * 1000)
+            if ((currentBarLastOpenPE.current === 0) || (((barTimeDatePE.getMinutes() % 3) === 0) && (barTimeDatePE.getMinutes() !== oldTimePE.getMinutes()))) {
+                currentBarTimePE.current = Math.floor(barTimeDatePE/180)*180
+                currentBarLastOpenPE.current = peData['open']
+                currentBarLastLowPE.current = peData['low']
+                currentBarLastHighPE.current = peData['high']
             }
 
             currentBarLastCloseNifty.current = stockData['close']
@@ -204,7 +213,9 @@ const Chart = () => {
             currentBarLastLowPE.current = Math.min(currentBarLastLowPE.current, peData['low'])
             currentBarLastHighPE.current = Math.max(currentBarLastHighPE.current, peData['high'])
 
-            const displayTime = currentBarTimeNifty.current
+            const displayTimeStock = currentBarTimeNifty.current
+            const displayTimeCE = currentBarTimeCE.current
+            const displayTimePE = currentBarTimePE.current
 
             const candleDataUpdateNifty =
                 {
@@ -212,7 +223,7 @@ const Chart = () => {
                     high: currentBarLastHighNifty.current,
                     low: currentBarLastLowNifty.current,
                     close: currentBarLastCloseNifty.current,
-                    time: displayTime
+                    time: displayTimeStock
                 };
             candlestickSeriesNifty.current.update(candleDataUpdateNifty, false);
 
@@ -222,7 +233,7 @@ const Chart = () => {
                     high: currentBarLastHighCE.current,
                     low: currentBarLastLowCE.current,
                     close: currentBarLastCloseCE.current,
-                    time: displayTime
+                    time: displayTimeCE
                 };
             candlestickSeriesCE.current.update(candleDataUpdateCE, false);
 
@@ -232,7 +243,7 @@ const Chart = () => {
                     high: currentBarLastHighPE.current,
                     low: currentBarLastLowPE.current,
                     close: currentBarLastClosePE.current,
-                    time: displayTime
+                    time: displayTimePE
                 };
             candlestickSeriesPE.current.update(candleDataUpdatePE, false);
         }
