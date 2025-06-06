@@ -10,6 +10,10 @@ const AnalyticsPage = ({ipAddress}) => {
     const [analyticsTradingStyle, setAnalyticsTradingStyle] = useState("simtrading")
     const [buttonState, setButtonState] = useState(true)
 
+    const [analyticsStrategy, setAnalyticsStrategy] = useState("breakout")
+    const [analyticsStrategyTradingStyle, setAnalyticsStrategyTradingStyle] = useState("simtrading")
+    const [analyticsStrategyLookback, setAnalyticsStrategyLookback] = useState("0")
+
     const analyticsChartContainerStock = useRef(null);
     const analyticsChartContainerCE = useRef(null);
     const analyticsChartContainerPE = useRef(null);
@@ -131,6 +135,33 @@ const AnalyticsPage = ({ipAddress}) => {
             });
     }
 
+    const handleStrategyAnalyticsRequestSubmitted = (event) => {
+        event.preventDefault();
+        setButtonState(true)
+        fetch('http://' + ipAddress + ':9060/analytics/strategyorderchart?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => {
+                response.json();
+                setButtonState(false)
+            })
+            .then((data) => {
+                console.log(data);
+                setButtonState(false)
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
     const plotChart = (event) => {
         event.preventDefault();
         const socket = new WebSocket('ws://' + ipAddress + ':9006');
@@ -214,7 +245,7 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsChartPE.current.timeScale().fitContent();
         }
 
-        fetch('http://' + ipAddress + ':9060/analytics/historyinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsTradingStyle, {
+        fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -252,7 +283,38 @@ const AnalyticsPage = ({ipAddress}) => {
                 </form>
                 <button type="button" disabled={buttonState} onClick={plotChart} title="Return" style={{float:"left", marginTop:'1%', marginLeft:'2%'}}>Plot Chart</button>
             </div>
-            <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'70%',}}>
+            <div style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%', border: '1px solid black', width:'30%'}}>
+                <h4>ANALYTICS-STRATEGY</h4>
+                <form name="analytics" onSubmit={handleStrategyAnalyticsRequestSubmitted} style={{float:"left", marginRight:'1%'}}>
+                    <label style={{float:"left"}}> Enter Trade Date:
+                        <input type="text" value={tradeDate} onChange={(e) => setTradeDate(e.target.value)}/>
+                    </label>
+                    <label style={{float:"left"}}> Enter Lookback Days :
+                        <input type="text" value={analyticsStrategyLookback} onChange={(e) => setAnalyticsStrategyLookback(e.target.value)}/>
+                    </label>
+                    <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Trading Style :: </label>
+                    <select  style={{float:"left", marginTop:'1%', width:'auto'}} name="StrategyTdStyle" id="strategyTdStyle" defaultValue={analyticsStrategyTradingStyle} onChange={(e) => setAnalyticsStrategyTradingStyle(e.target.value)}>
+                        <option>simtrading</option>
+                        <option>papertrading</option>
+                    </select>
+                    <label style={{float:"left", marginLeft:'1%', marginTop:'1%', marginRight: '1%'}}>Strategy :: </label>
+                    <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="StrategyCmd" id="strategyCmd" defaultValue={analyticsStrategy} onChange={(e) => setAnalyticsStrategy(e.target.value)}>
+                        <option>all</option>
+                        <option>breakout</option>
+                        <option>double-tb</option>
+                        <option>support</option>
+                        <option>resistance</option>
+                        <option>tradingrange</option>
+                        <option>trend-continuation</option>
+                        <option>breakout-reversal</option>
+                        <option>surprise-bar-reversal</option>
+                        <option>towards-yesterday-close</option>
+                        <option>open-tradingrange</option>
+                    </select>
+                    <input style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
+                </form>
+            </div>
+            <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'70%'}}>
                 <div style={{float:"left", marginLeft:'1%', width:'96%', height:'40%', border: '2px solid black'}} ref={analyticsChartContainerStock}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerCE}></div>
                 <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE}></div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
     const [orderType, setOrderType] = useState("R")
+    const [orderStrategy, setOrderStrategy] = useState("breakout")
     const [stoploss, setStoploss] = useState("")
     const [ratio, setRatio] = useState("m")
     const [cmdInputMngTd, setCmdInputMngTd] = useState("")
@@ -19,7 +20,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
         let targetvalue = "0.0";
         if (ratiocommands.length > 1)
             targetvalue = ratiocommands[1]
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue, {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue + "&strategy=" + orderStrategy, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -42,6 +43,51 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
         event.preventDefault();
         const cmdParams = cmdInputMngTd.replace(" ", "|");
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdParams, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onLNManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=", {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+
+    const onABSManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=ABS&params=-0.75", {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -180,17 +226,28 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
                 <option>RL</option>
                 <option>COD</option>
             </select>
+            <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
+            <select style={{float:"left", marginTop:'1%'}} name="OrderStrategy" id="orderStrategy" defaultValue={orderStrategy} onChange={(e) => setOrderStrategy(e.target.value)}>
+                <option>breakout</option>
+                <option>double-tb</option>
+                <option>support</option>
+                <option>resistance</option>
+                <option>tradingrange</option>
+                <option>trend-continuation</option>
+                <option>breakout-reversal</option>
+                <option>surprise-bar-reversal</option>
+                <option>towards-yesterday-close</option>
+                <option>open-tradingrange</option>
+            </select>
             <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
-
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
             <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
                 <option>L</option>
                 <option>LT</option>
                 <option>LTO</option>
-                <option>LN</option>
                 <option>Q</option>
                 <option>QT</option>
                 <option>ABS</option>
@@ -198,6 +255,8 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
             <input style={{clear:"both", float:"left", marginTop:'1%',  width:'24%'}} type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
             <p></p>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
             <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
                 <option>H</option>

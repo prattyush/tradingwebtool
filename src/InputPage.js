@@ -10,7 +10,7 @@ const InputPage = () => {
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
-    const [ipAddress, setIpAddress] = useState("192.168.1.9");
+    const [ipAddress, setIpAddress] = useState("192.168.1.18");
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
