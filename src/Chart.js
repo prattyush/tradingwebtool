@@ -278,7 +278,6 @@ const Chart = () => {
     return (
         <div>
             <div style={{float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
-                <h4>Chart</h4>
                 <div style={{float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%'}} ref={chartContainerCE}></div>
