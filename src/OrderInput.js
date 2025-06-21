@@ -234,10 +234,13 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
                 <option>resistance</option>
                 <option>tradingrange</option>
                 <option>trend-continuation</option>
-                <option>breakout-reversal</option>
+                <option>exhaustionbar-reversal</option>
                 <option>surprise-bar-reversal</option>
                 <option>towards-yesterday-close</option>
                 <option>open-tradingrange</option>
+                <option>stoploss-hit-reversal</option>
+                <option>EMALine</option>
+                <option>2ndLeg</option>
             </select>
             <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
@@ -248,6 +251,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
                 <option>L</option>
                 <option>LT</option>
                 <option>LTO</option>
+                <option>LN</option>
                 <option>Q</option>
                 <option>QT</option>
                 <option>ABS</option>

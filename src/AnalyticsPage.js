@@ -306,10 +306,13 @@ const AnalyticsPage = ({ipAddress}) => {
                         <option>resistance</option>
                         <option>tradingrange</option>
                         <option>trend-continuation</option>
-                        <option>breakout-reversal</option>
+                        <option>exhaustionbar-reversal</option>
                         <option>surprise-bar-reversal</option>
                         <option>towards-yesterday-close</option>
                         <option>open-tradingrange</option>
+                        <option>stoploss-hit-reversal</option>
+                        <option>EMALine</option>
+                        <option>2ndLeg</option>
                     </select>
                     <input style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
                 </form>
