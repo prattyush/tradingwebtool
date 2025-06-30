@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import useSound from 'use-sound';
+import notificationSound from './alarm01.mp3';
 
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
     const [orderType, setOrderType] = useState("R")
@@ -12,6 +14,9 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
     const [orderInfo, setOrderInfo] = useState("OrderInfo")
     const [tradeInfo, setTradeInfo] = useState("TradeInfo")
     const [timeInfo, setTimeInfo] = useState("")
+    const barCurrentTime = useRef(new Date())
+    const nextAudioTime = useRef(1)
+    const minuteEndAlarm = new Audio(notificationSound);
 
     const onOrderPlaced = (event) => {
         event.preventDefault();
@@ -146,12 +151,24 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
                     const barTimeDate = new Date((data['response']['time']-19800) * 1000)
                     const barTime = barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds()
                     setTimeInfo(barTime)
+                    if (nextAudioTime.current === 1) {
+                        nextAudioTime.current = (Math.floor(barTimeDate.getMinutes()/3) * 3) + 3
+                    }
+
+                    console.log(nextAudioTime.current);
+                    barCurrentTime.current = barTimeDate
                     // Handle data
                 })
                 .catch((err) => {
                     console.log(err.message);
                 });
-            console.log('This will be called every 12 seconds');
+            if (((barCurrentTime.current.getMinutes()+1) === nextAudioTime.current) && (barCurrentTime.current.getSeconds() > 30)) {
+                console.log(nextAudioTime.current);
+                console.log(barCurrentTime.current);
+                minuteEndAlarm.play();
+                nextAudioTime.current = nextAudioTime.current + 3
+            }
+
         }, replaySpeed*1000*10)
 
         return () => clearInterval(timeInfoInterval);
@@ -177,7 +194,6 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
                 .catch((err) => {
                     console.log(err.message);
                 });
-            console.log('This will be called every 12 seconds');
         }, 12000);
 
         return () => clearInterval(orderStateInterval);
@@ -239,6 +255,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
                 <option>towards-yesterday-close</option>
                 <option>open-tradingrange</option>
                 <option>stoploss-hit-reversal</option>
+                <option>wedge-reversal</option>
                 <option>EMALine</option>
                 <option>2ndLeg</option>
             </select>

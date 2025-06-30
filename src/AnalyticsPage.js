@@ -311,6 +311,7 @@ const AnalyticsPage = ({ipAddress}) => {
                         <option>towards-yesterday-close</option>
                         <option>open-tradingrange</option>
                         <option>stoploss-hit-reversal</option>
+                        <option>wedge-reversal</option>
                         <option>EMALine</option>
                         <option>2ndLeg</option>
                     </select>
