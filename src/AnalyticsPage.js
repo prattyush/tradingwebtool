@@ -302,6 +302,7 @@ const AnalyticsPage = ({ipAddress}) => {
                         <option>all</option>
                         <option>breakout</option>
                         <option>double-tb</option>
+                        <option>opening-reversal</option>
                         <option>support</option>
                         <option>resistance</option>
                         <option>tradingrange</option>

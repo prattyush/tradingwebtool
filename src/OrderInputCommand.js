@@ -228,6 +228,7 @@ const OrderInputCommand = () => {
                 <option>Q</option>
                 <option>QT</option>
                 <option>ABS</option>
+                <option>STRATGY</option>
             </select>
             <input style={{clear:"both", float:"left", marginTop:'1%',  width:'24%'}} type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
