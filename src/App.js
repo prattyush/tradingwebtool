@@ -6,6 +6,7 @@ import InputPage from './InputPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WaitPage from "./WaitPage";
 import OrderInputCommand from "./OrderInputCommand";
+import ChartStrategy from "./ChartStrategy";
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
           <Route path="/chart" element={<Chart />} />
             <Route path="/wait" element={<WaitPage />} />
             <Route path="/ordercmd" element={<OrderInputCommand />} />
-          <Route path="/" element={<InputPage />} />
+            <Route path="/tools/labelstrategy" element={<ChartStrategy />} />
+            <Route path="/" element={<InputPage />} />
         </Routes>
       </Router>
   );
