@@ -3,7 +3,7 @@ import Chart from "./Chart";
 import { useNavigate } from 'react-router-dom'
 import {useLocation} from 'react-router-dom';
 import {CandlestickSeries, createChart, LineStyle, createSeriesMarkers} from "lightweight-charts";
-
+import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
 
 const AnalyticsPage = ({ipAddress}) => {
     const [tradeDate, setTradeDate] = useState("")
@@ -246,10 +246,7 @@ const AnalyticsPage = ({ipAddress}) => {
         }
 
         fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
-            method: 'POST',
-            body: JSON.stringify({
-                // Add parameters here
-            }),
+            method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 'Access-Control-Allow-Origin':'true'
@@ -299,22 +296,11 @@ const AnalyticsPage = ({ipAddress}) => {
                     </select>
                     <label style={{float:"left", marginLeft:'1%', marginTop:'1%', marginRight: '1%'}}>Strategy :: </label>
                     <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="StrategyCmd" id="strategyCmd" defaultValue={analyticsStrategy} onChange={(e) => setAnalyticsStrategy(e.target.value)}>
-                        <option>all</option>
-                        <option>breakout</option>
-                        <option>double-tb</option>
-                        <option>opening-reversal</option>
-                        <option>support</option>
-                        <option>resistance</option>
-                        <option>tradingrange</option>
-                        <option>trend-continuation</option>
-                        <option>exhaustionbar-reversal</option>
-                        <option>surprise-bar-reversal</option>
-                        <option>towards-yesterday-close</option>
-                        <option>open-tradingrange</option>
-                        <option>stoploss-hit-reversal</option>
-                        <option>wedge-reversal</option>
-                        <option>EMALine</option>
-                        <option>2ndLeg</option>
+                        {strategyoptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
                     </select>
                     <input style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
                 </form>

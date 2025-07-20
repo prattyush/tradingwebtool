@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import useSound from 'use-sound';
 import notificationSound from './alarm01.mp3';
+import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
 
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
     const [orderType, setOrderType] = useState("R")
@@ -138,10 +139,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
     const onTdInfoCommandPlaced = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/tradeinfo?command=' + tdInfoCmd, {
-            method: 'POST',
-            body: JSON.stringify({
-                // Add parameters here
-            }),
+            method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 'Access-Control-Allow-Origin':'true'
@@ -159,11 +157,8 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
 
     useEffect(() => {
         const timeInfoInterval = setInterval(() => {
-            fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/timeinfo/', {
-                method: 'POST',
-                body: JSON.stringify({
-                    // Add parameters here
-                }),
+            fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/timeinfo', {
+                method: 'GET',
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                     'Access-Control-Allow-Origin':'true'
@@ -268,20 +263,11 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
             </select>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
             <select style={{float:"left", marginTop:'1%'}} name="OrderStrategy" id="orderStrategy" defaultValue={orderStrategy} onChange={(e) => setOrderStrategy(e.target.value)}>
-                <option>breakout</option>
-                <option>double-tb</option>
-                <option>support</option>
-                <option>opening-reversal</option>
-                <option>resistance</option>
-                <option>tradingrange</option>
-                <option>trend-continuation</option>
-                <option>exhaustionbar-reversal</option>
-                <option>surprise-bar-reversal</option>
-                <option>towards-yesterday-close</option>
-                <option>stoploss-hit-reversal</option>
-                <option>wedge-reversal</option>
-                <option>EMALine</option>
-                <option>2ndLeg</option>
+                {strategyoptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
             </select>
             <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>

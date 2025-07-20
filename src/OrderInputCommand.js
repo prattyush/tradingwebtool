@@ -75,10 +75,7 @@ const OrderInputCommand = () => {
     const onTdInfoCommandPlaced = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/tradeinfo?command=' + tdInfoCmd, {
-            method: 'POST',
-            body: JSON.stringify({
-                // Add parameters here
-            }),
+            method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 'Access-Control-Allow-Origin':'true'
@@ -97,10 +94,7 @@ const OrderInputCommand = () => {
     useEffect(() => {
         const timeInfoInterval = setInterval(() => {
             fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/timeinfo/', {
-                method: 'POST',
-                body: JSON.stringify({
-                    // Add parameters here
-                }),
+                method: 'GET',
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',
                     'Access-Control-Allow-Origin':'true'
