@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WaitPage from "./WaitPage";
 import OrderInputCommand from "./OrderInputCommand";
 import LabelStrategy from "./LabelStrategy";
+import AnalyzeStrategyOld from "./AnalyzeStrategyOld";
 import AnalyzeStrategy from "./AnalyzeStrategy";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/wait" element={<WaitPage />} />
             <Route path="/ordercmd" element={<OrderInputCommand />} />
             <Route path="/tools/labelstrategy" element={<LabelStrategy />} />
+            <Route path="/tools/analyzestrategyold" element={<AnalyzeStrategyOld />} />
             <Route path="/tools/analyzestrategy" element={<AnalyzeStrategy />} />
             <Route path="/" element={<InputPage />} />
         </Routes>

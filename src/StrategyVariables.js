@@ -37,6 +37,51 @@ export const windowtimeoptions = [
     { value: 'any', label: 'any' },
 ];
 
+export const getBarEndTimeOption = () => {
+    const barEndTimeOption = []
+    const chartTime = new Date(); // Gets current date and time
+    chartTime.setHours(9); // Sets hour to 9 AM
+    chartTime.setMinutes(15); // Sets minutes to 30
+    chartTime.setSeconds(0); // Sets seconds to 0
+    chartTime.setMilliseconds(0);
+
+    for (let i = 0; i < 36; i++) {
+        const entryMap = new Map();
+        let hours = chartTime.getHours().toString();
+        let minutes = chartTime.getMinutes().toString();
+        if (chartTime.getHours() < 10) {
+            hours = "0" + hours;
+        }
+        if (chartTime.getMinutes() < 10) {
+            minutes = "0" + minutes;
+        }
+
+        entryMap['value'] = hours + ":" + minutes;
+        entryMap['label'] = hours + ":" + minutes;
+
+        chartTime.setMinutes(chartTime.getMinutes() + 3)
+        barEndTimeOption.push(entryMap);
+    }
+    return barEndTimeOption;
+}
+
+export const barendimeoptions = [
+    { value: '1', label: '09:30' },
+    { value: '2', label: '09:45' },
+    { value: '3', label: '10:00' },
+    { value: '4', label: '10:15' },
+    { value: '5', label: '10:30' },
+    { value: '6', label: '10:45' },
+    { value: '7', label: '11:00' },
+    { value: 'any', label: 'any' },
+];
+
+export const tradeTypeOptions = [
+    { value: 'none', label: 'none' },
+    { value: 'buy', label: 'buy' },
+    { value: 'sell', label: 'sell' }
+];
+
 export const previousDayOptions = [
     { value: 'any', label: 'any' },
     { value: 'tradingrange', label: 'tradingrange' },
