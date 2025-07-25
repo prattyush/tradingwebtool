@@ -51,7 +51,7 @@ const AnalyzeStrategyOld = () => {
         });
         return images;
     }
-    const images = importAll(require.context('./images', false, /\.(png|jpe?g|svg)$/));
+    const images = importAll(require.context('./', false, /\.(png|jpe?g|svg)$/));
 
     return (
         <div>
