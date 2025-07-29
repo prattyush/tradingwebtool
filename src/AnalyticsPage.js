@@ -7,7 +7,6 @@ import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from
 
 const AnalyticsPage = ({ipAddress}) => {
     const [tradeDate, setTradeDate] = useState("")
-    const [analyticsTradingStyle, setAnalyticsTradingStyle] = useState("simtrading")
     const [buttonState, setButtonState] = useState(true)
 
     const [analyticsStrategy, setAnalyticsStrategy] = useState("breakout")
@@ -111,7 +110,7 @@ const AnalyticsPage = ({ipAddress}) => {
     const handleAnalyticsRequestSubmitted = (event) => {
         event.preventDefault();
         setButtonState(true)
-        fetch('http://' + ipAddress + ':9060/analytics/orderchart?tradedate=' + tradeDate + '&tradingstyle=' + analyticsTradingStyle, {
+        fetch('http://' + ipAddress + ':9060/analytics/orderchart?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -245,7 +244,7 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsChartPE.current.timeScale().fitContent();
         }
 
-        fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
+        fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -265,21 +264,6 @@ const AnalyticsPage = ({ipAddress}) => {
 
     return (
         <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', width:'96%', height:'70%', border: '1px solid black'}}>
-            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'20%'}}>
-                <h4>ANALYTICS</h4>
-                <form name="analytics" onSubmit={handleAnalyticsRequestSubmitted} style={{float:"left", marginRight:'1%'}}>
-                    <label style={{float:"left"}}> Enter Trade Date:
-                        <input type="text" value={tradeDate} onChange={(e) => setTradeDate(e.target.value)}/>
-                    </label>
-                    <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Trading Style :: </label>
-                    <select  style={{float:"left", marginTop:'1%', width:'auto'}} name="ManagementCmd" id="managementCmd" defaultValue={analyticsTradingStyle} onChange={(e) => setAnalyticsTradingStyle(e.target.value)}>
-                        <option>simtrading</option>
-                        <option>papertrading</option>
-                    </select>
-                    <input style={{clear:"both", float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
-                </form>
-                <button type="button" disabled={buttonState} onClick={plotChart} title="Return" style={{float:"left", marginTop:'1%', marginLeft:'2%'}}>Plot Chart</button>
-            </div>
             <div style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%', border: '1px solid black', width:'30%'}}>
                 <h4>ANALYTICS-STRATEGY</h4>
                 <form name="analytics" onSubmit={handleStrategyAnalyticsRequestSubmitted} style={{float:"left", marginRight:'1%'}}>
@@ -303,6 +287,7 @@ const AnalyticsPage = ({ipAddress}) => {
                         ))}
                     </select>
                     <input style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
+                    <button type="button" disabled={buttonState} onClick={plotChart} title="Return" style={{float:"left", marginTop:'1%', marginLeft:'2%'}}>Plot Chart</button>
                 </form>
             </div>
             <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'70%'}}>

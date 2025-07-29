@@ -9,6 +9,7 @@ import OrderInputCommand from "./OrderInputCommand";
 import LabelStrategy from "./LabelStrategy";
 import AnalyzeStrategyOld from "./AnalyzeStrategyOld";
 import AnalyzeStrategy from "./AnalyzeStrategy";
+import TradeReplayer from "./TradeReplayer";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/tools/labelstrategy" element={<LabelStrategy />} />
             <Route path="/tools/analyzestrategyold" element={<AnalyzeStrategyOld />} />
             <Route path="/tools/analyzestrategy" element={<AnalyzeStrategy />} />
+            <Route path="/tools/tradereplay" element={<TradeReplayer />} />
             <Route path="/" element={<InputPage />} />
         </Routes>
       </Router>

@@ -103,7 +103,7 @@ const AnalyzeStrategy = () => {
 
     const handleAnalyzeStrategy = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/tools?name=labelstrategy&type=analyze&prevdaycondition='
+        fetch('http://' + ipAddress + ':9060/tools?name=analyzestrategy&type=analyze&prevdaycondition='
             + prevDayCondition + "&daystartcondition=" + dayStartCondition + "&strategy=" + strategyOption + "&windowcount=" + barOption, {
             method: 'GET',
             headers: {

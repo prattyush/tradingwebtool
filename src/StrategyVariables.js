@@ -16,6 +16,7 @@ export const strategyoptions = [
     { value: 'wedge-reversal', label: 'wedge-reversal' },
     { value: 'EMALine', label: 'EMALine' },
     { value: '2ndLeg', label: '2ndLeg' },
+    { value: 'all', label: 'all' },
 ];
 
 export const baroptions = [
@@ -35,6 +36,17 @@ export const windowtimeoptions = [
     { value: '6', label: '10:45' },
     { value: '7', label: '11:00' },
     { value: 'any', label: 'any' },
+];
+
+export const optionstype = [
+    { value: 'Call', label: 'Call' },
+    { value: 'Put', label: 'Put' },
+];
+
+export const ordertype = [
+    { value: 'R', label: 'R' },
+    { value: 'RT', label: 'RT' },
+    { value: 'RL', label: 'RL' },
 ];
 
 export const getBarEndTimeOption = () => {

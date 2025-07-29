@@ -1,4 +1,4 @@
-import {useRef, useEffect} from "react";
+import {useRef, useEffect, useState} from "react";
 import {createChart, LineSeries, CandlestickSeries, LineStyle} from "lightweight-charts";
 import { useNavigate } from 'react-router-dom';
 import OrderInput from "./OrderInput";
@@ -20,6 +20,8 @@ const Chart = () => {
     const multiplierTwentyOneEMA = 2 / (21 + 1)
     const lineSeriesNineEMA = useRef(null);
     const lineSeriesTwentyOneEMA = useRef(null);
+
+    const timeInfoLegend = useRef(null);
 
     const navigate = useNavigate();
     const chartContainerNifty = useRef(null);
@@ -77,12 +79,18 @@ const Chart = () => {
     };
 
     useEffect(() => {
+        timeInfoLegend.current = document.createElement('div');
+        timeInfoLegend.current.style = `float:right; clear:both; z-index: 2; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300;`;
+        chartContainerNifty.current.appendChild(timeInfoLegend.current);
+
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
         chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
         chartCE.current = createChart(chartContainerCE.current, chartPropertiesOptions);
         chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
-        chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
+        chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5);
+
+
 
         candlestickSeriesNifty.current = chartNifty.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
@@ -227,6 +235,7 @@ const Chart = () => {
                     time: displayTimeStock
                 };
             candlestickSeriesNifty.current.update(candleDataUpdateNifty, false);
+            timeInfoLegend.current.innerHTML = formatTimeLocale(stockData['time'])
 
             const candleDataUpdatePE =
                 {
@@ -248,7 +257,16 @@ const Chart = () => {
                 };
             candlestickSeriesCE.current.update(candleDataUpdateCE, false);
         }
+
     };
+
+    function formatTimeLocale(barTime) {
+        const barDate = new Date((barTime - (5.5*60*60)) *1000)
+        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false, second:'2-digit' }; // Use hour12: false for 24-hour format
+        const formattedTime = barDate.toLocaleTimeString('en-GB', timeOptions);
+
+        return `${formattedTime}`;
+    }
 
     const onReset = (event) => {
         event.preventDefault();
@@ -278,7 +296,7 @@ const Chart = () => {
     return (
         <div>
             <div style={{float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
-                <div style={{float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%'}} ref={chartContainerCE}></div>
                 <div style={{float:"left"}} ref={chartContainerPE}></div>

@@ -1,27 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import useSound from 'use-sound';
+import notificationSound from './alarm01.mp3';
+import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
 import {useLocation} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
 
-const OrderInputCommand = () => {
+
+const OrderInputCommand = ({tradingStyle, ipAddress}) =>{
 
     const location = useLocation();
-    const ipAddress = location.state['ipAddress'];
-    const tradingStyle = location.state['tradingStyle'];
-    const ceStrikePrice = location.state['ceStrikePrice'];
-    const peStrikePrice = location.state['peStrikePrice'];
-    const replaySpeed = location.state['replaySpeed'];
+    let ipAddressInput = "";
+    let tradingStyleInput = "";
+    if (location.state) {
+        ipAddressInput = location.state['ipAddress'];
+        tradingStyleInput = location.state['tradingStyle'];
+    } else {
+        ipAddressInput = ipAddress;
+        tradingStyleInput = tradingStyle;
+    }
 
-    const navigate = useNavigate();
+
     const [orderType, setOrderType] = useState("R")
-    const [stoploss, setStoploss] = useState("")
-    const [ratio, setRatio] = useState("m")
+    const [orderStrategy, setOrderStrategy] = useState("breakout")
+    const [stoploss, setStoploss] = useState("75")
+    const [ratio, setRatio] = useState("l")
     const [cmdInputMngTd, setCmdInputMngTd] = useState("")
     const [tdMngmtCmd, setTdMngmtCmd] = useState("L")
+    const [strategyValue, setStrategyValue] = useState("fast")
     const [tdInfoCmd, setTdInfoCmd] = useState("P")
     const [optionsType, setOptionsType] = useState("CE")
     const [orderInfo, setOrderInfo] = useState("OrderInfo")
     const [tradeInfo, setTradeInfo] = useState("TradeInfo")
     const [timeInfo, setTimeInfo] = useState("")
+    const barCurrentTime = useRef(new Date())
+    const nextAudioTime = useRef(1)
+    const minuteEndAlarm = new Audio(notificationSound);
 
     const onOrderPlaced = (event) => {
         event.preventDefault();
@@ -30,7 +42,10 @@ const OrderInputCommand = () => {
         let targetvalue = "0.0";
         if (ratiocommands.length > 1)
             targetvalue = ratiocommands[1]
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue, {
+        console.log(ipAddressInput)
+        console.log(tradingStyleInput)
+        console.log(tradingStyleInput)
+        fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue + "&strategy=" + orderStrategy, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -52,7 +67,74 @@ const OrderInputCommand = () => {
     const onTdManagementCommandPlaced = (event) => {
         event.preventDefault();
         const cmdParams = cmdInputMngTd.replace(" ", "|");
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdParams, {
+        fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + '/ordermngmnt?command=' + tdMngmtCmd + "&params=" + cmdParams, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onStrategyCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + '/ordermngmnt?command=STRATGY&params=' + strategyValue, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onLNManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + "/ordermngmnt?command=LN&params=", {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+
+    const onABSManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + "/ordermngmnt?command=ABS&params=-0.25", {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -74,7 +156,7 @@ const OrderInputCommand = () => {
 
     const onTdInfoCommandPlaced = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/tradeinfo?command=' + tdInfoCmd, {
+        fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + '/tradeinfo?command=' + tdInfoCmd, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -92,33 +174,8 @@ const OrderInputCommand = () => {
     }
 
     useEffect(() => {
-        const timeInfoInterval = setInterval(() => {
-            fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/timeinfo/', {
-                method: 'GET',
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    'Access-Control-Allow-Origin':'true'
-                },
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    const barTimeDate = new Date((data['response']['time']-19800) * 1000)
-                    const barTime = barTimeDate.getHours() + ":" + barTimeDate.getMinutes() + ":" + barTimeDate.getSeconds()
-                    setTimeInfo(barTime)
-                    // Handle data
-                })
-                .catch((err) => {
-                    console.log(err.message);
-                });
-            console.log('This will be called every 12 seconds');
-        }, replaySpeed*1000*10)
-
-        return () => clearInterval(timeInfoInterval);
-    }, []);
-
-    useEffect(() => {
         const orderStateInterval = setInterval(() => {
-            fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderstate/', {
+            fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + '/orderstate/', {
                 method: 'POST',
                 body: JSON.stringify({
                     // Add parameters here
@@ -136,7 +193,6 @@ const OrderInputCommand = () => {
                 .catch((err) => {
                     console.log(err.message);
                 });
-            console.log('This will be called every 12 seconds');
         }, 12000);
 
         return () => clearInterval(orderStateInterval);
@@ -144,7 +200,7 @@ const OrderInputCommand = () => {
 
     const onOrderInfo = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderstate/', {
+        fetch('http://' + ipAddressInput + ':9060/' + tradingStyleInput + '/orderstate/', {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -162,29 +218,6 @@ const OrderInputCommand = () => {
             .catch((err) => {
                 console.log(err.message);
             });
-    }
-
-    const onReset = (event) => {
-        event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
-            method: 'POST',
-            body: JSON.stringify({
-                // Add parameters here
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                'Access-Control-Allow-Origin':'true'
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                // Handle data
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-        navigate('/');
     }
 
     return (
@@ -208,11 +241,18 @@ const OrderInputCommand = () => {
                 <option>RL</option>
                 <option>COD</option>
             </select>
+            <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
+            <select style={{float:"left", marginTop:'1%'}} name="OrderStrategy" id="orderStrategy" defaultValue={orderStrategy} onChange={(e) => setOrderStrategy(e.target.value)}>
+                {strategyoptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
             <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
-
-            <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
+            <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
             <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
                 <option>L</option>
@@ -225,8 +265,16 @@ const OrderInputCommand = () => {
                 <option>STRATGY</option>
             </select>
             <input style={{clear:"both", float:"left", marginTop:'1%',  width:'24%'}} type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
+            <select  style={{float:"left", marginTop:'1%', marginLeft:'1%'}} name="StrategyValue" id="strategyValue" defaultValue={strategyValue} onChange={(e) => setStrategyValue(e.target.value)}>
+                <option>fast</option>
+                <option>scalp</option>
+                <option>e</option>
+            </select>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
             <p></p>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
             <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
                 <option>H</option>
@@ -236,9 +284,6 @@ const OrderInputCommand = () => {
             </select>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdInfoCommandPlaced} title="TradeInfo">TradeInfo</button>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
-            <div style={{clear:"both", float:"left", borderLeft:-10, borderTop:-25, marginLeft:10, marginTop:20}}>
-                <button type="button"  onClick={onReset} title="Return">Reset</button>
-            </div>
         </div>
     );
 };

@@ -10,7 +10,7 @@ const InputPage = () => {
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
-    const [ipAddress, setIpAddress] = useState("192.168.1.10");
+    const [ipAddress, setIpAddress] = useState("192.168.1.8");
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
@@ -100,6 +100,11 @@ const InputPage = () => {
         navigate("/tools/analyzestrategy", {state: {ipAddress:ipAddress}});
     }
 
+    const handleTradeReplaySubmit = (event) => {
+        event.preventDefault();
+        navigate("/tools/tradereplay", {state: {ipAddress:ipAddress}});
+    }
+
     return (
         <div>
             <div style={{float:"left", marginBottom:'1%', width:'90%', height:'20%'}}>
@@ -130,6 +135,7 @@ const InputPage = () => {
                 <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'30%' }}>
                     <button type="button" onClick={handleStrategyLabelSubmit} title="labelstrategy" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Label Strategy</button>
                     <button type="button" onClick={handleAnalyzeStrategySubmit} title="analyzestrategy" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Analyze Strategy</button>
+                    <button type="button" onClick={handleTradeReplaySubmit} title="tradereplay" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Trade Replayer</button>
                 </div>
             </div>
             <div style={{float:"left", width:'98%', height:'75%'}}><AnalyticsPage ipAddress={ipAddress}/></div>
