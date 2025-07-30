@@ -173,18 +173,63 @@ const TradeReplayer = () => {
                 setCEStrikePrice(tradeReplayResponse['strike_price']['ce'])
                 setPEStrikePrice(tradeReplayResponse['strike_price']['pe'])
 
-                for (let i = 1; i < stockDataArray.current.length; i++) {
+                for (let i = 0; i < stockDataArray.current.length; i++) {
                     nineEMALineStock.current.push({time:stockDataArray.current[i]['time'], value: stockDataArray.current[i]['ema_9']})
                     twentyOneEMALineStock.current.push({time:stockDataArray.current[i]['time'], value: stockDataArray.current[i]['ema_21']})
                 }
-                for (let i = 1; i < ceDataArray.current.length; i++) {
+                for (let i = 0; i < ceDataArray.current.length; i++) {
                     nineEMALineCE.current.push({time:ceDataArray.current[i]['time'], value: ceDataArray.current[i]['ema_9']})
                     twentyOneEMALineCE.current.push({time:ceDataArray.current[i]['time'], value: ceDataArray.current[i]['ema_21']})
                 }
-                for (let i = 1; i < peDataArray.current.length; i++) {
+                for (let i = 0; i < peDataArray.current.length; i++) {
                     nineEMALinePE.current.push({time:peDataArray.current[i]['time'], value: peDataArray.current[i]['ema_9']})
                     twentyOneEMALinePE.current.push({time:peDataArray.current[i]['time'], value: peDataArray.current[i]['ema_21']})
                 }
+
+                drawChart()
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const handleCEPEPriceReset = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=optionsdata&tradedate=' + tradeDate+ '&forward=' + timeBarCount.current*3, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+
+                const tradeReplayResponse = data['response']
+                ceDataArray.current = tradeReplayResponse['price_action']['ce'];
+                peDataArray.current = tradeReplayResponse['price_action']['pe']
+
+                setCEStrikePrice(tradeReplayResponse['strike_price']['ce'])
+                setPEStrikePrice(tradeReplayResponse['strike_price']['pe'])
+
+                nineEMALineCE.current = []
+                twentyOneEMALineCE.current = []
+                nineEMALinePE.current = []
+                twentyOneEMALinePE.current = []
+
+                for (let k = 0; k < ceDataArray.current.length; k++) {
+                    nineEMALineCE.current.push({time:ceDataArray.current[k]['time'], value: ceDataArray.current[k]['ema_9']})
+                    twentyOneEMALineCE.current.push({time:ceDataArray.current[k]['time'], value: ceDataArray.current[k]['ema_21']})
+                }
+                for (let p = 0; p < peDataArray.current.length; p++) {
+                    nineEMALinePE.current.push({time:peDataArray.current[p]['time'], value: peDataArray.current[p]['ema_9']})
+                    twentyOneEMALinePE.current.push({time:peDataArray.current[p]['time'], value: peDataArray.current[p]['ema_21']})
+                }
+
+                console.log(ceDataArray.current);
+                console.log(peDataArray.current);
 
                 drawChart()
                 // Handle data
@@ -324,6 +369,7 @@ const TradeReplayer = () => {
                 tradeData['type'] = optionType;
                 tradeData['strike_price'] = strikePrice;
                 tradeData['price'] = buyPrice;
+                tradeData['targetPrice'] = targetPrice;
                 tradeData['stoploss'] = stoploss;
                 tradeData['quantity'] = quantity*batchCount;
                 tradeData['time'] = formatDateTimeLocale(currentBarData['time']);
@@ -489,11 +535,11 @@ const TradeReplayer = () => {
         analyticsCandlestickSeriesPE.current.update(peData, false);
 
         if (ceBuyOrderPending === true || peBuyOrderPending === true) {
-            if (ceBuyOrderPending) {
+            if (ceBuyOrderPending === true && ceBuyOrderPendingTrade['targetPrice'] <= ceData['high'] && ceBuyOrderPendingTrade['targetPrice'] >= ceData['low']) {
                 performBuyAction(ceBuyOrderPendingTrade, ceData['time'])
                 ceBuyOrderPending = false;
                 ceBuyOrderPendingTrade = null;
-            } else {
+            } else if (peBuyOrderPending === true && peBuyOrderPendingTrade['targetPrice'] <= peData['high'] && peBuyOrderPendingTrade['targetPrice'] >= peData['low']) {
                 performBuyAction(peBuyOrderPendingTrade, peData['time'])
                 peBuyOrderPending = false;
                 peBuyOrderPendingTrade = null;
@@ -573,6 +619,7 @@ const TradeReplayer = () => {
                     <button type="button" onClick={handleSubmitTradeReset} title="submitTradeReset" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Reset Trade Data</button>
                     <button type="button" onClick={handleClearPendingOrders} title="clearPendingOrders" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Clear Pending Orders</button>
                     <button type="button" onClick={handleClearCurrentTrade} title="clearCurrentTrade" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Clear Current Trade</button>
+                    <button type="button" onClick={handleCEPEPriceReset} title="resetcepe" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Reset CE-PE</button>
 
                     <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="historyInfo" rows={15} cols={50} value={historyInfo}>{historyInfo}</textarea>
                 </div>
