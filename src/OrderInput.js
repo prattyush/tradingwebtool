@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import useSound from 'use-sound';
 import notificationSound from './alarm01.mp3';
 import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
 
@@ -180,7 +179,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
                 .catch((err) => {
                     console.log(err.message);
                 });
-            if (((barCurrentTime.current.getMinutes()+1) === nextAudioTime.current) && (barCurrentTime.current.getSeconds() > 30)) {
+            if (((barCurrentTime.current.getMinutes()+1) === nextAudioTime.current) && (barCurrentTime.current.getSeconds() > 20)) {
                 console.log(nextAudioTime.current);
                 console.log(barCurrentTime.current);
                 minuteEndAlarm.play();
@@ -242,7 +241,6 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
 
     return (
         <div>
-            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={1} cols={9} value={timeInfo} readOnly={true}>timeInfo</textarea>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}

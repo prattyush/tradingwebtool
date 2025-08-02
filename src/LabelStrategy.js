@@ -1,10 +1,6 @@
 import {useState, useCallback, useRef, useEffect} from "react";
-import Zoom from 'react-medium-image-zoom'
-import { Controlled as ControlledZoom } from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import { useNavigate } from 'react-router-dom';
-import InnerImageZoom from 'react-inner-image-zoom';
-import ImageZoom from "react-image-zooom";
 import {strategyoptions, previousDayOptions, todayStartOptions, getBarEndTimeOption, tradeTypeOptions} from "./StrategyVariables";
 import {CandlestickSeries, createChart, LineStyle, createSeriesMarkers, LineSeries} from "lightweight-charts";
 
@@ -329,7 +325,7 @@ const LabelStrategy = () => {
                 <h5>True Cases</h5>
                 {entryOptionsIndexList.map((item, idx) => (
                     <div>
-                        <label style={{float:"left", marginTop:'1%'}}>Entry Strategy:: </label>
+                        <label style={{float:"left", marginTop:'1%'}}>Entry Strat:: </label>
                         <select style={{float:"left", marginTop:'1%'}} name="EntryStrategy" id={Math.random()} defaultValue="none" onChange={(e) => handleEntryStrategy(e, chartImageIdList[index], item.id)}>
                             {strategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
@@ -349,7 +345,7 @@ const LabelStrategy = () => {
                                 </option>
                             ))}
                         </select>
-                        <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strategy:: </label>
+                        <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strat:: </label>
                         <select style={{float:"left", marginTop:'1%'}} name="ExitStrategy" id="exitStrategy1" defaultValue="none" onChange={(e) => handleExitStrategy(e, chartImageIdList[index], item.id)}>
                             {strategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>
@@ -374,7 +370,7 @@ const LabelStrategy = () => {
                     </div>
                 ))}
                 <h5 style={{clear:"both", float:"left", marginTop:'5%'}}>FALSE TRAP Cases</h5>
-                <label style={{clear:"both", float:"left", marginTop:'1%'}}>Entry Strategy:: </label>
+                <label style={{clear:"both", float:"left", marginTop:'1%'}}>Entry Strat:: </label>
                 <select style={{float:"left", marginTop:'1%'}} name="EntryStrategy" id="entryStrategy3" defaultValue="none" onChange={(e) => handleFalseEntryStrategy(e, chartImageIdList[index], 1)}>
                     {strategyoptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -396,7 +392,7 @@ const LabelStrategy = () => {
                         </option>
                     ))}
                 </select>
-                <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strategy:: </label>
+                <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strat:: </label>
                 <select style={{float:"left", marginTop:'1%'}} name="ExitStrategy" id="exitStrategy3" defaultValue="none" onChange={(e) => handleFalseExitStrategy(e, chartImageIdList[index], 1)}>
                     {strategyoptions.map((option) => (
                         <option key={option.value} value={option.value}>
