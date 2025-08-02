@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import notificationSound from './alarm01.mp3';
 import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
 
-const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
+const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice}) => {
     const [orderType, setOrderType] = useState("R")
     const [orderStrategy, setOrderStrategy] = useState("breakout")
     const [stoploss, setStoploss] = useState("75")
@@ -241,6 +241,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed}) => {
 
     return (
         <div>
+            <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}
