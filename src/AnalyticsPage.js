@@ -30,6 +30,7 @@ const AnalyticsPage = ({ipAddress}) => {
     const analyticsChartPE = useRef(null);
 
     const [historyInfo, setHistoryInfo] = useState("");
+    const [reportSummary, setReportSummary] = useState("");
 
 
     const chartPropertiesNifty = {
@@ -244,7 +245,7 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsChartPE.current.timeScale().fitContent();
         }
 
-        fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
+        fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryreportinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -254,7 +255,8 @@ const AnalyticsPage = ({ipAddress}) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setHistoryInfo(data['response'])
+                setHistoryInfo(data['response']['history'])
+                setReportSummary(data['response']['report_summary'])
                 // Handle data
             })
             .catch((err) => {
@@ -296,6 +298,7 @@ const AnalyticsPage = ({ipAddress}) => {
                 <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE}></div>
             </div>
             <div style={{float:"left", marginTop:'1%', marginBottom:'1%', marginLeft:'1%', width:'20%', height:'80%', border: '1px solid black'}}>
+                <textarea style={{float:"left", marginTop:'1%', marginRight: '1%', width:'90%', height:'80%',}} name="reportSummary" rows={10} cols={30} value={reportSummary} readOnly={true}>report</textarea>
                 <textarea style={{float:"left", marginTop:'1%', marginRight: '1%', width:'90%', height:'80%',}} name="tradeInfo" rows={24} cols={60} value={historyInfo} readOnly={true}>info</textarea>
             </div>
         </div>
