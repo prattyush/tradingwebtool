@@ -171,14 +171,16 @@ const AnalyticsPage = ({ipAddress}) => {
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
             const stockDataArray = data['price_action']['stock'];
-
+            
             const ceDataMap = data['price_action']['ce']
             const ceDataMapKeys = Object.keys(ceDataMap);
             const ceDataArray = ceDataMapKeys.length > 0 ? ceDataMap[ceDataMapKeys[0]] : []
+            const ceStrikePrice = ceDataMapKeys.length > 0 ? ceDataMapKeys[0] : 0
 
             const peDataMap = data['price_action']['pe']
             const peDataMapKeys = Object.keys(peDataMap);
             const peDataArray = peDataMapKeys.length > 0 ? peDataMap[peDataMapKeys[0]] : []
+            const peStrikePrice = peDataMapKeys.length > 0 ? peDataMapKeys[0] : 0
 
             const ordersData = data['orders']
 
@@ -221,7 +223,7 @@ const AnalyticsPage = ({ipAddress}) => {
                     shape: shape,
                     text: stockText
                 })
-                if (ordersData[i]['type'] === 'Call') {
+                if (ordersData[i]['type'] === 'Call' && parseInt(ordersData[i]['strike_price']) === parseInt(ceStrikePrice)) {
                     orderCEMarkers.push({
                         time: ordersData[i]['time'],
                         price: ordersData[i]['price'],
@@ -232,15 +234,17 @@ const AnalyticsPage = ({ipAddress}) => {
                         text: text
                     })
                 } else {
-                    orderPEMarkers.push({
-                        time: ordersData[i]['time'],
-                        price: ordersData[i]['price'],
-                        position: 'atPriceMiddle',
-                        color: color,
-                        size: markerSize,
-                        shape: shape,
-                        text: text
-                    })
+                    if (parseInt(ordersData[i]['strike_price']) === parseInt(peStrikePrice)) {
+                        orderPEMarkers.push({
+                            time: ordersData[i]['time'],
+                            price: ordersData[i]['price'],
+                            position: 'atPriceMiddle',
+                            color: color,
+                            size: markerSize,
+                            shape: shape,
+                            text: text
+                        })
+                    }
                 }
             }
             createSeriesMarkers(analyticsCandlestickSeriesNifty.current, orderStockMarkers);
