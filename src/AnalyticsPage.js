@@ -279,6 +279,7 @@ const AnalyticsPage = ({ipAddress}) => {
                     <select  style={{float:"left", marginTop:'1%', width:'auto'}} name="StrategyTdStyle" id="strategyTdStyle" defaultValue={analyticsStrategyTradingStyle} onChange={(e) => setAnalyticsStrategyTradingStyle(e.target.value)}>
                         <option>simtrading</option>
                         <option>papertrading</option>
+                        <option>realtrading</option>
                     </select>
                     <label style={{float:"left", marginLeft:'1%', marginTop:'1%', marginRight: '1%'}}>Strategy :: </label>
                     <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="StrategyCmd" id="strategyCmd" defaultValue={analyticsStrategy} onChange={(e) => setAnalyticsStrategy(e.target.value)}>
