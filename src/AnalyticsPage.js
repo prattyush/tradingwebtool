@@ -171,8 +171,15 @@ const AnalyticsPage = ({ipAddress}) => {
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
             const stockDataArray = data['price_action']['stock'];
-            const ceDataArray = data['price_action']['ce'];
-            const peDataArray = data['price_action']['pe']
+
+            const ceDataMap = data['price_action']['ce']
+            const ceDataMapKeys = Object.keys(ceDataMap);
+            const ceDataArray = ceDataMapKeys.length > 0 ? ceDataMap[ceDataMapKeys[0]] : []
+
+            const peDataMap = data['price_action']['pe']
+            const peDataMapKeys = Object.keys(peDataMap);
+            const peDataArray = peDataMapKeys.length > 0 ? peDataMap[peDataMapKeys[0]] : []
+
             const ordersData = data['orders']
 
             analyticsCandlestickSeriesNifty.current.setData(stockDataArray)
