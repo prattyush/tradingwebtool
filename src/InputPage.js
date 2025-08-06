@@ -63,6 +63,32 @@ const InputPage = () => {
             });
 
     }
+    const handleRealTradingInfoSubmit = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/realtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true', {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                tradingStyle.current = "realtrading"
+                const option_info_data = data['response']
+                console.log(tradingStyle.current)
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+    }
 
     const handlePaperTradingInfoOrderSubmit = (event) => {
         event.preventDefault();
@@ -130,6 +156,7 @@ const InputPage = () => {
                     </label>
                     <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
                     <button type="button" onClick={handlePaperTradingInfoSubmit} title="papertrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING</button>
+                    <button type="button" onClick={handleRealTradingInfoSubmit} title="realtrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>REAL TRADING</button>
                     <button type="button" onClick={handlePaperTradingInfoOrderSubmit} title="papertradingorder" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING ORDER</button>
                 </div>
                 <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'30%' }}>
