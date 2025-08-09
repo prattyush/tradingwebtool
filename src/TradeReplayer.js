@@ -87,11 +87,11 @@ const TradeReplayer = () => {
 
     useEffect(() => {
         analyticsChartNifty.current = createChart(analyticsChartContainerStock.current, chartPropertiesNifty);
-        analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.4)
+        analyticsChartNifty.current.resize(window.innerWidth*0.67, window.innerHeight*0.5)
         analyticsChartCE.current = createChart(analyticsChartContainerCE.current, chartPropertiesOptions);
-        analyticsChartCE.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
         analyticsChartPE.current = createChart(analyticsChartContainerPE.current, chartPropertiesOptions);
-        analyticsChartPE.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
 
         //const histogramSeries = chartNifty.addSeries(HistogramSeries, { color: "#26a69a" });
         analyticsCandlestickSeriesNifty.current = analyticsChartNifty.current.addSeries(CandlestickSeries,
@@ -141,9 +141,9 @@ const TradeReplayer = () => {
         analyticsChartPE.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
-            analyticsChartNifty.current.resize(window.innerWidth*0.67, window.innerHeight*0.4)
-            analyticsChartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.4)
-            analyticsChartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.4)
+            analyticsChartNifty.current.resize(window.innerWidth*0.67, window.innerHeight*0.5)
+            analyticsChartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
+            analyticsChartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
         });
         return () => {
             analyticsChartNifty.current.remove();
@@ -523,6 +523,14 @@ const TradeReplayer = () => {
         peBuyOrderPendingTrade = null;
     }
 
+    function setRatioAndPrice(fieldValue) {
+        const splitValues = fieldValue.split(' ')
+        setRRRatio(splitValues[0]);
+        if (splitValues.length > 1) {
+            setTargetPrice(parseFloat(splitValues[1]));
+        }
+    }
+
     const handleTimeNext = (event) => {
         event.preventDefault();
         timeBarCount.current = timeBarCount.current + 1
@@ -568,24 +576,24 @@ const TradeReplayer = () => {
 
     return (
         <div>
-            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'20%'}}>
-                <h4>TRADE-REPLAYER</h4>
-                <form name="analytics" onSubmit={handleTradeReplayRequestSubmitted} style={{float:"left", marginRight:'1%'}}>
-                    <label style={{float:"left"}}> Enter Trade Date:
-                        <input type="text" value={tradeDate} onChange={(e) => setTradeDate(e.target.value)}/>
-                    </label>
-                    <input style={{clear:"both", float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
-                </form>
-
-                <button type="button" onClick={handleTimePrev} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Prev</button>
-                <button type="button" onClick={handleTimeNext} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Next</button>
-            </div>
             <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'68%', height:'80%'}}>
                 <div style={{float:"left", marginLeft:'1%', width:'96%', height:'40%', border: '2px solid black'}} ref={analyticsChartContainerStock}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerCE}></div>
-                <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE}></div>
+                <div style={{float:"left", marginTop:'1%', marginLeft:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE}></div>
             </div>
             <div style={{float:"left", marginTop:'1%', marginBottom:'1%', marginLeft:'1%', border: '1px solid black', width:'25%', height:'80%'}}>
+                <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'70%'}}>
+                    <h4>TRADE-REPLAYER</h4>
+                    <form name="analytics" onSubmit={handleTradeReplayRequestSubmitted} style={{float:"left", marginRight:'1%'}}>
+                        <label style={{float:"left"}}> Enter Trade Date:
+                            <input type="text" value={tradeDate} onChange={(e) => setTradeDate(e.target.value)}/>
+                        </label>
+                        <input style={{clear:"both", float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
+                    </form>
+
+                    <button type="button" onClick={handleTimePrev} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Prev</button>
+                    <button type="button" onClick={handleTimeNext} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Next</button>
+                </div>
                 <div style={{float:"left", width:"80%",  border: '1px solid black'}}>
                     <div style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%'}}>
                         <h5 style={{clear:"both", float:"left"}}>CE - {ceStrikePrice}  PE - {peStrikePrice}</h5>
@@ -606,9 +614,8 @@ const TradeReplayer = () => {
                                 </option>
                             ))}
                         </select>
-                        <input type="text" value={rrRatio} style={{width:'10%', float:"left", marginLeft:"1%"}} onChange={(e) => setRRRatio(e.target.value)}/>
+                        <input type="text" style={{width:'25%', float:"left", marginLeft:"1%"}} onChange={(e) => setRatioAndPrice(e.target.value)}/>
                         <input type="text" value={stoploss} style={{width:'10%', float:"left", marginLeft:"1%"}} onChange={(e) => updateStoploss(parseFloat(e.target.value))}/>
-                        <input type="text" value={targetPrice} style={{width:'10%', float:"left", marginLeft:"1%"}} onChange={(e) => setTargetPrice(parseFloat(e.target.value))}/>
                     </div>
 
                     <button type="button" onClick={handleBuyOptions} title="buyoptions" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Buy</button>

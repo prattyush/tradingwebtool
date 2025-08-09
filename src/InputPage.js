@@ -6,11 +6,11 @@ const InputPage = () => {
     const [tradeDate, setTradeDate] = useState("19-03-2025")
     const [ceStrikeprice, setCEStrikePrice] = useState(0)
     const [peStrikeprice, setPEStrikePrice] = useState(0)
-    const [replaySpeed, setReplaySpeed] = useState(".3")
+    const [replaySpeed, setReplaySpeed] = useState(".9")
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
-    const [ipAddress, setIpAddress] = useState("192.168.1.8");
+    const [ipAddress, setIpAddress] = useState("43.205.27.227");
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
