@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import notificationSound from './alarm01.mp3';
-import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
+import {strategyoptions, orderstrategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
 
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice}) => {
     const [orderType, setOrderType] = useState("R")
@@ -15,6 +15,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
     const [orderInfo, setOrderInfo] = useState("OrderInfo")
     const [tradeInfo, setTradeInfo] = useState("TradeInfo")
     const [timeInfo, setTimeInfo] = useState("")
+    const absCommandDiffValue = -0.1
     const barCurrentTime = useRef(new Date())
     const nextAudioTime = useRef(1)
     const minuteEndAlarm = new Audio(notificationSound);
@@ -115,7 +116,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
 
     const onABSManagementCommandPlaced = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=ABS&params=-0.25", {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=ABS&params=" + absCommandDiffValue.toString(), {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -241,7 +242,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
 
     return (
         <div>
-            <h4 style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</h4>
+            <label style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}
@@ -261,13 +262,21 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 <option>COD</option>
             </select>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
-            <select style={{float:"left", marginTop:'1%'}} name="OrderStrategy" id="orderStrategy" defaultValue={orderStrategy} onChange={(e) => setOrderStrategy(e.target.value)}>
-                {strategyoptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
+            <div style={{clear:"both", float:"left", marginBottom:'1%'}}>
+            {orderstrategyoptions.map((option) => (
+                <div key={option.value} style={{float:"left"}}>
+                    <input
+                        type="radio"
+                        id={option.value}
+                        name="orderStrategyRadioGroup" // All radios in a group must have the same name
+                        value={option.value}
+                        checked={orderStrategy === option.value}
+                        onChange={(e) => setOrderStrategy(e.target.value)}
+                    />
+                    <label htmlFor={option.value}>{option.label}</label>
+                </div>
+            ))}
+            </div>
             <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
