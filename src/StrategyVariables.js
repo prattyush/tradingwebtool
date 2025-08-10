@@ -1,20 +1,20 @@
 
 export const orderstrategyoptions = [
     { value: 'breakout', label: 'bo' },
-    { value: 'support', label: 'sup' },
-    { value: 'double-tb', label: 'dtb' },
-    { value: 'opening-tradingrange', label: 'otr' },
-    { value: 'tradingrange', label: 'tr' },
-    { value: 'opening-reversal', label: 'orv' },
-    { value: 'resistance', label: 're' },
     { value: 'trend-continuation', label: 'tc' },
-    { value: 'exhaustionbar-reversal', label: 'exbrv' },
-    { value: 'surprise-bar-reversal', label: 'spbrv' },
+    { value: 'support', label: 'sup' },
+    { value: 'resistance', label: 're' },
     { value: 'towards-yesterday-close', label: 'tyc' },
-    { value: 'stoploss-hit-reversal', label: 'shtrv' },
-    { value: 'wedge-reversal', label: 'wrv' },
     { value: 'EMALine', label: 'emln' },
     { value: '2ndLeg', label: '2L' },
+    { value: 'opening-tradingrange', label: 'otr' },
+    { value: 'tradingrange', label: 'tr' },
+    { value: 'double-tb', label: 'dtb' },
+    { value: 'opening-reversal', label: 'orv' },
+    { value: 'exhaustionbar-reversal', label: 'exbrv' },
+    { value: 'surprise-bar-reversal', label: 'spbrv' },
+    { value: 'stoploss-hit-reversal', label: 'shtrv' },
+    { value: 'wedge-reversal', label: 'wrv' },
 ];
 
 export const strategyoptions = [
