@@ -2,7 +2,7 @@ import {useState, useCallback, useRef, useEffect, use} from "react";
 import {useLocation} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {CandlestickSeries, createChart, LineSeries, LineStyle} from "lightweight-charts";
-import {strategyoptions, optionstype, ordertype} from "./StrategyVariables";
+import {strategyoptions, optionstype, orderTypeOptions} from "./StrategyVariables";
 
 
 const TradeReplayer = () => {
@@ -378,7 +378,7 @@ const TradeReplayer = () => {
                 tradeData['action'] = 'BUY';
 
                 if (orderType === "RL" || orderType === "RT") {
-                    console.log("Future Action " + ordertype + " " + optionType)
+                    console.log("Future Action " + orderTypeOptions + " " + optionType)
                     if (optionType === "Call") {
                         ceBuyOrderPendingTrade = tradeData;
                         ceBuyOrderPending = true;
@@ -601,7 +601,7 @@ const TradeReplayer = () => {
                     </div>
                     <div style={{clear:"both", float:"left", marginTop:"1%"}}>
                         <select style={{float:"left", marginTop:'1%', marginLeft:'1%'}} name="OrderTYPE" id="ordertype" defaultValue="1" onChange={(e) => setOrderType(e.target.value)}>
-                            {ordertype.map((option) => (
+                            {orderTypeOptions.map((option) => (
                                 <option key={option.value} value={option.value}>
                                     {option.label}
                                 </option>

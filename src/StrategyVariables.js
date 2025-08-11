@@ -61,10 +61,12 @@ export const optionstype = [
     { value: 'Put', label: 'Put' },
 ];
 
-export const ordertype = [
+export const orderTypeOptions = [
     { value: 'R', label: 'R' },
     { value: 'RT', label: 'RT' },
     { value: 'RL', label: 'RL' },
+    { value: 'RO', label: 'RO' },
+    { value: 'COD', label: 'COD' },
 ];
 
 export const getBarEndTimeOption = () => {

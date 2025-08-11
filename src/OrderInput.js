@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import notificationSound from './alarm01.mp3';
-import {strategyoptions, orderstrategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
+import {
+    strategyoptions,
+    orderstrategyoptions,
+    orderTypeOptions, previousDayOptions,
+    todayStartOptions,
+    baroptions
+} from "./StrategyVariables";
 
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice}) => {
     const [orderType, setOrderType] = useState("R")
@@ -254,13 +260,19 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 <option>PE</option>
             </select>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
-            <select style={{float:"left", marginTop:'1%'}} name="OrderType" id="orderType" defaultValue={orderType} onChange={(e) => setOrderType(e.target.value)}>
-                <option>R</option>
-                <option>RO</option>
-                <option>RT</option>
-                <option>RL</option>
-                <option>COD</option>
-            </select>
+            {orderTypeOptions.map((option) => (
+                <div key={option.value} style={{float:"left"}}>
+                    <input
+                        type="radio"
+                        id={option.value}
+                        name="orderTypeOptionsRadioGroup" // All radios in a group must have the same name
+                        value={option.value}
+                        checked={orderType === option.value}
+                        onChange={(e) => setOrderType(e.target.value)}
+                    />
+                    <label htmlFor={option.value}>{option.label}</label>
+                </div>
+            ))}
             <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
             <div style={{clear:"both", float:"left", marginBottom:'1%'}}>
             {orderstrategyoptions.map((option) => (
