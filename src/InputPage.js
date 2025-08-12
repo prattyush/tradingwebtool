@@ -8,6 +8,7 @@ const InputPage = () => {
     const [peStrikeprice, setPEStrikePrice] = useState(0)
     const [replaySpeed, setReplaySpeed] = useState(".9")
     const [forwardMinutes, setForwardMinutes] = useState(0)
+    const [tradeQuantity, setTradeQuantity] = useState(0)
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
     const [ipAddress, setIpAddress] = useState("43.205.27.227");
@@ -15,7 +16,7 @@ const InputPage = () => {
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/simtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=' + replaySpeed + '&forward=' + forwardMinutes + "&websocket=true", {
+            + '&pe=' + peStrikeprice +'&speed=' + replaySpeed + '&forward=' + forwardMinutes + '&websocket=true&quantity=' + tradeQuantity, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -40,7 +41,7 @@ const InputPage = () => {
     const handlePaperTradingInfoSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/papertrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true', {
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true&quantity='+tradeQuantity, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -66,7 +67,7 @@ const InputPage = () => {
     const handleRealTradingInfoSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/realtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true', {
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true&quantity='+tradeQuantity, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -93,7 +94,7 @@ const InputPage = () => {
     const handlePaperTradingInfoOrderSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/papertrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=false', {
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=false&quantity='+tradeQuantity, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -106,6 +107,32 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 tradingStyle.current = "papertrading"
+                const option_info_data = data['response']
+                console.log(tradingStyle.current)
+                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const handleRealTradingInfoOrderSubmit = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/realtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=false&quantity='+tradeQuantity, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                tradingStyle.current = "realtrading"
                 const option_info_data = data['response']
                 console.log(tradingStyle.current)
                 navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
@@ -147,9 +174,14 @@ const InputPage = () => {
                     </label>
                     <label style={{clear:"both", float:"left", marginLeft:'1%'}}>Enter Replay Speed :
                         <input type="text" value={replaySpeed} style={{width:'15%'}} onChange={(e) => setReplaySpeed(e.target.value)}/>
-                    </label><label style={{float:"left", marginLeft:'1%'}}>Enter Forward Minutes :
+                    </label>
+                    <label style={{float:"left", marginLeft:'1%'}}>Enter Forward Minutes :
                     <input
                         type="text" value={forwardMinutes} style={{width:'15%'}} onChange={(e) => setForwardMinutes(e.target.value)}/>
+                    </label>
+                    <label style={{float:"left", marginLeft:'1%'}}>Enter Quantity :
+                        <input
+                            type="text" value={tradeQuantity} style={{width:'15%'}} onChange={(e) => setTradeQuantity(e.target.value)}/>
                     </label>
                     <label style={{float:"left", marginLeft:'1%'}}>Enter IP Address:
                         <input type="text" value={ipAddress} style={{width:'30%'}} onChange={(e) => setIpAddress(e.target.value)}/>
@@ -158,6 +190,7 @@ const InputPage = () => {
                     <button type="button" onClick={handlePaperTradingInfoSubmit} title="papertrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING</button>
                     <button type="button" onClick={handleRealTradingInfoSubmit} title="realtrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>REAL TRADING</button>
                     <button type="button" onClick={handlePaperTradingInfoOrderSubmit} title="papertradingorder" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING ORDER</button>
+                    <button type="button" onClick={handleRealTradingInfoOrderSubmit} title="realtradingorder" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>REAL TRADING ORDER</button>
                 </div>
                 <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'30%' }}>
                     <button type="button" onClick={handleStrategyLabelSubmit} title="labelstrategy" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Label Strategy</button>
