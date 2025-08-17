@@ -21,7 +21,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
     const [orderInfo, setOrderInfo] = useState("OrderInfo")
     const [tradeInfo, setTradeInfo] = useState("TradeInfo")
     const [timeInfo, setTimeInfo] = useState("")
-    const absCommandDiffValue = -0.1
+    const absCommandDiffValue = -0.00
     const barCurrentTime = useRef(new Date())
     const nextAudioTime = useRef(1)
     const minuteEndAlarm = new Audio(notificationSound);
@@ -100,6 +100,48 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
     const onLNManagementCommandPlaced = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=", {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+    const onLN1ManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=1", {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+    const onLN2ManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=2", {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -313,6 +355,8 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
             <p></p>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN1ManagementCommandPlaced} title="LN-1">LN-1</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN2ManagementCommandPlaced} title="LN-2">LN-2</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
