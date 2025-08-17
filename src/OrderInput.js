@@ -315,18 +315,25 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                     <label htmlFor={option.value}>{option.label}</label>
                 </div>
             ))}
+            <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
+            <div style={{clear:"both", float:"left", marginBottom:'1%'}}>
+                {orderstrategyoptions.map((option) => (
+                    <div key={option.value} style={{float:"left"}}>
+                        <input
+                            type="radio"
+                            id={option.value}
+                            name="orderStrategyRadioGroup" // All radios in a group must have the same name
+                            value={option.value}
+                            checked={orderStrategy === option.value}
+                            onChange={(e) => setOrderStrategy(e.target.value)}
+                        />
+                        <label htmlFor={option.value}>{option.label}</label>
+                    </div>
+                ))}
+            </div>
             <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
-
-            <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
-            <select style={{float:"left", marginTop:'1%'}} name="OrderStrategy" id="orderStrategy" defaultValue={orderStrategy} onChange={(e) => setOrderStrategy(e.target.value)}>
-                {strategyoptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
             <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
