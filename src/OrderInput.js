@@ -13,6 +13,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
     const [orderStrategy, setOrderStrategy] = useState("breakout")
     const [stoploss, setStoploss] = useState("75")
     const [ratio, setRatio] = useState("l")
+    const [targetValue, setTargetValue] = useState(0.0)
     const [cmdInputMngTd, setCmdInputMngTd] = useState("")
     const [tdMngmtCmd, setTdMngmtCmd] = useState("L")
     const [strategyValue, setStrategyValue] = useState("fast")
@@ -30,10 +31,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
         event.preventDefault();
         const ratiocommands = ratio.split(" ");
         const riskrewardType = ratiocommands[0];
-        let targetvalue = "0.0";
-        if (ratiocommands.length > 1)
-            targetvalue = ratiocommands[1]
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + riskrewardType + "&target=" + targetvalue + "&strategy=" + orderStrategy, {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + ratio + "&target=" + targetValue.toString() + "&strategy=" + orderStrategy, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -331,8 +329,13 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                     </div>
                 ))}
             </div>
-            <input style={{clear:"both", float:"left", marginTop:'1%', width:'15%'}} type="commandInput" value={ratio}  onChange={(e) => setRatio(e.target.value)}/>
-            <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'15%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
+            <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="RatioValue" id="ratioValue" defaultValue={ratio} onChange={(e) => setRatio(e.target.value)}>
+                <option>l</option>
+                <option>m</option>
+                <option>h</option>
+            </select>
+            <input style={{float:"left", marginTop:'1%', width:'12%'}} type="targetInput" value={targetValue}  onChange={(e) => setTargetValue(e.target.value)}/>
+            <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'12%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
