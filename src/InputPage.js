@@ -29,8 +29,8 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 tradingStyle.current = "simtrading"
-                const option_info_data = data['response']
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:replaySpeed}});
+                const response_data = data['response']
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:replaySpeed}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -54,9 +54,9 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 tradingStyle.current = "papertrading"
-                const option_info_data = data['response']
+                const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -80,9 +80,9 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 tradingStyle.current = "realtrading"
-                const option_info_data = data['response']
+                const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -107,9 +107,9 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 tradingStyle.current = "papertrading"
-                const option_info_data = data['response']
+                const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
+                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -133,9 +133,9 @@ const InputPage = () => {
             .then((response) => response.json())
             .then((data) => {
                 tradingStyle.current = "realtrading"
-                const option_info_data = data['response']
+                const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:option_info_data['ce_strike_price'], peStrikePrice:option_info_data['pe_strike_price'], replaySpeed:1}});
+                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
                 // Handle data
             }).then()
             .catch((err) => {

@@ -13,6 +13,7 @@ const Chart = () => {
     const ceStrikePrice = location.state['ceStrikePrice'];
     const peStrikePrice = location.state['peStrikePrice'];
     const replaySpeed = location.state['replaySpeed'];
+    const websocketPort = location.state['port'];
 
     const nineEMALine = []
     const twentyOneEMALine = []
@@ -57,7 +58,7 @@ const Chart = () => {
     const currentBarLastLowPE = useRef(100000);
     const currentBarTimePE = useRef(null);
 
-    const socket = new WebSocket('ws://' + ipAddress + ':8765');
+    const socket = new WebSocket('ws://' + ipAddress + ':' + websocketPort);
     socket.onopen = () => {
         console.log('WebSocket connection opened');
     };
@@ -84,11 +85,11 @@ const Chart = () => {
         chartContainerNifty.current.appendChild(timeInfoLegend.current);
 
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
-        chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
+        chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.475)
         chartCE.current = createChart(chartContainerCE.current, chartPropertiesOptions);
-        chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
+        chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
-        chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5);
+        chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45);
 
 
 
