@@ -11,7 +11,7 @@ import {
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice}) => {
     const [orderType, setOrderType] = useState("R")
     const [orderStrategy, setOrderStrategy] = useState("breakout")
-    const [stoploss, setStoploss] = useState("75")
+    const [stoploss, setStoploss] = useState("10")
     const [ratio, setRatio] = useState("l")
     const [targetValue, setTargetValue] = useState(0.0)
     const [cmdInputMngTd, setCmdInputMngTd] = useState("")
