@@ -9,14 +9,21 @@ const InputPage = () => {
     const [replaySpeed, setReplaySpeed] = useState(".9")
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const [tradeQuantity, setTradeQuantity] = useState(0)
+    const [priceRange, setPriceRange] = useState("low")
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
     const [ipAddress, setIpAddress] = useState("43.205.27.227");
 
+    const priceIntervalRangeMap = new Map();
+    priceIntervalRangeMap.set("low", [60,90]);
+    priceIntervalRangeMap.set("mid", [90,135]);
+    priceIntervalRangeMap.set("high", [135,195]);
+
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/simtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=' + replaySpeed + '&forward=' + forwardMinutes + '&websocket=true&quantity=' + tradeQuantity, {
+            + '&pe=' + peStrikeprice +'&speed=' + replaySpeed + '&forward=' + forwardMinutes + '&websocket=true&quantity=' + tradeQuantity
+            + "&rlow=" + priceIntervalRangeMap.get(priceRange)[0] + "&rhigh=" + priceIntervalRangeMap.get(priceRange)[1], {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -41,7 +48,8 @@ const InputPage = () => {
     const handlePaperTradingInfoSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/papertrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true&quantity='+tradeQuantity, {
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true&quantity='+tradeQuantity
+            + "&rlow=" + priceIntervalRangeMap.get(priceRange)[0] + "&rhigh=" + priceIntervalRangeMap.get(priceRange)[1], {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -67,7 +75,8 @@ const InputPage = () => {
     const handleRealTradingInfoSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/realtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true&quantity='+tradeQuantity, {
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=true&quantity=' + tradeQuantity
+            + "&rlow=" + priceIntervalRangeMap.get(priceRange)[0] + "&rhigh=" + priceIntervalRangeMap.get(priceRange)[1], {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -94,7 +103,8 @@ const InputPage = () => {
     const handlePaperTradingInfoOrderSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/papertrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=false&quantity='+tradeQuantity, {
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=false&quantity='+tradeQuantity
+            + "&rlow=" + priceIntervalRangeMap.get(priceRange)[0] + "&rhigh=" + priceIntervalRangeMap.get(priceRange)[1], {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -120,7 +130,8 @@ const InputPage = () => {
     const handleRealTradingInfoOrderSubmit = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/realtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
-            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=false&quantity='+tradeQuantity, {
+            + '&pe=' + peStrikeprice +'&speed=1&forward=0&websocket=false&quantity=' + tradeQuantity
+            + "&rlow=" + priceIntervalRangeMap.get(priceRange)[0] + "&rhigh=" + priceIntervalRangeMap.get(priceRange)[1], {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -185,6 +196,13 @@ const InputPage = () => {
                     </label>
                     <label style={{float:"left", marginLeft:'1%'}}>Enter IP Address:
                         <input type="text" value={ipAddress} style={{width:'30%'}} onChange={(e) => setIpAddress(e.target.value)}/>
+                    </label>
+                    <label style={{float:"left", marginLeft:'1%'}}>Price Interval
+                        <select name="PriceRange" id="optionType" defaultValue={priceRange} onChange={(e) => setPriceRange(e.target.value)}>
+                            <option>low</option>
+                            <option>mid</option>
+                            <option>high</option>
+                        </select>
                     </label>
                     <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
                     <button type="button" onClick={handlePaperTradingInfoSubmit} title="papertrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING</button>
