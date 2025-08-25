@@ -162,6 +162,28 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 console.log(err.message);
             });
     }
+    const onBLManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        const cmdParams = "low|" + cmdInputMngTd.replace(" ", "|");
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=BL&params=" + cmdParams, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
 
 
     const onABSManagementCommandPlaced = (event) => {
@@ -292,10 +314,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
 
     const downloadRecording = (event) => {
         stopRecording();
-        console.log(mediaBlobUrl)
-        console.log("Stopped Recording")
         if (mediaBlobUrl) {
-            console.log("Inside Media Blob")
             const min = 1;
             const max = 100;
             const rand = Math.floor(min + Math.random() * (max - min)).toFixed(0);
@@ -386,6 +405,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN1ManagementCommandPlaced} title="LN-1">LN-1</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN2ManagementCommandPlaced} title="LN-2">LN-2</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onBLManagementCommandPlaced} title="BL">BL</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
