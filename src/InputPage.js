@@ -37,7 +37,7 @@ const InputPage = () => {
             .then((data) => {
                 tradingStyle.current = "simtrading"
                 const response_data = data['response']
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:replaySpeed}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:replaySpeed, tradeDate:tradeDate}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -64,7 +64,7 @@ const InputPage = () => {
                 tradingStyle.current = "papertrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -91,7 +91,7 @@ const InputPage = () => {
                 tradingStyle.current = "realtrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -119,7 +119,7 @@ const InputPage = () => {
                 tradingStyle.current = "papertrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
+                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -146,7 +146,7 @@ const InputPage = () => {
                 tradingStyle.current = "realtrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1}});
+                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
                 // Handle data
             }).then()
             .catch((err) => {

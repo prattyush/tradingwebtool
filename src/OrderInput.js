@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { useReactMediaRecorder } from 'react-media-recorder';
+
 import notificationSound from './alarm01.mp3';
 import {
     strategyoptions,
@@ -8,7 +10,7 @@ import {
     baroptions
 } from "./StrategyVariables";
 
-const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice}) => {
+const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice, tradeDate}) => {
     const [orderType, setOrderType] = useState("R")
     const [orderStrategy, setOrderStrategy] = useState("breakout")
     const [stoploss, setStoploss] = useState("10")
@@ -26,6 +28,8 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
     const barCurrentTime = useRef(new Date())
     const nextAudioTime = useRef(1)
     const minuteEndAlarm = new Audio(notificationSound);
+    const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
+
 
     const onOrderPlaced = (event) => {
         event.preventDefault();
@@ -286,9 +290,28 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             });
     }
 
+    const downloadRecording = (event) => {
+        stopRecording();
+        if (mediaBlobUrl) {
+            const min = 1;
+            const max = 100;
+            const rand = Math.floor(min + Math.random() * (max - min)).toFixed(0);
+
+            const link = document.createElement('a');
+            link.href = mediaBlobUrl;
+            link.download =  tradingStyle + '_' + tradeDate + '_recorded_media_' + rand.toString() + '.webm';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(mediaBlobUrl);
+        }
+    };
+
     return (
         <div>
             <label style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={startRecording} title="Record">Record</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={downloadRecording} title="Record">StopRecord</button>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}
@@ -357,6 +380,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             </select>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
             <p></p>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN1ManagementCommandPlaced} title="LN-1">LN-1</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN2ManagementCommandPlaced} title="LN-2">LN-2</button>

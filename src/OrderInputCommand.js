@@ -5,17 +5,26 @@ import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from
 import {useLocation} from "react-router-dom";
 
 
-const OrderInputCommand = ({tradingStyle, ipAddress}) =>{
+const OrderInputCommand = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice, tradeDate}) =>{
 
     const location = useLocation();
     let ipAddressInput = "";
     let tradingStyleInput = "";
+    let ceStrikePriceInput = "";
+    let peStrikePriceInput = "";
+    let tradeDateInput = "";
     if (location.state) {
         ipAddressInput = location.state['ipAddress'];
         tradingStyleInput = location.state['tradingStyle'];
+        ceStrikePriceInput = location.state['ceStrikePrice'];
+        peStrikePriceInput = location.state['peStrikePrice'];
+        tradeDateInput = location.state['tradeDate'];
     } else {
         ipAddressInput = ipAddress;
         tradingStyleInput = tradingStyle;
+        ceStrikePriceInput = ceStrikePrice;
+        peStrikePriceInput = peStrikePrice;
+        tradeDateInput = tradeDate;
     }
 
 

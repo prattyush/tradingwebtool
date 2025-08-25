@@ -14,6 +14,7 @@ const Chart = () => {
     const peStrikePrice = location.state['peStrikePrice'];
     const replaySpeed = location.state['replaySpeed'];
     const websocketPort = location.state['port'];
+    const tradeDate = location.state['tradeDate'];
 
     const nineEMALine = []
     const twentyOneEMALine = []
@@ -305,7 +306,7 @@ const Chart = () => {
                     <button type="button"  onClick={onReset} title="Return">Reset</button>
                 </div>
             </div>
-            <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice}/></div>
+            <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice} tradeDate={tradeDate}/></div>
         </div>
     );
 
