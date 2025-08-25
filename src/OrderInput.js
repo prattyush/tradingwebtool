@@ -292,7 +292,10 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
 
     const downloadRecording = (event) => {
         stopRecording();
+        console.log(mediaBlobUrl)
+        console.log("Stopped Recording")
         if (mediaBlobUrl) {
+            console.log("Inside Media Blob")
             const min = 1;
             const max = 100;
             const rand = Math.floor(min + Math.random() * (max - min)).toFixed(0);
