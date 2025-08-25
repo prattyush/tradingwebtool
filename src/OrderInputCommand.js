@@ -30,7 +30,7 @@ const OrderInputCommand = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice,
 
     const [orderType, setOrderType] = useState("R")
     const [orderStrategy, setOrderStrategy] = useState("breakout")
-    const [stoploss, setStoploss] = useState("10")
+    const [stoploss, setStoploss] = useState("3")
     const [ratio, setRatio] = useState("l")
     const [cmdInputMngTd, setCmdInputMngTd] = useState("")
     const [tdMngmtCmd, setTdMngmtCmd] = useState("L")

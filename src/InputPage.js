@@ -15,6 +15,8 @@ const InputPage = () => {
     const [ipAddress, setIpAddress] = useState("43.205.27.227");
 
     const priceIntervalRangeMap = new Map();
+    priceIntervalRangeMap.set("ulow", [21,45]);
+    priceIntervalRangeMap.set("vlow", [30,60]);
     priceIntervalRangeMap.set("low", [60,90]);
     priceIntervalRangeMap.set("mid", [90,135]);
     priceIntervalRangeMap.set("high", [135,195]);
