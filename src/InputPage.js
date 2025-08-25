@@ -20,6 +20,7 @@ const InputPage = () => {
     priceIntervalRangeMap.set("low", [60,90]);
     priceIntervalRangeMap.set("mid", [90,135]);
     priceIntervalRangeMap.set("high", [135,195]);
+    priceIntervalRangeMap.set("vhigh", [174,240]);
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
@@ -201,9 +202,12 @@ const InputPage = () => {
                     </label>
                     <label style={{float:"left", marginLeft:'1%'}}>Price Interval
                         <select name="PriceRange" id="optionType" defaultValue={priceRange} onChange={(e) => setPriceRange(e.target.value)}>
+                            <option>ulow</option>
+                            <option>vlow</option>
                             <option>low</option>
                             <option>mid</option>
                             <option>high</option>
+                            <option>vhigh</option>
                         </select>
                     </label>
                     <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
