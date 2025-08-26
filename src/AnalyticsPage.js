@@ -12,6 +12,7 @@ const AnalyticsPage = ({ipAddress}) => {
     const [analyticsStrategy, setAnalyticsStrategy] = useState("breakout")
     const [analyticsStrategyTradingStyle, setAnalyticsStrategyTradingStyle] = useState("simtrading")
     const [analyticsStrategyLookback, setAnalyticsStrategyLookback] = useState("0")
+    const [analyticsStrategyQuantity, setAnalyticsStrategyQuantity] = useState("0")
 
     const analyticsChartContainerStock = useRef(null);
     const analyticsChartContainerCE = useRef(null);
@@ -352,6 +353,9 @@ const AnalyticsPage = ({ipAddress}) => {
                             </option>
                         ))}
                     </select>
+                    <label style={{float:"left"}}> Enter Quantity :
+                        <input type="text" value={analyticsStrategyQuantity} onChange={(e) => setAnalyticsStrategyQuantity(e.target.value)}/>
+                    </label>
                     <input style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
                     <button type="button" disabled={buttonState} onClick={plotChart} title="Return" style={{float:"left", marginTop:'1%', marginLeft:'2%'}}>Plot Chart</button>
                 </form>

@@ -29,6 +29,7 @@ const LabelStrategy = () => {
     const falseEntryStrategyMap = useRef(new Map())
     const falseExitStrategyMap = useRef(new Map())
     const [prevDayConditions, setPrevDayConditions] = useState("tradingrange")
+    const [todaysDayConditions, setTodayDayConditions] = useState("tradingrange")
     const [dayStartConditions, setDayStartConditions] = useState("normal")
     const [imageIndexList, setImageIndexList] = useState([])
     const [stockPriceActionArray, setStockPriceActionArray] = useState([])
@@ -210,7 +211,8 @@ const LabelStrategy = () => {
             'falseTradeTypeExitStrategyMap': falseTradeTypeEntryStrategyMap.current,
 
             'prevdaycondition': prevDayConditions,
-            'daystartcondition': dayStartConditions
+            'daystartcondition': dayStartConditions,
+            'todaydaycondition': todaysDayConditions
         };
 
         const jsonString = JSON.stringify(dataToSend);
@@ -439,6 +441,13 @@ const LabelStrategy = () => {
                     </select>
                     <select style={{float:"left", marginTop:'1%', marginLeft:'1%'}} name="DayStartConditions" id="dayStartConditions" defaultValue="normal" onChange={(e) => setDayStartConditions(e.target.value)}>
                         {todayStartOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                    <select style={{clear:"both", float:"left", marginTop:'1%'}} name="TodaysDayState" id="todaysDayState" defaultValue="tradingrange" onChange={(e) => setTodayDayConditions(e.target.value)}>
+                        {previousDayOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>
