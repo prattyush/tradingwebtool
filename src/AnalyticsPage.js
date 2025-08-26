@@ -160,7 +160,7 @@ const AnalyticsPage = ({ipAddress}) => {
     const handleStrategyAnalyticsRequestSubmitted = (event) => {
         event.preventDefault();
         setButtonState(true)
-        fetch('http://' + ipAddress + ':9060/analytics/strategyorderchart?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
+        fetch('http://' + ipAddress + ':9060/analytics/strategyorderchart?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback + "&quantity=" + analyticsStrategyQuantity, {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
@@ -309,7 +309,7 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsChartPE2.current.timeScale().fitContent();
         }
 
-        fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryreportinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback, {
+        fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryreportinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback + "&quantity=" + analyticsStrategyQuantity, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
