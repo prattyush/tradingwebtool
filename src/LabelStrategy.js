@@ -446,7 +446,8 @@ const LabelStrategy = () => {
                             </option>
                         ))}
                     </select>
-                    <select style={{clear:"both", float:"left", marginTop:'1%'}} name="TodaysDayState" id="todaysDayState" defaultValue="tradingrange" onChange={(e) => setTodayDayConditions(e.target.value)}>
+                    <label style={{clear:"both", float:"left", marginLeft:'1%'}}>Today's Day Condition :: </label>
+                    <select style={{ float:"left", marginTop:'1%'}} name="TodaysDayState" id="todaysDayState" defaultValue="tradingrange" onChange={(e) => setTodayDayConditions(e.target.value)}>
                         {previousDayOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
