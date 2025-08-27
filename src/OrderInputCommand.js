@@ -140,6 +140,80 @@ const OrderInputCommand = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice,
             });
     }
 
+    const onLN1ManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=1", {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onLN2ManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=2", {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onBLManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        postBLCommand("low");
+    }
+    const onBLMidManagementCommandPlaced = (event) => {
+        event.preventDefault();
+        postBLCommand("mid");
+    }
+
+    function postBLCommand(barPosition) {
+        const cmdParams = barPosition + "|" + cmdInputMngTd.replace(" ", "|");
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=BL&params=" + cmdParams, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
 
     const onABSManagementCommandPlaced = (event) => {
         event.preventDefault();
@@ -282,6 +356,10 @@ const OrderInputCommand = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice,
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
             <p></p>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN1ManagementCommandPlaced} title="LN-1">LN-1</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN2ManagementCommandPlaced} title="LN-2">LN-2</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onBLManagementCommandPlaced} title="BL">BL</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onBLMidManagementCommandPlaced} title="BL-Mid">BL-Mi</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
