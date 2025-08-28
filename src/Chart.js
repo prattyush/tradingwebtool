@@ -276,6 +276,7 @@ const Chart = () => {
 
     const onReset = (event) => {
         event.preventDefault();
+        downloadRecording(event);
         if (!isRecording.current) {
             fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
                 method: 'POST',
@@ -298,8 +299,6 @@ const Chart = () => {
                     console.log(err.message);
                 });
             navigate('/');
-        } else {
-            downloadRecording(event);
         }
     }
 
