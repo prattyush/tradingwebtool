@@ -277,6 +277,7 @@ const Chart = () => {
     const onReset = (event) => {
         event.preventDefault();
         downloadRecording(event);
+        downloadRecording(event);
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
             method: 'POST',
             body: JSON.stringify({
@@ -320,8 +321,8 @@ const Chart = () => {
                 link.click();
                 document.body.removeChild(link);
                 window.URL.revokeObjectURL(mediaBlobUrl);
+                isRecording.current = false;
             }
-            isRecording.current = false;
         }
     };
 
