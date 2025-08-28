@@ -3,6 +3,7 @@ import {createChart, LineSeries, CandlestickSeries, LineStyle} from "lightweight
 import { useNavigate } from 'react-router-dom';
 import OrderInput from "./OrderInput";
 import {useLocation} from 'react-router-dom';
+import {useReactMediaRecorder} from "react-media-recorder";
 
 const Chart = () => {
 
@@ -15,6 +16,9 @@ const Chart = () => {
     const replaySpeed = location.state['replaySpeed'];
     const websocketPort = location.state['port'];
     const tradeDate = location.state['tradeDate'];
+    const isRecording = useRef(false);
+    const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
+
 
     const nineEMALine = []
     const twentyOneEMALine = []
@@ -272,6 +276,7 @@ const Chart = () => {
 
     const onReset = (event) => {
         event.preventDefault();
+        downloadRecording(event);
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
             method: 'POST',
             body: JSON.stringify({
@@ -295,9 +300,36 @@ const Chart = () => {
         navigate('/');
     }
 
+    const triggerRecording = (event) => {
+        startRecording();
+        isRecording.current = true;
+    }
+
+    const downloadRecording = (event) => {
+        if (isRecording.current) {
+            stopRecording();
+            if (mediaBlobUrl) {
+                const min = 1;
+                const max = 100;
+                const rand = Math.floor(min + Math.random() * (max - min)).toFixed(0);
+
+                const link = document.createElement('a');
+                link.href = mediaBlobUrl;
+                link.download =  tradingStyle + '_' + tradeDate + '_recorded_media_' + rand.toString() + '.webm';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(mediaBlobUrl);
+            }
+            isRecording.current = false;
+        }
+    };
+
     return (
         <div>
-            <div style={{float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={triggerRecording} title="StartRecord">Record</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={downloadRecording} title="StopRecord">StopRecord</button>
+            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE}></div>
                 <div style={{float:"left", marginTop:"1%", marginLeft:'0.5%'}} ref={chartContainerPE}></div>
