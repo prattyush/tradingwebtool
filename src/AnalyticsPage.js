@@ -19,18 +19,24 @@ const AnalyticsPage = ({ipAddress}) => {
     const analyticsChartContainerPE = useRef(null);
     const analyticsChartContainerCE2 = useRef(null);
     const analyticsChartContainerPE2 = useRef(null);
+    const analyticsChartContainerCE3 = useRef(null);
+    const analyticsChartContainerPE3 = useRef(null);
 
     const analyticsCandlestickSeriesNifty = useRef(null);
     const analyticsCandlestickSeriesCE = useRef(null);
     const analyticsCandlestickSeriesPE = useRef(null);
     const analyticsCandlestickSeriesCE2 = useRef(null);
     const analyticsCandlestickSeriesPE2 = useRef(null);
+    const analyticsCandlestickSeriesCE3 = useRef(null);
+    const analyticsCandlestickSeriesPE3 = useRef(null);
 
     const analyticsChartNifty = useRef(null);
     const analyticsChartCE = useRef(null);
     const analyticsChartPE = useRef(null);
     const analyticsChartCE2 = useRef(null);
     const analyticsChartPE2 = useRef(null);
+    const analyticsChartCE3 = useRef(null);
+    const analyticsChartPE3 = useRef(null);
 
     const [historyInfo, setHistoryInfo] = useState("");
     const [reportSummary, setReportSummary] = useState("");
@@ -65,6 +71,11 @@ const AnalyticsPage = ({ipAddress}) => {
         analyticsChartPE2.current = createChart(analyticsChartContainerPE2.current, chartPropertiesOptions);
         analyticsChartPE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
 
+        analyticsChartCE3.current = createChart(analyticsChartContainerCE2.current, chartPropertiesOptions);
+        analyticsChartCE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartPE3.current = createChart(analyticsChartContainerPE2.current, chartPropertiesOptions);
+        analyticsChartPE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+
         //const histogramSeries = chartNifty.addSeries(HistogramSeries, { color: "#26a69a" });
         analyticsCandlestickSeriesNifty.current = analyticsChartNifty.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
@@ -75,6 +86,10 @@ const AnalyticsPage = ({ipAddress}) => {
         analyticsCandlestickSeriesCE2.current = analyticsChartCE2.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
         analyticsCandlestickSeriesPE2.current = analyticsChartPE2.current.addSeries(CandlestickSeries,
+            { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
+        analyticsCandlestickSeriesCE3.current = analyticsChartCE3.current.addSeries(CandlestickSeries,
+            { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
+        analyticsCandlestickSeriesPE3.current = analyticsChartPE3.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
 
         //currentBarLastCloseNifty.current = 10.96 + Math.random();
@@ -110,8 +125,14 @@ const AnalyticsPage = ({ipAddress}) => {
         analyticsChartPE2.current.applyOptions(chartOptions);
         analyticsChartPE2.current.timeScale().fitContent();
 
+        analyticsChartPE3.current.applyOptions(chartOptions);
+        analyticsChartPE3.current.timeScale().fitContent();
+
         analyticsChartCE2.current.applyOptions(chartOptions);
         analyticsChartCE2.current.timeScale().fitContent();
+
+        analyticsChartCE3.current.applyOptions(chartOptions);
+        analyticsChartCE3.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
             analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.45)
@@ -119,6 +140,8 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsChartPE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
             analyticsChartCE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
             analyticsChartPE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+            analyticsChartCE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+            analyticsChartPE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
         });
         return () => {
             analyticsChartNifty.current.remove();
@@ -126,6 +149,8 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsChartPE.current.remove();
             analyticsChartCE2.current.remove();
             analyticsChartPE2.current.remove();
+            analyticsChartCE3.current.remove();
+            analyticsChartPE3.current.remove();
         };
     }, []);
 
@@ -198,15 +223,19 @@ const AnalyticsPage = ({ipAddress}) => {
             const ceDataMapKeys = Object.keys(ceDataMap);
             const ceDataArray = ceDataMapKeys.length > 0 ? ceDataMap[ceDataMapKeys[ceDataMapKeys.length-1]] : []
             const ceDataArray2 = ceDataMapKeys.length > 1 ? ceDataMap[ceDataMapKeys[ceDataMapKeys.length-2]] : []
+            const ceDataArray3 = ceDataMapKeys.length > 2 ? ceDataMap[ceDataMapKeys[ceDataMapKeys.length-3]] : []
             const ceStrikePrice = ceDataMapKeys.length > 0 ? ceDataMapKeys[ceDataMapKeys.length-1] : 0
             const ceStrikePrice2 = ceDataMapKeys.length > 1 ? ceDataMapKeys[ceDataMapKeys.length-2] : 0
+            const ceStrikePrice3 = ceDataMapKeys.length > 2 ? ceDataMapKeys[ceDataMapKeys.length-3] : 0
 
             const peDataMap = data['price_action']['pe']
             const peDataMapKeys = Object.keys(peDataMap);
             const peDataArray = peDataMapKeys.length > 0 ? peDataMap[peDataMapKeys[peDataMapKeys.length-1]] : []
             const peDataArray2 = peDataMapKeys.length > 1 ? peDataMap[peDataMapKeys[peDataMapKeys.length-2]] : []
+            const peDataArray3 = peDataMapKeys.length > 2 ? peDataMap[peDataMapKeys[peDataMapKeys.length-3]] : []
             const peStrikePrice = peDataMapKeys.length > 0 ? peDataMapKeys[peDataMapKeys.length-1] : 0
             const peStrikePrice2 = peDataMapKeys.length > 1 ? peDataMapKeys[peDataMapKeys.length-2] : 0
+            const peStrikePrice3 = peDataMapKeys.length > 2 ? peDataMapKeys[peDataMapKeys.length-3] : 0
 
             const ordersData = data['orders']
 
@@ -215,6 +244,8 @@ const AnalyticsPage = ({ipAddress}) => {
             analyticsCandlestickSeriesPE.current.setData(peDataArray)
             analyticsCandlestickSeriesCE2.current.setData(ceDataArray2)
             analyticsCandlestickSeriesPE2.current.setData(peDataArray2)
+            analyticsCandlestickSeriesCE3.current.setData(ceDataArray3)
+            analyticsCandlestickSeriesPE3.current.setData(peDataArray3)
 
 
             const orderStockMarkers = []
@@ -222,6 +253,8 @@ const AnalyticsPage = ({ipAddress}) => {
             const orderPEMarkers = []
             const orderCEMarkers2 = []
             const orderPEMarkers2 = []
+            const orderCEMarkers3 = []
+            const orderPEMarkers3 = []
             const markerSize = 0.1;
 
             for (let i = 0; i < ordersData.length; i++) {
@@ -294,6 +327,26 @@ const AnalyticsPage = ({ipAddress}) => {
                         shape: shape,
                         text: text
                     })
+                } else if (ordersData[i]['type'] === 'Call' && parseInt(ordersData[i]['strike_price']) === parseInt(ceStrikePrice3)) {
+                    orderCEMarkers3.push({
+                        time: ordersData[i]['time'],
+                        price: ordersData[i]['price'],
+                        position: 'atPriceMiddle',
+                        color: color,
+                        size: markerSize,
+                        shape: shape,
+                        text: text
+                    })
+                } else if (ordersData[i]['type'] === 'Put' && parseInt(ordersData[i]['strike_price']) === parseInt(peStrikePrice3))  {
+                    orderPEMarkers3.push({
+                        time: ordersData[i]['time'],
+                        price: ordersData[i]['price'],
+                        position: 'atPriceMiddle',
+                        color: color,
+                        size: markerSize,
+                        shape: shape,
+                        text: text
+                    })
                 }
             }
             createSeriesMarkers(analyticsCandlestickSeriesNifty.current, orderStockMarkers);
@@ -301,12 +354,17 @@ const AnalyticsPage = ({ipAddress}) => {
             createSeriesMarkers(analyticsCandlestickSeriesPE.current, orderPEMarkers);
             createSeriesMarkers(analyticsCandlestickSeriesCE2.current, orderCEMarkers2);
             createSeriesMarkers(analyticsCandlestickSeriesPE2.current, orderPEMarkers2);
+            createSeriesMarkers(analyticsCandlestickSeriesCE3.current, orderCEMarkers3);
+            createSeriesMarkers(analyticsCandlestickSeriesPE3.current, orderPEMarkers3);
+
 
             analyticsChartNifty.current.timeScale().fitContent();
             analyticsChartCE.current.timeScale().fitContent();
             analyticsChartPE.current.timeScale().fitContent();
             analyticsChartCE2.current.timeScale().fitContent();
             analyticsChartPE2.current.timeScale().fitContent();
+            analyticsChartCE3.current.timeScale().fitContent();
+            analyticsChartPE3.current.timeScale().fitContent();
         }
 
         fetch('http://' + ipAddress + ':9060/analytics/strategyhistoryreportinfo?tradedate=' + tradeDate + '&tradingstyle=' + analyticsStrategyTradingStyle + '&strategy=' + analyticsStrategy + '&lookback=' + analyticsStrategyLookback + "&quantity=" + analyticsStrategyQuantity, {
@@ -366,6 +424,8 @@ const AnalyticsPage = ({ipAddress}) => {
                 <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerCE2}></div>
                 <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE2}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerCE3}></div>
+                <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE3}></div>
             </div>
             <div style={{float:"left", marginTop:'1%', marginBottom:'1%', marginLeft:'1%', width:'20%', height:'80%', border: '1px solid black'}}>
                 <textarea style={{float:"left", marginTop:'1%', marginRight: '1%', width:'90%', height:'80%',}} name="reportSummary" rows={10} cols={30} value={reportSummary} readOnly={true}>report</textarea>
