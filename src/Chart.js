@@ -276,29 +276,31 @@ const Chart = () => {
 
     const onReset = (event) => {
         event.preventDefault();
-        downloadRecording(event);
-        downloadRecording(event);
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
-            method: 'POST',
-            body: JSON.stringify({
-                // Add parameters here
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                'Access-Control-Allow-Origin':'true'
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                socket.close()
-                // Handle data
-            }).then(() => socket.close())
-            .catch((err) => {
-                socket.close()
-                console.log(err.message);
-            });
-        navigate('/');
+        if (!isRecording.current) {
+            fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/reset', {
+                method: 'POST',
+                body: JSON.stringify({
+                    // Add parameters here
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                    'Access-Control-Allow-Origin': 'true'
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    socket.close()
+                    // Handle data
+                }).then(() => socket.close())
+                .catch((err) => {
+                    socket.close()
+                    console.log(err.message);
+                });
+            navigate('/');
+        } else {
+            downloadRecording(event);
+        }
     }
 
     const triggerRecording = (event) => {
