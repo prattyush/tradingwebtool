@@ -361,8 +361,9 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 <option>PE</option>
             </select>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
+            <div style={{clear:"both", float:"left"}}>
             {orderTypeOptions.map((option) => (
-                <div key={option.value} style={{clear:"both", float:"left"}}>
+                <div key={option.value} style={{float:"left"}}>
                     <input
                         type="radio"
                         id={option.value}
@@ -374,6 +375,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                     <label htmlFor={option.value}>{option.label}</label>
                 </div>
             ))}
+            </div>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
             <div style={{clear:"both", float:"left", marginBottom:'1%'}}>
                 {orderstrategyoptions.map((option) => (
