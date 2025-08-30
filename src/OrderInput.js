@@ -190,6 +190,36 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             });
     }
 
+    const onOrderBlockerPlaced1 = (event) => {
+        event.preventDefault();
+        postOrderBlockerCommand("1");
+    }
+    const onOrderBlockerPlaced2 = (event) => {
+        event.preventDefault();
+        postOrderBlockerCommand("2");
+    }
+
+    function postOrderBlockerCommand(barCount) {
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/blockorders?count=" + barCount, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            }).then()
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
 
     const onABSManagementCommandPlaced = (event) => {
         event.preventDefault();
@@ -332,7 +362,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             </select>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
             {orderTypeOptions.map((option) => (
-                <div key={option.value} style={{float:"left"}}>
+                <div key={option.value} style={{clear:"both", float:"left"}}>
                     <input
                         type="radio"
                         id={option.value}
@@ -368,6 +398,8 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             <input style={{float:"left", marginTop:'1%', width:'12%'}} type="targetInput" value={targetValue}  onChange={(e) => setTargetValue(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'12%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
+            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced1} title="OrderBlocker1">BLK1</button>
+            <button style={{float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced2} title="OrderBlocker2">BLK2</button>
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
             <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
