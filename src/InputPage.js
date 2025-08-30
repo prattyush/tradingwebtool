@@ -3,13 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import AnalyticsPage from "./AnalyticsPage";
 
 const InputPage = () => {
-    const [tradeDate, setTradeDate] = useState("19-03-2025")
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 as months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    const [tradeDate, setTradeDate] = useState(formattedDate)
     const [ceStrikeprice, setCEStrikePrice] = useState(0)
     const [peStrikeprice, setPEStrikePrice] = useState(0)
     const [replaySpeed, setReplaySpeed] = useState(".9")
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const [tradeQuantity, setTradeQuantity] = useState(0)
-    const [priceRange, setPriceRange] = useState("low")
+    const [priceRange, setPriceRange] = useState("vlow")
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
     const [ipAddress, setIpAddress] = useState("43.205.27.227");
