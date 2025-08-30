@@ -11,11 +11,11 @@ const Chart = () => {
     const ipAddress = location.state['ipAddress'];
     const chartTime = useRef(null);
     const tradingStyle = location.state['tradingStyle'];
-    const [ceStrikePrice, setCEStrikePrice] = useState(location.state['ceStrikePrice']);
-    const [peStrikePrice, setPEStrikePrice] = useState(location.state['peStrikePrice']);
     const replaySpeed = location.state['replaySpeed'];
     const websocketPort = location.state['port'];
     const tradeDate = location.state['tradeDate'];
+    const ceStrikePrice = location.state['ceStrikePrice'];
+    const peStrikePrice = location.state['peStrikePrice'];
     const rangeHigh = location.state['rangeHigh'];
     const rangeLow = location.state['rangeLow'];
     const isRecording = useRef(false);
@@ -291,9 +291,9 @@ const Chart = () => {
             .then((data) => {
                 console.log(data);
                 const ceDataArray = data['prev_data']
+                var strikePrice = data['ce_strike_price']
                 candlestickSeriesCE.current.setData(ceDataArray);
                 currentBarLastOpenCE.current = 0
-                setCEStrikePrice(data['ce_strike_price'])
                 chartCE.current.timeScale().fitContent();
                 // Handle data
             }).then(() => socket.close())
@@ -320,7 +320,7 @@ const Chart = () => {
                 const peDataArray = data['prev_data']
                 candlestickSeriesPE.current.setData(peDataArray);
                 currentBarLastOpenPE.current = 0
-                setPEStrikePrice(data['pe_strike_price'])
+                var strikePrice = data['pe_strike_price']
                 chartPE.current.timeScale().fitContent();
                 // Handle data
             }).then(() => socket.close())

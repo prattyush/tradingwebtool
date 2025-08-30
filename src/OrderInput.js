@@ -319,6 +319,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
 
     return (
         <div>
+            <label style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
             <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}
