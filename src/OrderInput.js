@@ -405,8 +405,8 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'12%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced} title="OrderBlocker">BLK</button>
-            <button style={{float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced1} title="OrderBlocker1">BLK1</button>
-            <button style={{float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced2} title="OrderBlocker2">BLK2</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced1} title="OrderBlocker1">BLK1</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced2} title="OrderBlocker2">BLK2</button>
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
             <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
