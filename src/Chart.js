@@ -11,11 +11,13 @@ const Chart = () => {
     const ipAddress = location.state['ipAddress'];
     const chartTime = useRef(null);
     const tradingStyle = location.state['tradingStyle'];
-    const ceStrikePrice = location.state['ceStrikePrice'];
-    const peStrikePrice = location.state['peStrikePrice'];
+    const [ceStrikePrice, setCEStrikePrice] = useState(location.state['ceStrikePrice']);
+    const [peStrikePrice, setPEStrikePrice] = useState(location.state['peStrikePrice']);
     const replaySpeed = location.state['replaySpeed'];
     const websocketPort = location.state['port'];
     const tradeDate = location.state['tradeDate'];
+    const rangeHigh = location.state['rangeHigh'];
+    const rangeLow = location.state['rangeLow'];
     const isRecording = useRef(false);
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
 
@@ -263,7 +265,6 @@ const Chart = () => {
                 };
             candlestickSeriesCE.current.update(candleDataUpdateCE, false);
         }
-
     };
 
     function formatTimeLocale(barTime) {
@@ -272,6 +273,60 @@ const Chart = () => {
         const formattedTime = barDate.toLocaleTimeString('en-GB', timeOptions);
 
         return `${formattedTime}`;
+    }
+
+    const onCEFeedReset = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/cefeedreset?rlow=' + rangeLow + "&rhigh=" + rangeHigh, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin': 'true'
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const ceDataArray = data['prev_data']
+                candlestickSeriesCE.current.setData(ceDataArray);
+                currentBarLastOpenCE.current = 0
+                setCEStrikePrice(data['ce_strike_price'])
+                chartCE.current.timeScale().fitContent();
+                // Handle data
+            }).then(() => socket.close())
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onPEFeedReset = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/pefeedreset?rlow=' + rangeLow + "&rhigh=" + rangeHigh, {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin': 'true'
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const peDataArray = data['prev_data']
+                candlestickSeriesPE.current.setData(peDataArray);
+                currentBarLastOpenPE.current = 0
+                setPEStrikePrice(data['pe_strike_price'])
+                chartPE.current.timeScale().fitContent();
+                // Handle data
+            }).then(() => socket.close())
+            .catch((err) => {
+                console.log(err.message);
+            });
     }
 
     const onReset = (event) => {
@@ -331,14 +386,14 @@ const Chart = () => {
         <div>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={triggerRecording} title="StartRecord">Record</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={downloadRecording} title="StopRecord">StopRecord</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onReset} title="Return">Reset</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onCEFeedReset} title="CEReset">CEFeedReset</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
+            <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
             <div style={{clear:"both", float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE} id="chartContainerCE"></div>
                 <div style={{float:"left", marginTop:"1%", marginLeft:'0.5%'}} ref={chartContainerPE}></div>
-                <p></p>
-                <div style={{clear:"both", float:"left", borderLeft:-10, borderTop:-25, marginLeft:10, marginTop:20}}>
-                    <button type="button"  onClick={onReset} title="Return">Reset</button>
-                </div>
             </div>
             <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice} tradeDate={tradeDate}/></div>
         </div>

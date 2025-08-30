@@ -40,7 +40,7 @@ const InputPage = () => {
             .then((data) => {
                 tradingStyle.current = "simtrading"
                 const response_data = data['response']
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:replaySpeed, tradeDate:tradeDate}});
+                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:replaySpeed, tradeDate:tradeDate, rangeHigh:priceIntervalRangeMap.get(priceRange)[1], rangeLow:priceIntervalRangeMap.get(priceRange)[0]}});
                 // Handle data
             }).then()
             .catch((err) => {
