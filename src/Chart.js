@@ -179,9 +179,6 @@ const Chart = () => {
             const barEpochTimeStock = stockData['time']
             const barEpochTimeCE = ceData['time']
             const barEpochTimePE = peData['time']
-            let stockDataUpdated = false;
-            let ceDataUpdated = false;
-            let peDataUpdated = false;
 
             const barTimeDateStock = new Date(barEpochTimeStock * 1000)
             const barTimeDateCE = new Date(barEpochTimeCE * 1000)
@@ -192,23 +189,19 @@ const Chart = () => {
             const oldTimeStock = new Date(currentBarTimeNifty.current * 1000)
             if ((currentBarLastOpenNifty.current === 0) || (Math.floor(barTimeDateStock.getMinutes()/3) !== Math.floor(oldTimeStock.getMinutes()/3))) {
                 if ((Math.floor(barEpochTimeStock/180)*180) >= currentBarTimeNifty.current) {
-                    currentBarTimeNifty.current = Math.floor(barEpochTimeStock / 180) * 180
-                    currentBarLastOpenNifty.current = stockData['open']
-                    currentBarLastLowNifty.current = stockData['low']
-                    currentBarLastHighNifty.current = stockData['high']
+                currentBarTimeNifty.current = Math.floor(barEpochTimeStock/180)*180
+                currentBarLastOpenNifty.current = stockData['open']
+                currentBarLastLowNifty.current = stockData['low']
+                currentBarLastHighNifty.current = stockData['high']
 
-                    const nineEMAValue = stockData['close'] * multiplierNineEMA + nineEMALine[nineEMALine.length - 1]['value'] * (1 - multiplierNineEMA)
-                    const twentyOneEMAValue = stockData['close'] * multiplierTwentyOneEMA + twentyOneEMALine[twentyOneEMALine.length - 1]['value'] * (1 - multiplierTwentyOneEMA)
+                const nineEMAValue = stockData['close'] * multiplierNineEMA + nineEMALine[nineEMALine.length-1]['value'] * (1-multiplierNineEMA)
+                const twentyOneEMAValue = stockData['close'] * multiplierTwentyOneEMA + twentyOneEMALine[twentyOneEMALine.length-1]['value'] * (1-multiplierTwentyOneEMA)
 
-                    nineEMALine.push({time: currentBarTimeNifty.current, value: nineEMAValue})
-                    twentyOneEMALine.push({time: currentBarTimeNifty.current, value: twentyOneEMAValue})
-                    lineSeriesNineEMA.current.update({time: currentBarTimeNifty.current, value: nineEMAValue}, false)
-                    lineSeriesTwentyOneEMA.current.update({
-                        time: currentBarTimeNifty.current,
-                        value: twentyOneEMAValue
-                    }, false)
-                    stockDataUpdated = true
-                }
+                nineEMALine.push({time:currentBarTimeNifty.current, value: nineEMAValue})
+                twentyOneEMALine.push({time:currentBarTimeNifty.current, value: twentyOneEMAValue})
+                lineSeriesNineEMA.current.update({time:currentBarTimeNifty.current, value: nineEMAValue}, false)
+                lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current, value: twentyOneEMAValue}, false)
+                    }
             }
             const oldTimeCE = new Date(currentBarTimeCE.current * 1000)
             if ((currentBarLastOpenCE.current === 0) || (Math.floor(barTimeDateCE.getMinutes()/3) !== Math.floor(oldTimeCE.getMinutes()/3))) {
@@ -217,7 +210,6 @@ const Chart = () => {
                     currentBarLastOpenCE.current = ceData['open']
                     currentBarLastLowCE.current = ceData['low']
                     currentBarLastHighCE.current = ceData['high']
-                    ceDataUpdated = true
                 }
             }
 
@@ -228,67 +220,59 @@ const Chart = () => {
                     currentBarLastOpenPE.current = peData['open']
                     currentBarLastLowPE.current = peData['low']
                     currentBarLastHighPE.current = peData['high']
-                    peDataUpdated = true
                 }
             }
 
-            if (stockDataUpdated === true) {
-                currentBarLastCloseNifty.current = stockData['close']
-                currentBarLastLowNifty.current = Math.min(currentBarLastLowNifty.current, stockData['low'])
-                currentBarLastHighNifty.current = Math.max(currentBarLastHighNifty.current, stockData['high'])
-            }
-            if (ceDataUpdated === true) {
-                currentBarLastCloseCE.current = ceData['close']
-                currentBarLastLowCE.current = Math.min(currentBarLastLowCE.current, ceData['low'])
-                currentBarLastHighCE.current = Math.max(currentBarLastHighCE.current, ceData['high'])
+            currentBarLastCloseNifty.current = stockData['close']
+            currentBarLastCloseCE.current = ceData['close']
+            currentBarLastClosePE.current = peData['close']
 
-            }
-            if (peDataUpdated === true) {
-                currentBarLastClosePE.current = peData['close']
-                currentBarLastLowPE.current = Math.min(currentBarLastLowPE.current, peData['low'])
-                currentBarLastHighPE.current = Math.max(currentBarLastHighPE.current, peData['high'])
+            currentBarLastLowNifty.current = Math.min(currentBarLastLowNifty.current, stockData['low'])
+            currentBarLastHighNifty.current = Math.max(currentBarLastHighNifty.current, stockData['high'])
 
-            }
+            currentBarLastLowCE.current = Math.min(currentBarLastLowCE.current, ceData['low'])
+            currentBarLastHighCE.current = Math.max(currentBarLastHighCE.current, ceData['high'])
+
+            currentBarLastLowPE.current = Math.min(currentBarLastLowPE.current, peData['low'])
+            currentBarLastHighPE.current = Math.max(currentBarLastHighPE.current, peData['high'])
 
             const displayTimeStock = currentBarTimeNifty.current
             const displayTimeCE = currentBarTimeCE.current
             const displayTimePE = currentBarTimePE.current
+            try {
 
-            const candleDataUpdateNifty =
-                {
-                    open: currentBarLastOpenNifty.current,
-                    high: currentBarLastHighNifty.current,
-                    low: currentBarLastLowNifty.current,
-                    close: currentBarLastCloseNifty.current,
-                    time: displayTimeStock
-                };
-            if (stockDataUpdated === true) {
+                const candleDataUpdateNifty =
+                    {
+                        open: currentBarLastOpenNifty.current,
+                        high: currentBarLastHighNifty.current,
+                        low: currentBarLastLowNifty.current,
+                        close: currentBarLastCloseNifty.current,
+                        time: displayTimeStock
+                    };
                 candlestickSeriesNifty.current.update(candleDataUpdateNifty, false);
                 timeInfoLegend.current.innerHTML = formatTimeLocale(stockData['time'])
-            }
 
-            const candleDataUpdatePE =
-                {
-                    open: currentBarLastOpenPE.current,
-                    high: currentBarLastHighPE.current,
-                    low: currentBarLastLowPE.current,
-                    close: currentBarLastClosePE.current,
-                    time: displayTimePE
-                };
-            if (peDataUpdated === true) {
+                const candleDataUpdatePE =
+                    {
+                        open: currentBarLastOpenPE.current,
+                        high: currentBarLastHighPE.current,
+                        low: currentBarLastLowPE.current,
+                        close: currentBarLastClosePE.current,
+                        time: displayTimePE
+                    };
                 candlestickSeriesPE.current.update(candleDataUpdatePE, false);
-            }
 
-            const candleDataUpdateCE =
-                {
-                    open: currentBarLastOpenCE.current,
-                    high: currentBarLastHighCE.current,
-                    low: currentBarLastLowCE.current,
-                    close: currentBarLastCloseCE.current,
-                    time: displayTimeCE
-                };
-            if (ceDataUpdated === true) {
+                const candleDataUpdateCE =
+                    {
+                        open: currentBarLastOpenCE.current,
+                        high: currentBarLastHighCE.current,
+                        low: currentBarLastLowCE.current,
+                        close: currentBarLastCloseCE.current,
+                        time: displayTimeCE
+                    };
                 candlestickSeriesCE.current.update(candleDataUpdateCE, false);
+            } catch (error) {
+                console.error("Caught error in updating series:", error);
             }
         }
     };
