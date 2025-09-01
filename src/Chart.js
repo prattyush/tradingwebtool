@@ -1,4 +1,4 @@
-import {useRef, useEffect, useState} from "react";
+import {useRef, useEffect} from "react";
 import {createChart, LineSeries, CandlestickSeries, LineStyle} from "lightweight-charts";
 import { useNavigate } from 'react-router-dom';
 import OrderInput from "./OrderInput";
@@ -97,8 +97,6 @@ const Chart = () => {
         chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
         chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45);
-
-
 
         candlestickSeriesNifty.current = chartNifty.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
@@ -300,11 +298,9 @@ const Chart = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                const ceDataArray = data['prev_data']
-                var strikePrice = data['ce_strike_price']
+                const ceDataArray = data['response']['prev_data']
                 candlestickSeriesCE.current.setData(ceDataArray);
                 currentBarLastOpenCE.current = 0
-                chartCE.current.timeScale().fitContent();
                 // Handle data
             }).then(() => socket.close())
             .catch((err) => {
@@ -327,12 +323,8 @@ const Chart = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                const peDataArray = data['prev_data']
+                const peDataArray = data['response']['prev_data']
                 candlestickSeriesPE.current.setData(peDataArray);
-                currentBarLastOpenPE.current = 0
-                var strikePrice = data['pe_strike_price']
-                chartPE.current.timeScale().fitContent();
-                // Handle data
             }).then(() => socket.close())
             .catch((err) => {
                 console.log(err.message);
