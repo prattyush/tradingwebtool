@@ -67,6 +67,7 @@ export const orderTypeOptions = [
     { value: 'RL', label: 'RL' },
     { value: 'RO', label: 'RO' },
     { value: 'RLB', label: 'RLB' },
+    { value: 'RLBL', label: 'RLBL' },
     { value: 'RTB', label: 'RTB' },
     { value: 'COD', label: 'COD' },
 ];
