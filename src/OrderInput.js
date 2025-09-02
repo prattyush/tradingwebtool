@@ -28,8 +28,17 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
     const nextAudioTime = useRef(1)
     const minuteEndAlarm = new Audio(notificationSound);
 
-    const onOrderPlaced = (event) => {
+    const onCEOrderPlaced = (event) => {
         event.preventDefault();
+        placeOrder("CE")
+    }
+
+    const onPEOrderPlaced = (event) => {
+        event.preventDefault();
+        placeOrder("PE")
+    }
+
+    function placeOrder(optionsType) {
         const ratiocommands = ratio.split(" ");
         const riskrewardType = ratiocommands[0];
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderplace?optiontype=' + optionsType + "&command=" + orderType + "&stoploss=" + stoploss + "&ratiotype=" + ratio + "&target=" + targetValue.toString() + "&strategy=" + orderStrategy, {
@@ -359,11 +368,6 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                     onClick={onOrderInfo}
                     title="OrderState">OrderState</button>
             <p></p>
-            <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Option Type :: </label>
-            <select style={{float:"left", marginTop:'1%', marginRight: '1%'}} name="OptionType" id="optionType" defaultValue={optionsType} onChange={(e) => setOptionsType(e.target.value)}>
-                <option>CE</option>
-                <option>PE</option>
-            </select>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
             <div style={{clear:"both", float:"left"}}>
             {orderTypeOptions.map((option) => (
@@ -403,7 +407,8 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             </select>
             <input style={{float:"left", marginTop:'1%', width:'12%'}} type="targetInput" value={targetValue}  onChange={(e) => setTargetValue(e.target.value)}/>
             <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'12%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
-            <button style={{float:"left", marginTop:'1%', marginLeft: '1%'}} type="button" onClick={onOrderPlaced} title="PlaceOrder">PlaceOrder</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft: '1%'}} type="button" onClick={onCEOrderPlaced} title="PlaceOrderCE">CE-Order</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft: '1%'}} type="button" onClick={onPEOrderPlaced} title="PlaceOrderPE">PE-Order</button>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced} title="OrderBlocker">BLK</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced1} title="OrderBlocker1">BLK1</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced2} title="OrderBlocker2">BLK2</button>
