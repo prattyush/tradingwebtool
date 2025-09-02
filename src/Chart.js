@@ -298,12 +298,10 @@ const Chart = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                const ceDataArray = data['response']['prev_data']
-                candlestickSeriesCE.current.setData(ceDataArray);
+                candlestickSeriesCE.current.setData(data['response']['prev_data']);
                 currentBarLastOpenCE.current = 0
                 // Handle data
-            }).then(() => socket.close())
-            .catch((err) => {
+            }).catch((err) => {
                 console.log(err.message);
             });
     }
@@ -323,10 +321,9 @@ const Chart = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                const peDataArray = data['response']['prev_data']
-                candlestickSeriesPE.current.setData(peDataArray);
-            }).then(() => socket.close())
-            .catch((err) => {
+                candlestickSeriesPE.current.setData(data['response']['prev_data']);
+                currentBarLastOpenPE.current = 0
+            }).catch((err) => {
                 console.log(err.message);
             });
     }
