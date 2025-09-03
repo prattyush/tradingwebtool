@@ -17,6 +17,7 @@ const InputPage = () => {
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const [tradeQuantity, setTradeQuantity] = useState(0)
     const [priceRange, setPriceRange] = useState("vlow")
+    const [chartType, setChartType] = useState("stockCEPE")
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
     const [ipAddress, setIpAddress] = useState("43.205.27.227");
@@ -47,7 +48,7 @@ const InputPage = () => {
             .then((data) => {
                 tradingStyle.current = "simtrading"
                 const response_data = data['response']
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:replaySpeed, tradeDate:tradeDate, rangeHigh:priceIntervalRangeMap.get(priceRange)[1], rangeLow:priceIntervalRangeMap.get(priceRange)[0]}});
+                navigate(getNavigateChartType(), {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:replaySpeed, tradeDate:tradeDate, rangeHigh:priceIntervalRangeMap.get(priceRange)[1], rangeLow:priceIntervalRangeMap.get(priceRange)[0]}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -74,7 +75,7 @@ const InputPage = () => {
                 tradingStyle.current = "papertrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
+                navigate(getNavigateChartType(), {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate, rangeHigh: priceIntervalRangeMap.get(priceRange)[1], rangeLow: priceIntervalRangeMap.get(priceRange)[0]}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -101,13 +102,22 @@ const InputPage = () => {
                 tradingStyle.current = "realtrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/chart", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
+                navigate(getNavigateChartType(), {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate, rangeHigh: priceIntervalRangeMap.get(priceRange)[1], rangeLow: priceIntervalRangeMap.get(priceRange)[0]}});
                 // Handle data
             }).then()
             .catch((err) => {
                 console.log(err.message);
             });
+    }
 
+    function getNavigateChartType() {
+        if (chartType === "stockCEPE") {
+            return "/chart"
+        }  else if (chartType === "Options") {
+            return "/optionschart"
+        }
+
+        return "/chart"
     }
 
     const handlePaperTradingInfoOrderSubmit = (event) => {
@@ -129,7 +139,7 @@ const InputPage = () => {
                 tradingStyle.current = "papertrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
+                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate, rangeHigh: priceIntervalRangeMap.get(priceRange)[1], rangeLow: priceIntervalRangeMap.get(priceRange)[0]}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -156,7 +166,7 @@ const InputPage = () => {
                 tradingStyle.current = "realtrading"
                 const response_data = data['response']
                 console.log(tradingStyle.current)
-                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate}});
+                navigate("/ordercmd", {state: {tradingStyle:tradingStyle.current, ipAddress:ipAddress, ceStrikePrice:response_data['ce_strike_price'], peStrikePrice:response_data['pe_strike_price'], port:response_data['port'], replaySpeed:1, tradeDate:tradeDate, rangeHigh: priceIntervalRangeMap.get(priceRange)[1], rangeLow: priceIntervalRangeMap.get(priceRange)[0]}});
                 // Handle data
             }).then()
             .catch((err) => {
@@ -217,6 +227,13 @@ const InputPage = () => {
                             <option>vhigh</option>
                         </select>
                     </label>
+                    <label style={{float:"left", marginLeft:'1%'}}>Chart Type
+                    <select name="ChartType" id="chartType" defaultValue={chartType} onChange={(e) => setChartType(e.target.value)}>
+                        <option>stockCEPE</option>
+                        <option>Options</option>
+                        <option>Stock</option>
+                    </select>
+                </label>
                     <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
                     <button type="button" onClick={handlePaperTradingInfoSubmit} title="papertrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>PAPER TRADING</button>
                     <button type="button" onClick={handleRealTradingInfoSubmit} title="realtrading" style={{float:"left", marginTop:"1%", marginLeft:'1%', marginBottom:'1%'}}>REAL TRADING</button>

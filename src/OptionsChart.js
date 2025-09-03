@@ -5,7 +5,7 @@ import OrderInput from "./OrderInput";
 import {useLocation} from 'react-router-dom';
 import {useReactMediaRecorder} from "react-media-recorder";
 
-const Chart = () => {
+const OptionsChart = () => {
 
     const location = useLocation();
     const ipAddress = location.state['ipAddress'];
@@ -21,42 +21,36 @@ const Chart = () => {
     const isRecording = useRef(false);
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
 
-    const nineEMALine = []
-    const twentyOneEMALine = []
+    let nineEMALineCE = []
+    let twentyOneEMALineCE = []
+
+    let nineEMALinePE = []
+    let twentyOneEMALinePE = []
+
     const multiplierNineEMA = 2 / (9 + 1)
     const multiplierTwentyOneEMA = 2 / (21 + 1)
-    const lineSeriesNineEMA = useRef(null);
-    const lineSeriesTwentyOneEMA = useRef(null);
+    const lineSeriesNineCEEMA = useRef(null);
+    const lineSeriesTwentyOneCEEMA = useRef(null);
+    const lineSeriesNinePEEMA = useRef(null);
+    const lineSeriesTwentyOnePEEMA = useRef(null);
 
     const timeInfoLegend = useRef(null);
 
     const navigate = useNavigate();
-    const chartContainerNifty = useRef(null);
     const chartContainerCE = useRef(null);
     const chartContainerPE = useRef(null);
 
-    const candlestickSeriesNifty = useRef(null);
     const candlestickSeriesCE = useRef(null);
     const candlestickSeriesPE = useRef(null);
 
-    const chartNifty = useRef(null);
     const chartCE = useRef(null);
     const chartPE = useRef(null);
-
-
-    const currentBarLastOpenNifty = useRef(0);
-    const currentBarLastCloseNifty = useRef(null);
-    const currentBarLastHighNifty = useRef(0);
-    const currentBarLastLowNifty = useRef(1000000);
-    const currentBarTimeNifty = useRef(null);
-
 
     const currentBarLastOpenCE = useRef(0);
     const currentBarLastCloseCE = useRef(null);
     const currentBarLastHighCE = useRef(0);
     const currentBarLastLowCE = useRef(100000);
     const currentBarTimeCE = useRef(null);
-
 
     const currentBarLastOpenPE = useRef(0);
     const currentBarLastClosePE = useRef(null);
@@ -67,14 +61,6 @@ const Chart = () => {
     const socket = new WebSocket('ws://' + ipAddress + ':' + websocketPort);
     socket.onopen = () => {
         console.log('WebSocket connection opened');
-    };
-
-    const chartPropertiesNifty = {
-        layout: {
-            textColor: "white",
-            background: { type: "solid", color: "black" }
-        },
-        autosize: true,
     };
 
     const chartPropertiesOptions = {
@@ -88,24 +74,23 @@ const Chart = () => {
     useEffect(() => {
         timeInfoLegend.current = document.createElement('div');
         timeInfoLegend.current.style = `float:right; clear:both; z-index: 2; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300;`;
-        chartContainerNifty.current.appendChild(timeInfoLegend.current);
+        chartContainerCE.current.appendChild(timeInfoLegend.current);
 
-        chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
-        chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
         chartCE.current = createChart(chartContainerCE.current, chartPropertiesOptions);
-        chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
+        chartCE.current.resize(window.innerWidth*0.68, window.innerHeight*0.45)
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
-        chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45);
+        chartPE.current.resize(window.innerWidth*0.68, window.innerHeight*0.45);
 
-        candlestickSeriesNifty.current = chartNifty.current.addSeries(CandlestickSeries,
-            { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
         candlestickSeriesCE.current = chartCE.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
         candlestickSeriesPE.current = chartPE.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
 
-        lineSeriesNineEMA.current = chartNifty.current.addSeries(LineSeries, { color: '#2962FF', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
-        lineSeriesTwentyOneEMA.current = chartNifty.current.addSeries(LineSeries, { color: '#26a69a', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
+        lineSeriesNineCEEMA.current = chartCE.current.addSeries(LineSeries, { color: '#2962FF', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
+        lineSeriesTwentyOneCEEMA.current = chartCE.current.addSeries(LineSeries, { color: '#26a69a', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
+
+        lineSeriesNinePEEMA.current = chartPE.current.addSeries(LineSeries, { color: '#2962FF', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
+        lineSeriesTwentyOnePEEMA.current = chartPE.current.addSeries(LineSeries, { color: '#26a69a', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
 
         const chartOptions = {
             timeScale: {
@@ -123,9 +108,6 @@ const Chart = () => {
             },
         }
 
-        chartNifty.current.applyOptions(chartOptions);
-        chartNifty.current.timeScale().fitContent();
-
         chartCE.current.applyOptions(chartOptions);
         chartCE.current.timeScale().fitContent();
 
@@ -133,12 +115,10 @@ const Chart = () => {
         chartPE.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
-            chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
-            chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
-            chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
+            chartCE.current.resize(window.innerWidth*0.68, window.innerHeight*0.45)
+            chartPE.current.resize(window.innerWidth*0.68, window.innerHeight*0.45)
         });
         return () => {
-            chartNifty.current.remove();
             chartCE.current.remove();
             chartPE.current.remove();
         };
@@ -147,27 +127,37 @@ const Chart = () => {
     socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.hasOwnProperty('prev_data')) {
-            const stockDataArray = data['prev_data']['stock']
             const ceDataArray = data['prev_data']['ce']
             const peDataArray = data['prev_data']['pe']
 
-            nineEMALine.push({time:stockDataArray[0]['time'], value: stockDataArray[0]['close']})
-            twentyOneEMALine.push({time:stockDataArray[0]['time'], value: stockDataArray[0]['close']})
+            nineEMALineCE.push({time:ceDataArray[0]['time'], value: ceDataArray[0]['close']})
+            twentyOneEMALineCE.push({time:ceDataArray[0]['time'], value: ceDataArray[0]['close']})
 
-            for (let i = 1; i < stockDataArray.length; i++) {
-                const nineEMAValue = stockDataArray[i]['close'] * multiplierNineEMA + nineEMALine[i-1]['value'] * (1-multiplierNineEMA)
-                const twentyOneEMAValue = stockDataArray[i]['close'] * multiplierTwentyOneEMA + twentyOneEMALine[i-1]['value'] * (1-multiplierTwentyOneEMA)
-                nineEMALine.push({time:stockDataArray[i]['time'], value: nineEMAValue})
-                twentyOneEMALine.push({time:stockDataArray[i]['time'], value: twentyOneEMAValue})
+            nineEMALinePE.push({time:peDataArray[0]['time'], value: peDataArray[0]['close']})
+            twentyOneEMALinePE.push({time:peDataArray[0]['time'], value: peDataArray[0]['close']})
+
+            for (let i = 1; i < ceDataArray.length; i++) {
+                const nineEMAValueCE = ceDataArray[i]['close'] * multiplierNineEMA + nineEMALineCE[i-1]['value'] * (1-multiplierNineEMA)
+                const twentyOneEMAValueCE = ceDataArray[i]['close'] * multiplierTwentyOneEMA + twentyOneEMALineCE[i-1]['value'] * (1-multiplierTwentyOneEMA)
+                nineEMALineCE.push({time:ceDataArray[i]['time'], value: nineEMAValueCE})
+                twentyOneEMALineCE.push({time:ceDataArray[i]['time'], value: twentyOneEMAValueCE})
             }
 
-            currentBarLastOpenNifty.current = 0
-            candlestickSeriesNifty.current.setData(stockDataArray)
+            for (let i = 1; i < peDataArray.length; i++) {
+                const nineEMAValuePE = peDataArray[i]['close'] * multiplierNineEMA + nineEMALinePE[i-1]['value'] * (1-multiplierNineEMA)
+                const twentyOneEMAValuePE = peDataArray[i]['close'] * multiplierTwentyOneEMA + twentyOneEMALinePE[i-1]['value'] * (1-multiplierTwentyOneEMA)
+                nineEMALinePE.push({time:peDataArray[i]['time'], value: nineEMAValuePE})
+                twentyOneEMALinePE.push({time:peDataArray[i]['time'], value: twentyOneEMAValuePE})
+            }
+
             candlestickSeriesCE.current.setData(ceDataArray)
             candlestickSeriesPE.current.setData(peDataArray)
 
-            lineSeriesNineEMA.current.setData(nineEMALine)
-            lineSeriesTwentyOneEMA.current.setData(twentyOneEMALine)
+            lineSeriesNineCEEMA.current.setData(nineEMALineCE)
+            lineSeriesTwentyOneCEEMA.current.setData(twentyOneEMALineCE)
+
+            lineSeriesNinePEEMA.current.setData(nineEMALinePE)
+            lineSeriesTwentyOnePEEMA.current.setData(twentyOneEMALinePE)
         } else {
             const stockData = data['stock']
             const ceData = data['ce']
@@ -183,21 +173,6 @@ const Chart = () => {
 
             chartTime.current = barTimeDateStock.getHours() + ":" + barTimeDateStock.getMinutes() + ":" + barTimeDateStock.getSeconds()
 
-            const oldTimeStock = new Date(currentBarTimeNifty.current * 1000)
-            if ((currentBarLastOpenNifty.current === 0) || (Math.floor(barTimeDateStock.getMinutes()/3) !== Math.floor(oldTimeStock.getMinutes()/3))) {
-                currentBarTimeNifty.current = Math.floor(barEpochTimeStock/180)*180
-                currentBarLastOpenNifty.current = stockData['open']
-                currentBarLastLowNifty.current = stockData['low']
-                currentBarLastHighNifty.current = stockData['high']
-
-                const nineEMAValue = stockData['close'] * multiplierNineEMA + nineEMALine[nineEMALine.length-1]['value'] * (1-multiplierNineEMA)
-                const twentyOneEMAValue = stockData['close'] * multiplierTwentyOneEMA + twentyOneEMALine[twentyOneEMALine.length-1]['value'] * (1-multiplierTwentyOneEMA)
-
-                nineEMALine.push({time:currentBarTimeNifty.current, value: nineEMAValue})
-                twentyOneEMALine.push({time:currentBarTimeNifty.current, value: twentyOneEMAValue})
-                lineSeriesNineEMA.current.update({time:currentBarTimeNifty.current, value: nineEMAValue}, false)
-                lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current, value: twentyOneEMAValue}, false)
-            }
             const oldTimeCE = new Date(currentBarTimeCE.current * 1000)
             if ((currentBarLastOpenCE.current === 0) || (Math.floor(barTimeDateCE.getMinutes()/3) !== Math.floor(oldTimeCE.getMinutes()/3))) {
                 currentBarTimeCE.current = Math.floor(barEpochTimeCE / 180) * 180
@@ -205,6 +180,13 @@ const Chart = () => {
                 currentBarLastLowCE.current = ceData['low']
                 currentBarLastHighCE.current = ceData['high']
 
+                const nineEMAValue = ceData['close'] * multiplierNineEMA + nineEMALineCE[nineEMALineCE.length-1]['value'] * (1-multiplierNineEMA)
+                const twentyOneEMAValue = ceData['close'] * multiplierTwentyOneEMA + twentyOneEMALineCE[twentyOneEMALineCE.length-1]['value'] * (1-multiplierTwentyOneEMA)
+
+                nineEMALineCE.push({time:currentBarTimeCE.current, value: nineEMAValue})
+                twentyOneEMALineCE.push({time:currentBarTimeCE.current, value: twentyOneEMAValue})
+                lineSeriesNineCEEMA.current.update({time:currentBarTimeCE.current, value: nineEMAValue}, false)
+                lineSeriesTwentyOneCEEMA.current.update({time:currentBarTimeCE.current, value: twentyOneEMAValue}, false)
             }
 
             const oldTimePE = new Date(currentBarTimePE.current * 1000)
@@ -213,14 +195,18 @@ const Chart = () => {
                 currentBarLastOpenPE.current = peData['open']
                 currentBarLastLowPE.current = peData['low']
                 currentBarLastHighPE.current = peData['high']
+
+                const nineEMAValue = peData['close'] * multiplierNineEMA + nineEMALinePE[nineEMALinePE.length-1]['value'] * (1-multiplierNineEMA)
+                const twentyOneEMAValue = peData['close'] * multiplierTwentyOneEMA + twentyOneEMALinePE[twentyOneEMALinePE.length-1]['value'] * (1-multiplierTwentyOneEMA)
+
+                nineEMALinePE.push({time:currentBarTimePE.current, value: nineEMAValue})
+                twentyOneEMALinePE.push({time:currentBarTimePE.current, value: twentyOneEMAValue})
+                lineSeriesNinePEEMA.current.update({time:currentBarTimePE.current, value: nineEMAValue}, false)
+                lineSeriesTwentyOnePEEMA.current.update({time:currentBarTimePE.current, value: twentyOneEMAValue}, false)
             }
 
-            currentBarLastCloseNifty.current = stockData['close']
             currentBarLastCloseCE.current = ceData['close']
             currentBarLastClosePE.current = peData['close']
-
-            currentBarLastLowNifty.current = Math.min(currentBarLastLowNifty.current, stockData['low'])
-            currentBarLastHighNifty.current = Math.max(currentBarLastHighNifty.current, stockData['high'])
 
             currentBarLastLowCE.current = Math.min(currentBarLastLowCE.current, ceData['low'])
             currentBarLastHighCE.current = Math.max(currentBarLastHighCE.current, ceData['high'])
@@ -228,21 +214,9 @@ const Chart = () => {
             currentBarLastLowPE.current = Math.min(currentBarLastLowPE.current, peData['low'])
             currentBarLastHighPE.current = Math.max(currentBarLastHighPE.current, peData['high'])
 
-            const displayTimeStock = currentBarTimeNifty.current
             const displayTimeCE = currentBarTimeCE.current
             const displayTimePE = currentBarTimePE.current
             try {
-                const candleDataUpdateNifty =
-                    {
-                        open: currentBarLastOpenNifty.current,
-                        high: currentBarLastHighNifty.current,
-                        low: currentBarLastLowNifty.current,
-                        close: currentBarLastCloseNifty.current,
-                        time: displayTimeStock
-                    };
-                candlestickSeriesNifty.current.update(candleDataUpdateNifty, false);
-                timeInfoLegend.current.innerHTML = formatTimeLocale(stockData['time'])
-
                 const candleDataUpdatePE =
                     {
                         open: currentBarLastOpenPE.current,
@@ -262,6 +236,8 @@ const Chart = () => {
                         time: displayTimeCE
                     };
                 candlestickSeriesCE.current.update(candleDataUpdateCE, false);
+
+                timeInfoLegend.current.innerHTML = formatTimeLocale(stockData['time'])
             } catch (error) {
                 console.error("Caught error in updating series:", error);
             }
@@ -291,12 +267,29 @@ const Chart = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                candlestickSeriesCE.current.setData(data['response']['prev_data']);
+                const ceDataArray = data['response']['prev_data']
+
+                nineEMALineCE = []
+                twentyOneEMALineCE = []
+
+                nineEMALineCE.push({time:ceDataArray[0]['time'], value: ceDataArray[0]['close']})
+                twentyOneEMALineCE.push({time:ceDataArray[0]['time'], value: ceDataArray[0]['close']})
+
+                for (let i = 1; i < ceDataArray.length; i++) {
+                    const nineEMAValueCE = ceDataArray[i]['close'] * multiplierNineEMA + nineEMALineCE[i-1]['value'] * (1-multiplierNineEMA)
+                    const twentyOneEMAValueCE = ceDataArray[i]['close'] * multiplierTwentyOneEMA + twentyOneEMALineCE[i-1]['value'] * (1-multiplierTwentyOneEMA)
+                    nineEMALineCE.push({time:ceDataArray[i]['time'], value: nineEMAValueCE})
+                    twentyOneEMALineCE.push({time:ceDataArray[i]['time'], value: twentyOneEMAValueCE})
+                }
+                candlestickSeriesCE.current.setData(ceDataArray);
+
+                lineSeriesNineCEEMA.current.setData(nineEMALineCE)
+                lineSeriesTwentyOneCEEMA.current.setData(twentyOneEMALineCE)
                 currentBarLastOpenCE.current = 0
                 // Handle data
             }).catch((err) => {
-                console.log(err.message);
-            });
+            console.log(err.message);
+        });
     }
 
     const onPEFeedReset = (event) => {
@@ -317,8 +310,8 @@ const Chart = () => {
                 candlestickSeriesPE.current.setData(data['response']['prev_data']);
                 currentBarLastOpenPE.current = 0
             }).catch((err) => {
-                console.log(err.message);
-            });
+            console.log(err.message);
+        });
     }
 
     const onReset = (event) => {
@@ -383,9 +376,8 @@ const Chart = () => {
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
             <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
             <div style={{clear:"both", float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE} id="chartContainerCE"></div>
-                <div style={{float:"left", marginTop:"1%", marginLeft:'0.5%'}} ref={chartContainerPE}></div>
+                <div style={{clear:"both", float:"left", marginTop:"1%", marginLeft:'1%'}} ref={chartContainerPE}></div>
             </div>
             <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice} tradeDate={tradeDate}/></div>
         </div>
@@ -394,4 +386,4 @@ const Chart = () => {
 
 };
 
-export default Chart;
+export default OptionsChart;

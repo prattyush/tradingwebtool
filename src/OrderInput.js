@@ -19,7 +19,6 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
     const [tdMngmtCmd, setTdMngmtCmd] = useState("L")
     const [strategyValue, setStrategyValue] = useState("fast")
     const [tdInfoCmd, setTdInfoCmd] = useState("P")
-    const [optionsType, setOptionsType] = useState("CE")
     const [orderInfo, setOrderInfo] = useState("OrderInfo")
     const [tradeInfo, setTradeInfo] = useState("TradeInfo")
     const [timeInfo, setTimeInfo] = useState("")
@@ -60,6 +59,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 console.log(err.message);
             });
     }
+
     const onTdManagementCommandPlaced = (event) => {
         event.preventDefault();
         const cmdParams = cmdInputMngTd.replace(" ", "|");
@@ -126,6 +126,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 console.log(err.message);
             });
     }
+
     const onLN1ManagementCommandPlaced = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=1", {
@@ -147,6 +148,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 console.log(err.message);
             });
     }
+
     const onLN2ManagementCommandPlaced = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + "/ordermngmnt?command=LN&params=2", {
@@ -168,10 +170,12 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                 console.log(err.message);
             });
     }
+
     const onBLManagementCommandPlaced = (event) => {
         event.preventDefault();
         postBLCommand("low");
     }
+
     const onBLMidManagementCommandPlaced = (event) => {
         event.preventDefault();
         postBLCommand("mid");

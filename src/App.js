@@ -10,12 +10,14 @@ import LabelStrategy from "./LabelStrategy";
 import AnalyzeStrategyOld from "./AnalyzeStrategyOld";
 import AnalyzeStrategy from "./AnalyzeStrategy";
 import TradeReplayer from "./TradeReplayer";
+import OptionsChart from "./OptionsChart";
 
 function App() {
   return (
       <Router>
         <Routes>
-          <Route path="/chart" element={<Chart />} />
+            <Route path="/chart" element={<Chart />} />
+            <Route path="/optionschart" element={<OptionsChart />} />
             <Route path="/wait" element={<WaitPage />} />
             <Route path="/ordercmd" element={<OrderInputCommand />} />
             <Route path="/tools/labelstrategy" element={<LabelStrategy />} />
