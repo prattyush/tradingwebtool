@@ -43,7 +43,6 @@ const Chart = () => {
     const chartCE = useRef(null);
     const chartPE = useRef(null);
 
-
     const currentBarLastOpenNifty = useRef(0);
     const currentBarLastCloseNifty = useRef(null);
     const currentBarLastHighNifty = useRef(0);
@@ -56,7 +55,6 @@ const Chart = () => {
     const currentBarLastHighCE = useRef(0);
     const currentBarLastLowCE = useRef(100000);
     const currentBarTimeCE = useRef(null);
-
 
     const currentBarLastOpenPE = useRef(0);
     const currentBarLastClosePE = useRef(null);
@@ -197,6 +195,7 @@ const Chart = () => {
                 twentyOneEMALine.push({time:currentBarTimeNifty.current, value: twentyOneEMAValue})
                 lineSeriesNineEMA.current.update({time:currentBarTimeNifty.current, value: nineEMAValue}, false)
                 lineSeriesTwentyOneEMA.current.update({time:currentBarTimeNifty.current, value: twentyOneEMAValue}, false)
+                console.log("Updating Nine EMA Line at " + barTimeDateStock)
             }
             const oldTimeCE = new Date(currentBarTimeCE.current * 1000)
             if ((currentBarLastOpenCE.current === 0) || (Math.floor(barTimeDateCE.getMinutes()/3) !== Math.floor(oldTimeCE.getMinutes()/3))) {
@@ -204,7 +203,6 @@ const Chart = () => {
                 currentBarLastOpenCE.current = ceData['open']
                 currentBarLastLowCE.current = ceData['low']
                 currentBarLastHighCE.current = ceData['high']
-
             }
 
             const oldTimePE = new Date(currentBarTimePE.current * 1000)
