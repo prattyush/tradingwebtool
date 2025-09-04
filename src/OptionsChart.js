@@ -306,8 +306,24 @@ const OptionsChart = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                candlestickSeriesPE.current.setData(data['response']['prev_data']);
+                const peDataArray = data['response']['prev_data']
+
+                nineEMALinePE = []
+                twentyOneEMALinePE = []
+
+                nineEMALinePE.push({time:peDataArray[0]['time'], value: peDataArray[0]['close']})
+                twentyOneEMALinePE.push({time:peDataArray[0]['time'], value: peDataArray[0]['close']})
+
+                for (let i = 1; i < peDataArray.length; i++) {
+                    const nineEMAValuePE = peDataArray[i]['close'] * multiplierNineEMA + nineEMALinePE[i-1]['value'] * (1-multiplierNineEMA)
+                    const twentyOneEMAValuePE = peDataArray[i]['close'] * multiplierTwentyOneEMA + twentyOneEMALinePE[i-1]['value'] * (1-multiplierTwentyOneEMA)
+                    nineEMALinePE.push({time:peDataArray[i]['time'], value: nineEMAValuePE})
+                    twentyOneEMALinePE.push({time:peDataArray[i]['time'], value: twentyOneEMAValuePE})
+                }
+                candlestickSeriesPE.current.setData(peDataArray);
+
+                lineSeriesNinePEEMA.current.setData(nineEMALinePE)
+                lineSeriesTwentyOnePEEMA.current.setData(twentyOneEMALinePE)
                 currentBarLastOpenPE.current = 0
             }).catch((err) => {
             console.log(err.message);
