@@ -9,7 +9,7 @@ const AnalyticsPage = ({ipAddress}) => {
     const [tradeDate, setTradeDate] = useState("")
     const [buttonState, setButtonState] = useState(true)
 
-    const [analyticsStrategy, setAnalyticsStrategy] = useState("breakout")
+    const [analyticsStrategy, setAnalyticsStrategy] = useState("all")
     const [analyticsStrategyTradingStyle, setAnalyticsStrategyTradingStyle] = useState("simtrading")
     const [analyticsStrategyLookback, setAnalyticsStrategyLookback] = useState("0")
     const [analyticsStrategyQuantity, setAnalyticsStrategyQuantity] = useState("0")
