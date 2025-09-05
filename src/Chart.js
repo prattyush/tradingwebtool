@@ -98,7 +98,7 @@ const Chart = () => {
         chartContainerNifty.current.appendChild(timeInfoLegend.current);
 
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
-        chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
+        chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.45)
         chartCE.current = createChart(chartContainerCE.current, chartPropertiesOptions);
         chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
@@ -146,9 +146,9 @@ const Chart = () => {
         chartPE.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
-            chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.5)
-            chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
-            chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.5)
+            chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.45)
+            chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
+            chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
         });
         return () => {
             chartNifty.current.remove();
