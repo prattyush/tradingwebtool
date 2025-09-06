@@ -52,6 +52,7 @@ export const tradestrategyoptions = [
     { value: 'OPN-TR-R', label: 'OPENING_TRADING_RANGE_RESISTANCE' },
 
     { value: 'TWD-YES-CLS', label: 'TOWARDS_YESTERDAYS_CLOSE' },
+    { value: 'all', label: 'all' },
 ]
 
 export const strategyoptions = [
