@@ -20,7 +20,7 @@ const InputPage = () => {
     const [chartType, setChartType] = useState("stockCEPE")
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
-    const [ipAddress, setIpAddress] = useState("192.168.1.5");
+    const [ipAddress, setIpAddress] = useState("43.205.27.227");
 
     const priceIntervalRangeMap = new Map();
     priceIntervalRangeMap.set("ulow", [21,45]);
