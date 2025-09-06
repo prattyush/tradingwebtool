@@ -75,21 +75,21 @@ const TradeStrategyLabelTool = () => {
 
     useEffect(() => {
         analyticsChartNifty.current = createChart(analyticsChartContainerStock.current, chartPropertiesNifty);
-        analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.4)
+        analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.5)
         analyticsChartCE.current = createChart(analyticsChartContainerCE.current, chartPropertiesOptions);
-        analyticsChartCE.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartCE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
         analyticsChartPE.current = createChart(analyticsChartContainerPE.current, chartPropertiesOptions);
-        analyticsChartPE.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartPE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
 
         analyticsChartCE2.current = createChart(analyticsChartContainerCE2.current, chartPropertiesOptions);
-        analyticsChartCE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartCE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
         analyticsChartPE2.current = createChart(analyticsChartContainerPE2.current, chartPropertiesOptions);
-        analyticsChartPE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartPE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
 
         analyticsChartCE3.current = createChart(analyticsChartContainerCE2.current, chartPropertiesOptions);
-        analyticsChartCE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartCE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
         analyticsChartPE3.current = createChart(analyticsChartContainerPE2.current, chartPropertiesOptions);
-        analyticsChartPE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.4)
+        analyticsChartPE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
 
         //const histogramSeries = chartNifty.addSeries(HistogramSeries, { color: "#26a69a" });
         analyticsCandlestickSeriesNifty.current = analyticsChartNifty.current.addSeries(CandlestickSeries,
