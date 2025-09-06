@@ -452,14 +452,6 @@ const TradeStrategyLabelTool = () => {
                             <option>papertrading</option>
                             <option>realtrading</option>
                         </select>
-                        <label style={{float:"left", marginLeft:'1%', marginTop:'1%', marginRight: '1%'}}>Strategy :: </label>
-                        <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="StrategyCmd" id="strategyCmd" defaultValue={analyticsStrategy} onChange={(e) => setAnalyticsStrategy(e.target.value)}>
-                            {strategyoptions.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
                         <label style={{float:"left"}}> Enter Quantity :
                             <input type="text" value={tradingQuantity} onChange={(e) => setTradingQuantity(e.target.value)}/>
                         </label>
