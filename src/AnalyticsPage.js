@@ -3,7 +3,13 @@ import Chart from "./Chart";
 import { useNavigate } from 'react-router-dom'
 import {useLocation} from 'react-router-dom';
 import {CandlestickSeries, createChart, LineStyle, createSeriesMarkers} from "lightweight-charts";
-import {strategyoptions, previousDayOptions, todayStartOptions, baroptions} from "./StrategyVariables";
+import {
+    strategyoptions,
+    previousDayOptions,
+    todayStartOptions,
+    baroptions,
+    tradestrategyoptions
+} from "./StrategyVariables";
 
 const AnalyticsPage = ({ipAddress}) => {
     const [tradeDate, setTradeDate] = useState("")
@@ -405,7 +411,7 @@ const AnalyticsPage = ({ipAddress}) => {
                     </select>
                     <label style={{float:"left", marginLeft:'1%', marginTop:'1%', marginRight: '1%'}}>Strategy :: </label>
                     <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="StrategyCmd" id="strategyCmd" defaultValue={analyticsStrategy} onChange={(e) => setAnalyticsStrategy(e.target.value)}>
-                        {strategyoptions.map((option) => (
+                        {tradestrategyoptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>
