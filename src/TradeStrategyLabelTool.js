@@ -20,8 +20,6 @@ const TradeStrategyLabelTool = () => {
     const [tradeDate, setTradeDate] = useState("")
     const [buttonState, setButtonState] = useState(true)
     const tradesLabeledStrategyMap = useRef(new Map());
-
-    const [analyticsStrategy, setAnalyticsStrategy] = useState("all")
     const [tradingstyle, setTradingstyle] = useState("simtrading")
     const [tradingQuantity, setTradingQuantity] = useState("0")
 
@@ -52,10 +50,6 @@ const TradeStrategyLabelTool = () => {
     const analyticsChartPE2 = useRef(null);
     const analyticsChartCE3 = useRef(null);
     const analyticsChartPE3 = useRef(null);
-
-    const [historyInfo, setHistoryInfo] = useState("");
-    const [reportSummary, setReportSummary] = useState("");
-
 
     const chartPropertiesNifty = {
         layout: {
@@ -365,6 +359,8 @@ const TradeStrategyLabelTool = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                // Resetting the Map Data
+                tradesLabeledStrategyMap.current = new Map()
 
                 const groupedOrdersData = data['response']
                 setGroupedOrdersData(groupedOrdersData);
@@ -377,8 +373,6 @@ const TradeStrategyLabelTool = () => {
                     indexArray.push(j);
                 }
                 setOrdersGroupCount(indexArray)
-                setHistoryInfo(data['response']['history'])
-                setReportSummary(data['response']['report_summary'])
                 // Handle data
             })
             .catch((err) => {
