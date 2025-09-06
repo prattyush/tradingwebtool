@@ -150,7 +150,7 @@ const TradeStrategyLabelTool = () => {
         analyticsChartCE3.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
-            analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.45)
+            analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.5)
             analyticsChartCE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
             analyticsChartPE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
             analyticsChartCE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
