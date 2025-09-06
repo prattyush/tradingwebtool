@@ -50,6 +50,8 @@ export const tradestrategyoptions = [
     { value: 'TRND-PB-TRND', label: 'TREND_PULLBACK_RESUME' },
     { value: 'OPN-TR-S', label: 'OPENING_TRADING_RANGE_SUPPORT' },
     { value: 'OPN-TR-R', label: 'OPENING_TRADING_RANGE_RESISTANCE' },
+
+    { value: 'TWD-YES-CLS', label: 'TOWARDS_YESTERDAYS_CLOSE' },
 ]
 
 export const strategyoptions = [
