@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import Chart from "./Chart";
 import { useNavigate } from 'react-router-dom'
 import {useLocation} from 'react-router-dom';
-import {CandlestickSeries, createChart, LineStyle, createSeriesMarkers} from "lightweight-charts";
+import {CandlestickSeries, createChart, LineStyle, createSeriesMarkers, LineSeries} from "lightweight-charts";
 import {
     strategyoptions,
     previousDayOptions,
@@ -26,6 +26,13 @@ const TradeStrategyLabelTool = () => {
     const [ordersGroupCount, setOrdersGroupCount] = useState([])
     const ordersReportList = useRef([''])
     const [groupedOrdersData, setGroupedOrdersData] = useState([])
+
+    const nineEMALine = []
+    const twentyOneEMALine = []
+    const multiplierNineEMA = 2 / (9 + 1)
+    const multiplierTwentyOneEMA = 2 / (21 + 1)
+    const lineSeriesNineEMA = useRef(null);
+    const lineSeriesTwentyOneEMA = useRef(null);
 
     const analyticsChartContainerStock = useRef(null);
     const analyticsChartContainerCE = useRef(null);
@@ -100,6 +107,9 @@ const TradeStrategyLabelTool = () => {
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
         analyticsCandlestickSeriesPE3.current = analyticsChartPE3.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
+
+        lineSeriesNineEMA.current = analyticsChartNifty.current.addSeries(LineSeries, { color: '#2962FF', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
+        lineSeriesTwentyOneEMA.current = analyticsChartNifty.current.addSeries(LineSeries, { color: '#26a69a', lineWidth: 1, lastValueVisible:false, priceLineVisible: false });
 
         //currentBarLastCloseNifty.current = 10.96 + Math.random();
         //candlestickSeriesNifty.current.setData(candleData);
@@ -201,6 +211,12 @@ const TradeStrategyLabelTool = () => {
             const data = JSON.parse(event.data);
             const stockDataArray = data['price_action']['stock'];
 
+
+            for (let i = 0; i < stockDataArray.length; i++) {
+                nineEMALine.push({time:stockDataArray[i]['time'], value: stockDataArray[i]['ema_9']});
+                twentyOneEMALine.push({time:stockDataArray[i]['time'], value: stockDataArray[i]['ema_21']});
+            }
+
             const ceDataMap = data['price_action']['ce']
             const ceDataMapKeys = Object.keys(ceDataMap);
             const ceDataArray = ceDataMapKeys.length > 0 ? ceDataMap[ceDataMapKeys[ceDataMapKeys.length-1]] : []
@@ -229,6 +245,8 @@ const TradeStrategyLabelTool = () => {
             analyticsCandlestickSeriesCE3.current.setData(ceDataArray3)
             analyticsCandlestickSeriesPE3.current.setData(peDataArray3)
 
+            lineSeriesNineEMA.current.setData(nineEMALine)
+            lineSeriesTwentyOneEMA.current.setData(twentyOneEMALine)
 
             const orderStockMarkers = []
             const orderCEMarkers = []
