@@ -20,7 +20,7 @@ const InputPage = () => {
     const [chartType, setChartType] = useState("stockCEPE")
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
-    const [ipAddress, setIpAddress] = useState("43.205.27.227");
+    const [ipAddress, setIpAddress] = useState("192.168.1.5");
 
     const priceIntervalRangeMap = new Map();
     priceIntervalRangeMap.set("ulow", [21,45]);
@@ -189,6 +189,13 @@ const InputPage = () => {
         navigate("/tools/tradereplay", {state: {ipAddress:ipAddress}});
     }
 
+    const handleTradeLabelTool = (event) => {
+        event.preventDefault();
+        navigate("/tools/tradelabelstrategy", {state: {ipAddress:ipAddress}});
+    }
+
+
+
     return (
         <div>
             <div style={{float:"left", marginBottom:'1%', width:'90%', height:'20%'}}>
@@ -244,6 +251,7 @@ const InputPage = () => {
                     <button type="button" onClick={handleStrategyLabelSubmit} title="labelstrategy" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Label Strategy</button>
                     <button type="button" onClick={handleAnalyzeStrategySubmit} title="analyzestrategy" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Analyze Strategy</button>
                     <button type="button" onClick={handleTradeReplaySubmit} title="tradereplay" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Trade Replayer</button>
+                    <button type="button" onClick={handleTradeLabelTool} title="tradelabel" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Trade Label</button>
                 </div>
             </div>
             <div style={{float:"left", width:'98%', height:'75%'}}><AnalyticsPage ipAddress={ipAddress}/></div>

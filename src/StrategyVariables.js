@@ -17,6 +17,41 @@ export const orderstrategyoptions = [
     { value: 'wedge-reversal', label: 'wrv' },
 ];
 
+export const tradestrategyoptions = [
+    { value: 'none', label: 'none' },
+    { value: 'TR-BO', label: 'TRADING_RANGE_BREAKOUT' },
+    { value: 'TRND-BO', label: 'TREND_BREAKOUT' },
+
+    { value: 'TR-BO-2L', label: 'TRADING_RANGE_BREAKOUT_2ND_LEG' },
+    { value: 'TRND-BO-2L', label: 'TREND_BREAKOUT_2ND_LEG' },
+    { value: 'TR-2L', label: 'TRADING_RANGE_2ND_LEG' },
+    { value: 'SB-2L', label: 'SURPRISE_BAR_2ND_LEG' },
+    { value: 'TRND-2L', label: 'TREND_2ND_LEG' },
+    { value: 'OPN-TR-2L', label: 'OPENING_TRADING_RANGE_2ND_LEG' },
+
+    { value: 'TR-BO-RV', label: 'TRADING_RANGE_BREAKOUT_REVERSAL' },
+    { value: 'TRND-BO-RV', label: 'TREND_BREAKOUT_REVERSAL' },
+    { value: 'TR-DTB-RV', label: 'TRADING_RANGE_DOUBLE_TOP_BOTTOM_REVERSAL' },
+    { value: 'SB-RV', label: 'SURPRISE_BAR_REVERSAL' },
+    { value: 'TRND-EB-RV', label: 'TREND_EXHAUSTION_BAR_REVERSAL' },
+    { value: 'TRND-DBT-RV', label: 'TREND_DOUBLE_TOP_BOTTOM_REVERSAL' },
+    { value: 'TRND-HS-RV', label: 'TREND_HEAD_SHOULDERS_REVERSAL' },
+    { value: 'TRND-WG-RV', label: 'TREND_WEDGE_REVERSAL' },
+    { value: 'TRND-50-PB-RV', label: 'TREND_FIFTY_PULLBACK_REVERSAL' },
+
+    { value: 'TR-T-S', label: 'TRADING_RANGE_TOWARDS_SUPPORT' },
+    { value: 'TR-T-R', label: 'TRADING_RANGE_TOWARDS_RESISTANCE' },
+    { value: 'TR-T-DBT', label: 'TRADING_RANGE_TOWARDS_DOUBLE_TOP_BOTTOM' },
+    { value: 'TRND-T-DBT', label: 'TREND_TOWARDS_DOUBLE_TOP_BOTTOM' },
+    { value: 'TRND-WG', label: 'TREND_TOWARDS_WEDGE' },
+    { value: 'TRND-EM-TRND', label: 'TREND_PULLBACK_EMA_RESUME' },
+    { value: 'TRND-EM-PB', label: 'TREND_EMA_PULLBACK' },
+    { value: 'TRND-50-PB-TRND', label: 'TREND_FIFTY_PULLBACK_RESUME' },
+    { value: 'TRND-PB-TRND', label: 'TREND_PULLBACK_RESUME' },
+    { value: 'OPN-TR-S', label: 'OPENING_TRADING_RANGE_SUPPORT' },
+    { value: 'OPN-TR-R', label: 'OPENING_TRADING_RANGE_RESISTANCE' },
+]
+
 export const strategyoptions = [
     { value: 'none', label: 'none' },
     { value: 'breakout', label: 'breakout' },
