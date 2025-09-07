@@ -211,7 +211,6 @@ const TradeStrategyLabelTool = () => {
             const data = JSON.parse(event.data);
             const stockDataArray = data['price_action']['stock'];
 
-
             for (let i = 0; i < stockDataArray.length; i++) {
                 nineEMALine.push({time:stockDataArray[i]['time'], value: stockDataArray[i]['ema_9']});
                 twentyOneEMALine.push({time:stockDataArray[i]['time'], value: stockDataArray[i]['ema_21']});
