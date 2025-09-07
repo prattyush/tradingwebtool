@@ -28,8 +28,8 @@ export const tradestrategyoptions = [
     { value: 'SB-2L', label: 'SURPRISE_BAR_2ND_LEG' },
     { value: 'TRND-2L', label: 'TREND_2ND_LEG' },
     { value: 'OPN-TR-2L', label: 'OPENING_TRADING_RANGE_2ND_LEG' },
-    { value: 'BO-REV-2L', label: 'BREAKOUT_REVERSAL_2ND_LEG' },
-    { value: 'BO-REV-WG', label: 'BREAKOUT_REVERSAL_WEDGE' },
+    { value: 'TRND-REV-2L', label: 'TREND_BREAKOUT_REVERSAL_2ND_LEG' },
+    { value: 'TRND-REV-WG', label: 'TREND_BREAKOUT_REVERSAL_WEDGE' },
     { value: 'TRND-REV-WG-TRND', label: 'TREND_REVERSAL_WEDGE_RESUME' },
 
     { value: 'TR-BO-RV', label: 'TRADING_RANGE_BREAKOUT_REVERSAL' },
