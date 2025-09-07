@@ -76,21 +76,21 @@ const TradeStrategyLabelTool = () => {
 
     useEffect(() => {
         analyticsChartNifty.current = createChart(analyticsChartContainerStock.current, chartPropertiesNifty);
-        analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.5)
+        analyticsChartNifty.current.resize(window.innerWidth*0.64, window.innerHeight*0.5)
         analyticsChartCE.current = createChart(analyticsChartContainerCE.current, chartPropertiesOptions);
-        analyticsChartCE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+        analyticsChartCE.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
         analyticsChartPE.current = createChart(analyticsChartContainerPE.current, chartPropertiesOptions);
-        analyticsChartPE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+        analyticsChartPE.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
 
         analyticsChartCE2.current = createChart(analyticsChartContainerCE2.current, chartPropertiesOptions);
-        analyticsChartCE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+        analyticsChartCE2.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
         analyticsChartPE2.current = createChart(analyticsChartContainerPE2.current, chartPropertiesOptions);
-        analyticsChartPE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+        analyticsChartPE2.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
 
         analyticsChartCE3.current = createChart(analyticsChartContainerCE2.current, chartPropertiesOptions);
-        analyticsChartCE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+        analyticsChartCE3.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
         analyticsChartPE3.current = createChart(analyticsChartContainerPE2.current, chartPropertiesOptions);
-        analyticsChartPE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+        analyticsChartPE3.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
 
         //const histogramSeries = chartNifty.addSeries(HistogramSeries, { color: "#26a69a" });
         analyticsCandlestickSeriesNifty.current = analyticsChartNifty.current.addSeries(CandlestickSeries,
@@ -154,13 +154,13 @@ const TradeStrategyLabelTool = () => {
         analyticsChartCE3.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
-            analyticsChartNifty.current.resize(window.innerWidth*0.63, window.innerHeight*0.5)
-            analyticsChartCE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
-            analyticsChartPE.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
-            analyticsChartCE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
-            analyticsChartPE2.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
-            analyticsChartCE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
-            analyticsChartPE3.current.resize(window.innerWidth*0.31, window.innerHeight*0.45)
+            analyticsChartNifty.current.resize(window.innerWidth*0.64, window.innerHeight*0.5)
+            analyticsChartCE.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
+            analyticsChartPE.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
+            analyticsChartCE2.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
+            analyticsChartPE2.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
+            analyticsChartCE3.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
+            analyticsChartPE3.current.resize(window.innerWidth*0.32, window.innerHeight*0.45)
         });
         return () => {
             analyticsChartNifty.current.remove();
@@ -440,17 +440,17 @@ const TradeStrategyLabelTool = () => {
     }
 
     return (
-        <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', width:'96%', height:'100%', border: '1px solid black'}}>
-            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'68%'}}>
-                <div style={{float:"left", marginLeft:'1%', width:'96%', height:'50%', border: '2px solid black'}} ref={analyticsChartContainerStock}></div>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerCE}></div>
-                <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE}></div>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerCE2}></div>
-                <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE2}></div>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerCE3}></div>
-                <div style={{float:"left", marginTop:'1%', width:'47%', border: '1px solid black'}} ref={analyticsChartContainerPE3}></div>
+        <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', width:'99%', height:'100%', border: '1px solid black'}}>
+            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', border: '1px solid black', width:'66%'}}>
+                <div style={{float:"left", marginLeft:'1%', width:'98%', height:'50%', border: '2px solid black'}} ref={analyticsChartContainerStock}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'48%', border: '1px solid black'}} ref={analyticsChartContainerCE}></div>
+                <div style={{float:"left", marginTop:'1%', width:'48%', border: '1px solid black'}} ref={analyticsChartContainerPE}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'48%', border: '1px solid black'}} ref={analyticsChartContainerCE2}></div>
+                <div style={{float:"left", marginTop:'1%', width:'48%', border: '1px solid black'}} ref={analyticsChartContainerPE2}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', marginRight:'1%', marginTop:'1%', width:'48%', border: '1px solid black'}} ref={analyticsChartContainerCE3}></div>
+                <div style={{float:"left", marginTop:'1%', width:'48%', border: '1px solid black'}} ref={analyticsChartContainerPE3}></div>
             </div>
-            <div style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%', border: '1px solid black', width:'28%'}}>
+            <div style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%', border: '1px solid black', width:'32%'}}>
                 <div style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%', border: '1px solid black', width:'100%'}}>
                     <h4>TRADE-LABELING-TOOL</h4>
                     <form name="analytics" onSubmit={handleStrategyAnalyticsRequestSubmitted} style={{float:"left", marginRight:'1%'}}>
@@ -475,10 +475,10 @@ const TradeStrategyLabelTool = () => {
                 </div>
 
                 <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', marginLeft:'1%', width:'100%', height:'80%', border: '1px solid black'}}>
-                    <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', width:'98%', height:'120%', border: '1px solid black'}}>
+                    <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', width:'98%', height:'900px', border: '1px solid black', overflow: 'scroll'}}>
                         {ordersGroupCount.map((index) => (
                             <div>
-                                <textarea style={{float:"left", marginTop:'1%', marginRight: '1%', width:'90%', height:'80%',}} name="reportSummary" rows={10} cols={30} value={ordersReportList.current[index]} readOnly={true}>report</textarea>
+                                <textarea style={{float:"left", marginTop:'1%', marginRight: '1%', width:'100%', height:'10%', fontSize:'0.75rem'}} name="reportSummary" rows={7} cols={48} value={ordersReportList.current[index]} readOnly={true}>report</textarea>
                                 <label style={{clear:"both", float:"left", marginTop:'1%'}}>Strategy ::</label>
                                 <select style={{float:"left", marginTop:'1%'}} name="tradestrategy" id="tradestrategy" defaultValue="none" onChange={(e) => handleTradeLabelStrategySelect(e, index)}>
                                     {tradestrategyoptions.map((option) => (
