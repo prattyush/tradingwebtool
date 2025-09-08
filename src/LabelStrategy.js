@@ -1,7 +1,14 @@
 import {useState, useCallback, useRef, useEffect} from "react";
 import 'react-medium-image-zoom/dist/styles.css'
 import { useNavigate } from 'react-router-dom';
-import {strategyoptions, previousDayOptions, todayStartOptions, getBarEndTimeOption, tradeTypeOptions} from "./StrategyVariables";
+import {
+    strategyoptions,
+    previousDayOptions,
+    todayStartOptions,
+    getBarEndTimeOption,
+    tradeTypeOptions,
+    tradestrategyoptions
+} from "./StrategyVariables";
 import {CandlestickSeries, createChart, LineStyle, createSeriesMarkers, LineSeries} from "lightweight-charts";
 
 import {useLocation} from 'react-router-dom';
@@ -329,7 +336,7 @@ const LabelStrategy = () => {
                     <div>
                         <label style={{float:"left", marginTop:'1%'}}>Entry Strat:: </label>
                         <select style={{float:"left", marginTop:'1%'}} name="EntryStrategy" id={Math.random()} defaultValue="none" onChange={(e) => handleEntryStrategy(e, chartImageIdList[index], item.id)}>
-                            {strategyoptions.map((option) => (
+                            {tradestrategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
                             ))}
                         </select>
@@ -349,7 +356,7 @@ const LabelStrategy = () => {
                         </select>
                         <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strat:: </label>
                         <select style={{float:"left", marginTop:'1%'}} name="ExitStrategy" id="exitStrategy1" defaultValue="none" onChange={(e) => handleExitStrategy(e, chartImageIdList[index], item.id)}>
-                            {strategyoptions.map((option) => (
+                            {tradestrategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>
                                     {option.label}
                                 </option>
@@ -374,7 +381,7 @@ const LabelStrategy = () => {
                 <h5 style={{clear:"both", float:"left", marginTop:'5%'}}>FALSE TRAP Cases</h5>
                 <label style={{clear:"both", float:"left", marginTop:'1%'}}>Entry Strat:: </label>
                 <select style={{float:"left", marginTop:'1%'}} name="EntryStrategy" id="entryStrategy3" defaultValue="none" onChange={(e) => handleFalseEntryStrategy(e, chartImageIdList[index], 1)}>
-                    {strategyoptions.map((option) => (
+                    {tradestrategyoptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>
@@ -396,7 +403,7 @@ const LabelStrategy = () => {
                 </select>
                 <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strat:: </label>
                 <select style={{float:"left", marginTop:'1%'}} name="ExitStrategy" id="exitStrategy3" defaultValue="none" onChange={(e) => handleFalseExitStrategy(e, chartImageIdList[index], 1)}>
-                    {strategyoptions.map((option) => (
+                    {tradestrategyoptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>
