@@ -42,11 +42,13 @@ const OrderInputCommand = () =>{
     const onCEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("CE")
+        setRatio("l")
     }
 
     const onPEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("PE")
+        setRatio("l")
     }
 
     function placeOrder(optionsType) {

@@ -478,7 +478,7 @@ const TradeStrategyLabelTool = () => {
                     <div style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%', width:'98%', height:'900px', border: '1px solid black', overflow: 'scroll'}}>
                         {ordersGroupCount.map((index) => (
                             <div>
-                                <textarea style={{float:"left", marginTop:'1%', marginRight: '1%', width:'100%', height:'10%', fontSize:'0.75rem'}} name="reportSummary" rows={7} cols={48} value={ordersReportList.current[index]} readOnly={true}>report</textarea>
+                                <textarea style={{float:"left", marginTop:'1%', marginRight: '1%', width:'100%', height:'10%', fontSize:'0.75rem'}} name="reportSummary" rows={7} cols={46} value={ordersReportList.current[index]} readOnly={true}>report</textarea>
                                 <label style={{clear:"both", float:"left", marginTop:'1%'}}>Strategy ::</label>
                                 <select style={{float:"left", marginTop:'1%'}} name="tradestrategy" id="tradestrategy" defaultValue="none" onChange={(e) => handleTradeLabelStrategySelect(e, index)}>
                                     {tradestrategyoptions.map((option) => (
