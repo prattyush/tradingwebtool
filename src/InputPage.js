@@ -27,7 +27,7 @@ const InputPage = () => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/simtrading/initiate?tradedate=' + tradeDate + '&ce=' + ceStrikeprice
             + '&pe=' + peStrikeprice +'&speed=' + replaySpeed + '&forward=' + forwardMinutes + '&websocket=true&quantity=' + tradeQuantity
-            + "&rlow=" + priceIntervalRangeMap.get(priceRange)[0] + "&rhigh=" + priceIntervalRangeMap.get(priceRange)[1], {
+            + "&rlow=" + priceIntervalRangeMap[priceRange][0] + "&rhigh=" + priceIntervalRangeMap[priceRange][1], {
             method: 'POST',
             body: JSON.stringify({
                 // Add parameters here
