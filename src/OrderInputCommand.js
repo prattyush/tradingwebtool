@@ -42,14 +42,12 @@ const OrderInputCommand = () =>{
     const onCEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("CE")
-        document.getElementById("ratioValue").innerText = "l"
         setRatio("l")
     }
 
     const onPEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("PE")
-        document.getElementById("ratioValue").innerText = "l"
         setRatio("l")
     }
 
@@ -99,7 +97,6 @@ const OrderInputCommand = () =>{
             });
 
         setTdMngmtCmd("L")
-        document.getElementById("managementCmd").innerText = "L"
     }
 
     const onStrategyCommandPlaced = (event) => {
@@ -485,7 +482,7 @@ const OrderInputCommand = () =>{
                     </div>
                 ))}
             </div>
-            <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="RatioValue" id="ratioValue" defaultValue={ratio} onChange={(e) => setRatio(e.target.value)}>
+            <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="RatioValue" id="ratioValue" defaultValue={ratio} value={ratio} onChange={(e) => setRatio(e.target.value)}>
                 <option>l</option>
                 <option>m</option>
                 <option>h</option>
@@ -525,7 +522,7 @@ const OrderInputCommand = () =>{
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
-            <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
+            <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} value={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
                 <option>H</option>
                 <option>P</option>
                 <option>R</option>
