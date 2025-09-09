@@ -1,4 +1,21 @@
 
+export const priceIntervalRangeMap = new Map();
+priceIntervalRangeMap.set("ulow", [21,45]);
+priceIntervalRangeMap.set("vlow", [30,60]);
+priceIntervalRangeMap.set("low", [60,90]);
+priceIntervalRangeMap.set("mid", [90,135]);
+priceIntervalRangeMap.set("high", [135,195]);
+priceIntervalRangeMap.set("vhigh", [174,240]);
+
+export const optionvaluerangeoptions = [
+    { value: 'ulow', label: 'ulow' },
+    { value: 'vlow', label: 'vlow' },
+    { value: 'low', label: 'low' },
+    { value: 'mid', label: 'mid' },
+    { value: 'high', label: 'high' },
+    { value: 'vhigh', label: 'vhigh' }
+]
+
 export const orderstrategyoptions = [
     { value: 'breakout', label: 'bo' },
     { value: 'trend-continuation', label: 'tc' },

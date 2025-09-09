@@ -12,6 +12,7 @@ import AnalyzeStrategy from "./AnalyzeStrategy";
 import TradeReplayer from "./TradeReplayer";
 import OptionsChart from "./OptionsChart";
 import TradeStrategyLabelTool from "./TradeStrategyLabelTool";
+import TradeReplayerOptions from "./TradeReplayerOptions";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/tools/analyzestrategyold" element={<AnalyzeStrategyOld />} />
             <Route path="/tools/analyzestrategy" element={<AnalyzeStrategy />} />
             <Route path="/tools/tradereplay" element={<TradeReplayer />} />
+            <Route path="/tools/tradereplayoptions" element={<TradeReplayerOptions />} />
             <Route path="/tools/tradelabelstrategy" element={<TradeStrategyLabelTool />} />
             <Route path="/" element={<InputPage />} />
         </Routes>

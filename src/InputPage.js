@@ -1,6 +1,7 @@
 import {useRef, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import AnalyticsPage from "./AnalyticsPage";
+import {priceIntervalRangeMap} from "./StrategyVariables";
 
 const InputPage = () => {
 
@@ -21,14 +22,6 @@ const InputPage = () => {
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
     const [ipAddress, setIpAddress] = useState("43.205.27.227");
-
-    const priceIntervalRangeMap = new Map();
-    priceIntervalRangeMap.set("ulow", [21,45]);
-    priceIntervalRangeMap.set("vlow", [30,60]);
-    priceIntervalRangeMap.set("low", [60,90]);
-    priceIntervalRangeMap.set("mid", [90,135]);
-    priceIntervalRangeMap.set("high", [135,195]);
-    priceIntervalRangeMap.set("vhigh", [174,240]);
 
     const handleSimulationInfoSubmit = (event) => {
         event.preventDefault();
@@ -189,6 +182,11 @@ const InputPage = () => {
         navigate("/tools/tradereplay", {state: {ipAddress:ipAddress}});
     }
 
+    const handleTradeReplayOptionsSubmit = (event) => {
+        event.preventDefault();
+        navigate("/tools/tradereplayoptions", {state: {ipAddress:ipAddress}});
+    }
+
     const handleTradeLabelTool = (event) => {
         event.preventDefault();
         navigate("/tools/tradelabelstrategy", {state: {ipAddress:ipAddress}});
@@ -251,6 +249,7 @@ const InputPage = () => {
                     <button type="button" onClick={handleStrategyLabelSubmit} title="labelstrategy" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Label Strategy</button>
                     <button type="button" onClick={handleAnalyzeStrategySubmit} title="analyzestrategy" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Analyze Strategy</button>
                     <button type="button" onClick={handleTradeReplaySubmit} title="tradereplay" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Trade Replayer</button>
+                    <button type="button" onClick={handleTradeReplayOptionsSubmit} title="tradereplay" style={{clear:"both", float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Trade Replayer Options</button>
                     <button type="button" onClick={handleTradeLabelTool} title="tradelabel" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Trade Label</button>
                 </div>
             </div>
