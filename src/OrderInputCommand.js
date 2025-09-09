@@ -97,6 +97,9 @@ const OrderInputCommand = () =>{
             .catch((err) => {
                 console.log(err.message);
             });
+
+        setTdMngmtCmd("L")
+        document.getElementById("managementCmd").innerHTML = "L"
     }
 
     const onStrategyCommandPlaced = (event) => {

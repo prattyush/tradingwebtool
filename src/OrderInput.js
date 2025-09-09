@@ -85,6 +85,9 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             .catch((err) => {
                 console.log(err.message);
             });
+
+        setTdMngmtCmd("L")
+        document.getElementById("managementCmd").innerHTML = "L"
     }
 
     const onStrategyCommandPlaced = (event) => {
