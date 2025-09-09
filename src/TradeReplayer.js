@@ -154,7 +154,7 @@ const TradeReplayer = () => {
 
     const handleTradeReplayRequestSubmitted = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&tradedate=' + tradeDate, {
+        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&forward=3&tradedate=' + tradeDate, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',

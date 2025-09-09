@@ -131,7 +131,7 @@ const TradeReplayerOptions = () => {
 
     const handleTradeReplayRequestSubmitted = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&tradedate=' + tradeDate + "&opmaxv=" + priceIntervalRangeMap.get(priceRange)[1] + "&opminv=" + priceIntervalRangeMap.get(priceRange)[0], {
+        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&tradedate=' + tradeDate + "&forward=3&opmaxv=" + priceIntervalRangeMap.get(priceRange)[1] + "&opminv=" + priceIntervalRangeMap.get(priceRange)[0], {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -168,9 +168,7 @@ const TradeReplayerOptions = () => {
 
     const handleCEPEPriceReset = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=optionsdata&tradedate=' + tradeDate+ '&forward='
-            + timeBarCount.current*3 + "&opmaxv=" + priceIntervalRangeMap.get(priceRange)[1] + "&opminv="
-            + priceIntervalRangeMap.get(priceRange)[0], {
+        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=optionsdata&tradedate=' + tradeDate+ '&forward=' + timeBarCount.current*3 + "&opmaxv=" + priceIntervalRangeMap.get(priceRange)[1] + "&opminv=" + priceIntervalRangeMap.get(priceRange)[0], {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
