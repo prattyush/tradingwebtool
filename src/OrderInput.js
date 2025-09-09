@@ -408,7 +408,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
                     </div>
                 ))}
             </div>
-            <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="RatioValue" id="ratioValue" defaultValue={ratio} onChange={(e) => setRatio(e.target.value)}>
+            <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="RatioValue" id="ratioValue" defaultValue={ratio} value={ratio} onChange={(e) => setRatio(e.target.value)}>
                 <option>l</option>
                 <option>m</option>
                 <option>h</option>
@@ -422,7 +422,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced2} title="OrderBlocker2">BLK2</button>
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
-            <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} value={ratio} onChange={(e) => setTdMngmtCmd(e.target.value)}>
+            <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} value={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
                 <option>L</option>
                 <option>LT</option>
                 <option>LTO</option>
@@ -448,7 +448,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
-            <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} value={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
+            <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
                 <option>H</option>
                 <option>P</option>
                 <option>R</option>
