@@ -42,14 +42,14 @@ const OrderInputCommand = () =>{
     const onCEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("CE")
-        document.getElementById("ratioValue").innerHTML = "l"
+        document.getElementById("ratioValue").innerText = "l"
         setRatio("l")
     }
 
     const onPEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("PE")
-        document.getElementById("ratioValue").innerHTML = "l"
+        document.getElementById("ratioValue").innerText = "l"
         setRatio("l")
     }
 
@@ -99,7 +99,7 @@ const OrderInputCommand = () =>{
             });
 
         setTdMngmtCmd("L")
-        document.getElementById("managementCmd").innerHTML = "L"
+        document.getElementById("managementCmd").innerText = "L"
     }
 
     const onStrategyCommandPlaced = (event) => {
