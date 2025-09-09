@@ -42,12 +42,14 @@ const OrderInputCommand = () =>{
     const onCEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("CE")
+        document.getElementById("ratioValue").innerHTML = "l"
         setRatio("l")
     }
 
     const onPEOrderPlaced = (event) => {
         event.preventDefault();
         placeOrder("PE")
+        document.getElementById("ratioValue").innerHTML = "l"
         setRatio("l")
     }
 
@@ -527,7 +529,7 @@ const OrderInputCommand = () =>{
                 <option>RS</option>
             </select>
             <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdInfoCommandPlaced} title="TradeInfo">TradeInfo</button>
-            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'.5'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
+            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'0.6rem'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
         </div>
     );
 };
