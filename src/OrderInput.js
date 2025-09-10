@@ -6,7 +6,7 @@ import {
     orderstrategyoptions,
     orderTypeOptions, previousDayOptions,
     todayStartOptions,
-    baroptions
+    baroptions, optionstype, tradestrategyoptions
 } from "./StrategyVariables";
 
 const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStrikePrice, tradeDate}) => {
@@ -370,92 +370,94 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
 
     return (
         <div>
-            <label style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
-            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
-            <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
-                    onClick={onOrderInfo}
-                    title="OrderState">OrderState</button>
-            <p></p>
-            <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
-            <div style={{clear:"both", float:"left"}}>
-            {orderTypeOptions.map((option) => (
-                <div key={option.value} style={{float:"left"}}>
-                    <input
-                        type="radio"
-                        id={option.value}
-                        name="orderTypeOptionsRadioGroup" // All radios in a group must have the same name
-                        value={option.value}
-                        checked={orderType === option.value}
-                        onChange={(e) => setOrderType(e.target.value)}
-                    />
-                    <label htmlFor={option.value}>{option.label}</label>
-                </div>
-            ))}
+            <div style={{float:"left"}}>
+                <label style={{clear:"both", float:"left", marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
+                <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'0.6rem'}} name="orderInfo" rows={10} cols={40} value={orderInfo}>value</textarea>
+                <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
+                        onClick={onOrderInfo}
+                        title="OrderState">OrderState</button>
+                <p></p>
             </div>
-            <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
-            <div style={{clear:"both", float:"left", marginBottom:'1%'}}>
-                {orderstrategyoptions.map((option) => (
+            <div style={{float:"left", marginTop:'1%', marginRight: '1%', marginLeft: '1%'}}>
+                <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
+                <div style={{clear:"both", float:"left"}}>
+                {orderTypeOptions.map((option) => (
                     <div key={option.value} style={{float:"left"}}>
                         <input
                             type="radio"
                             id={option.value}
-                            name="orderStrategyRadioGroup" // All radios in a group must have the same name
+                            name="orderTypeOptionsRadioGroup" // All radios in a group must have the same name
                             value={option.value}
-                            checked={orderStrategy === option.value}
-                            onChange={(e) => setOrderStrategy(e.target.value)}
+                            checked={orderType === option.value}
+                            onChange={(e) => setOrderType(e.target.value)}
                         />
                         <label htmlFor={option.value}>{option.label}</label>
                     </div>
                 ))}
+                </div>
+                <label style={{clear:"both", float:"left", marginTop:'1%', marginLeft: '1%'}}>Choose Order Strategy :: </label>
+                <div style={{clear:"both", float:"left", marginBottom:'1%'}}>
+                    <select style={{float:"left", marginTop:'1%', marginLeft:'1%'}} name="orderStrategyRadioGroup" id="orderStrategyRadioGroup" defaultValue="1" onChange={(e) => setOrderStrategy(e.target.value)}>
+                        {tradestrategyoptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="RatioValue" id="ratioValue" defaultValue={ratio} value={ratio} onChange={(e) => setRatio(e.target.value)}>
+                    <option>l</option>
+                    <option>m</option>
+                    <option>h</option>
+                </select>
+                <input style={{float:"left", marginTop:'1%', width:'12%'}} type="targetInput" value={targetValue}  onChange={(e) => setTargetValue(e.target.value)}/>
+                <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'12%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
+                <button style={{float:"left", marginTop:'1%', marginLeft: '1%'}} type="button" onClick={onCEOrderPlaced} title="PlaceOrderCE">CE-Order</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft: '1%'}} type="button" onClick={onPEOrderPlaced} title="PlaceOrderPE">PE-Order</button>
+                <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced} title="OrderBlocker">BLK</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced1} title="OrderBlocker1">BLK1</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced2} title="OrderBlocker2">BLK2</button>
+
             </div>
-            <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="RatioValue" id="ratioValue" defaultValue={ratio} value={ratio} onChange={(e) => setRatio(e.target.value)}>
-                <option>l</option>
-                <option>m</option>
-                <option>h</option>
-            </select>
-            <input style={{float:"left", marginTop:'1%', width:'12%'}} type="targetInput" value={targetValue}  onChange={(e) => setTargetValue(e.target.value)}/>
-            <input style={{float:"left", marginLeft: '1%', marginTop:'1%', width:'12%'}} type="commandInput" value={stoploss}  onChange={(e) => setStoploss(e.target.value)}/>
-            <button style={{float:"left", marginTop:'1%', marginLeft: '1%'}} type="button" onClick={onCEOrderPlaced} title="PlaceOrderCE">CE-Order</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft: '1%'}} type="button" onClick={onPEOrderPlaced} title="PlaceOrderPE">PE-Order</button>
-            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onOrderBlockerPlaced} title="OrderBlocker">BLK</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced1} title="OrderBlocker1">BLK1</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderBlockerPlaced2} title="OrderBlocker2">BLK2</button>
             <p></p>
-            <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
-            <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} value={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
-                <option>L</option>
-                <option>LT</option>
-                <option>LTO</option>
-                <option>LN</option>
-                <option>Q</option>
-                <option>QT</option>
-                <option>ABS</option>
-                <option>STRATGY</option>
-            </select>
-            <input style={{clear:"both", float:"left", marginTop:'1%',  width:'24%'}} type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
-            <select  style={{float:"left", marginTop:'1%', marginLeft:'1%'}} name="StrategyValue" id="strategyValue" defaultValue={strategyValue} onChange={(e) => setStrategyValue(e.target.value)}>
-                <option>fast</option>
-                <option>scalp</option>
-                <option>e</option>
-            </select>
-            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
-            <p></p>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN1ManagementCommandPlaced} title="LN-1">LN-1</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN2ManagementCommandPlaced} title="LN-2">LN-2</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onBLManagementCommandPlaced} title="BL">BL</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onBLMidManagementCommandPlaced} title="BL-Mid">BL-Mi</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
-            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
-            <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
-            <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
-                <option>H</option>
-                <option>P</option>
-                <option>R</option>
-                <option>RS</option>
-            </select>
-            <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdInfoCommandPlaced} title="TradeInfo">TradeInfo</button>
-            <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'0.6rem'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
+            <div style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>
+                <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
+                <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} value={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
+                    <option>L</option>
+                    <option>LT</option>
+                    <option>LTO</option>
+                    <option>LN</option>
+                    <option>Q</option>
+                    <option>QT</option>
+                    <option>ABS</option>
+                </select>
+                <input style={{float:"left", marginLeft: '1%', marginTop:'1%',  width:'15%'}} type="commandInput" value={cmdInputMngTd}  onChange={(e) => setCmdInputMngTd(e.target.value)}/>
+                <select  style={{float:"left", marginTop:'1%', marginLeft:'1%'}} name="StrategyValue" id="strategyValue" defaultValue={strategyValue} onChange={(e) => setStrategyValue(e.target.value)}>
+                    <option>fast</option>
+                    <option>scalp</option>
+                    <option>e</option>
+                </select>
+                <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
+                <p></p>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN1ManagementCommandPlaced} title="LN-1">LN-1</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN2ManagementCommandPlaced} title="LN-2">LN-2</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onBLManagementCommandPlaced} title="BL">BL</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onBLMidManagementCommandPlaced} title="BL-Mid">BL-Mi</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
+                <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
+            </div>
+            <div style={{float:"left", marginTop:'1%', marginRight: '1%'}}>
+                <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
+                <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
+                    <option>H</option>
+                    <option>P</option>
+                    <option>R</option>
+                    <option>RS</option>
+                </select>
+                <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdInfoCommandPlaced} title="TradeInfo">TradeInfo</button>
+                <textarea style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%', fontSize:'0.6rem'}} name="tradeInfo" rows={10} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
+            </div>
         </div>
     );
 };

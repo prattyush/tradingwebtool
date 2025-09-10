@@ -21,6 +21,11 @@ const Chart = () => {
     const isRecording = useRef(false);
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
 
+    const optionsChartWidth = 0.90
+    const stockChartWidth = 0.90
+    const optionsChartHeight = 0.25
+    const stockChartHeight = 0.25
+
     const nineEMALine = []
     const twentyOneEMALine = []
     let nineEMALineCE = []
@@ -98,11 +103,11 @@ const Chart = () => {
         chartContainerNifty.current.appendChild(timeInfoLegend.current);
 
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
-        chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.45)
+        chartNifty.current.resize(window.innerWidth*stockChartWidth, window.innerHeight*stockChartHeight)
         chartCE.current = createChart(chartContainerCE.current, chartPropertiesOptions);
-        chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
+        chartCE.current.resize(window.innerWidth*optionsChartWidth, window.innerHeight*optionsChartHeight)
         chartPE.current = createChart(chartContainerPE.current, chartPropertiesOptions);
-        chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45);
+        chartPE.current.resize(window.innerWidth*optionsChartWidth, window.innerHeight*optionsChartHeight);
 
         candlestickSeriesNifty.current = chartNifty.current.addSeries(CandlestickSeries,
             { upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#26a69a', wickDownColor: '#ef5350'});
@@ -146,9 +151,9 @@ const Chart = () => {
         chartPE.current.timeScale().fitContent();
 
         window.addEventListener("load", () => {
-            chartNifty.current.resize(window.innerWidth*0.68, window.innerHeight*0.45)
-            chartCE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
-            chartPE.current.resize(window.innerWidth*0.33, window.innerHeight*0.45)
+            chartNifty.current.resize(window.innerWidth*stockChartWidth, window.innerHeight*stockChartHeight)
+            chartCE.current.resize(window.innerWidth*optionsChartWidth, window.innerHeight*optionsChartHeight)
+            chartPE.current.resize(window.innerWidth*optionsChartWidth, window.innerHeight*optionsChartHeight)
         });
         return () => {
             chartNifty.current.remove();
@@ -553,12 +558,14 @@ const Chart = () => {
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onOrderOptionsChartCommandPlaced} title="OptionsOrderChart">OrderChart</button>
             <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
-            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
+            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'96%', height:'96%', border: '1px solid black'}}>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE} id="chartContainerCE"></div>
-                <div style={{float:"left", marginTop:"1%", marginLeft:'0.5%'}} ref={chartContainerPE}></div>
+                <div style={{clear:"both", float:"left", marginTop:"1%", marginLeft:'1%'}} ref={chartContainerPE} id="chartContainerPE"></div>
             </div>
-            <div style={{float:"left", width:'25%', height:'90%', marginLeft:'1%'}} ><OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice} tradeDate={tradeDate}/></div>
+            <div style={{clear:"both", float:"left", width:'90%', height:'25%', marginLeft:'1%'}} >
+                <OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice} tradeDate={tradeDate}/>
+            </div>
         </div>
     );
 
