@@ -99,7 +99,7 @@ const Chart = () => {
 
     useEffect(() => {
         timeInfoLegend.current = document.createElement('div');
-        timeInfoLegend.current.style = `float:right; z-index: 2; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300;`;
+        timeInfoLegend.current.style = `float:right; clear:both; z-index: 2; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300;`;
         chartContainerNifty.current.appendChild(timeInfoLegend.current);
 
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
