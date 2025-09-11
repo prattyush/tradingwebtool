@@ -22,9 +22,9 @@ const Chart = () => {
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
 
     const optionsChartWidth = 0.31
-    const stockChartWidth = 0.67
-    const optionsChartHeight = 0.48
-    const stockChartHeight = 0.48
+    const stockChartWidth = 0.66
+    const optionsChartHeight = 0.45
+    const stockChartHeight = 0.45
 
     const nineEMALine = []
     const twentyOneEMALine = []
@@ -558,8 +558,8 @@ const Chart = () => {
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onOrderOptionsChartCommandPlaced} title="OptionsOrderChart">OrderChart</button>
             <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
-            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'68%', height:'96%', border: '1px solid black'}}>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
+            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
+                <div style={{clear:"both", float:"left", marginLeft:'1%', width:'96%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE} id="chartContainerCE"></div>
                 <div style={{float:"left", marginTop:"1%", marginLeft:'1%'}} ref={chartContainerPE} id="chartContainerPE"></div>
             </div>
