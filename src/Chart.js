@@ -558,7 +558,7 @@ const Chart = () => {
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onOrderOptionsChartCommandPlaced} title="OptionsOrderChart">OrderChart</button>
             <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
-            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'68%', height:'96%', border: '1px solid black'}}>
+            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'66%', height:'96%', border: '1px solid black'}}>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
                 <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE} id="chartContainerCE"></div>
                 <div style={{float:"left", marginTop:"1%", marginLeft:'1%'}} ref={chartContainerPE} id="chartContainerPE"></div>
