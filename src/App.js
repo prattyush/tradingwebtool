@@ -13,12 +13,14 @@ import TradeReplayer from "./TradeReplayer";
 import OptionsChart from "./OptionsChart";
 import TradeStrategyLabelTool from "./TradeStrategyLabelTool";
 import TradeReplayerOptions from "./TradeReplayerOptions";
+import VerticalChart from "./VerticalChart";
 
 function App() {
   return (
       <Router>
         <Routes>
             <Route path="/chart" element={<Chart />} />
+            <Route path="/verticalchart" element={<VerticalChart />} />
             <Route path="/optionschart" element={<OptionsChart />} />
             <Route path="/wait" element={<WaitPage />} />
             <Route path="/ordercmd" element={<OrderInputCommand />} />
