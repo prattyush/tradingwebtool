@@ -6,7 +6,7 @@ import {
     previousDayOptions,
     todayStartOptions,
     baroptions,
-    windowtimeoptions
+    windowtimeoptions, tradestrategyoptions
 } from "./StrategyVariables";
 import {CandlestickSeries, createChart, createSeriesMarkers, LineSeries, LineStyle} from "lightweight-charts";
 
@@ -226,7 +226,7 @@ const AnalyzeStrategy = () => {
                         </select>
                         <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>Strategy :: </label>
                         <select style={{float:"left", marginTop:'1%', marginLeft:'1%'}} name="StrategyOptions" id="strategyOptions" defaultValue="1" onChange={(e) => setStrategyOption(e.target.value)}>
-                            {strategyoptions.map((option) => (
+                            {tradestrategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>
                                     {option.label}
                                 </option>
