@@ -104,10 +104,12 @@ const InputPage = () => {
     }
 
     function getNavigateChartType() {
-        if (chartType === "stockCEPE") {
+        if (chartType === "StockCEPE") {
             return "/chart"
         }  else if (chartType === "Options") {
             return "/optionschart"
+        } else if (chartType === "VerticalStockCEPE") {
+            return "/verticalchart"
         }
 
         return "/chart"
@@ -234,9 +236,10 @@ const InputPage = () => {
                     </label>
                     <label style={{float:"left", marginLeft:'1%'}}>Chart Type
                     <select name="ChartType" id="chartType" defaultValue={chartType} onChange={(e) => setChartType(e.target.value)}>
-                        <option>stockCEPE</option>
+                        <option>StockCEPE</option>
                         <option>Options</option>
                         <option>Stock</option>
+                        <option>VerticalStockCEPE</option>
                     </select>
                 </label>
                     <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
