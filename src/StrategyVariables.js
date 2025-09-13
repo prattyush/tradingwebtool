@@ -60,6 +60,7 @@ export const tradestrategyoptions = [
     { value: 'TRND-HS-RV', label: 'TREND_HEAD_SHOULDERS_REVERSAL' },
     { value: 'TRND-WG-RV', label: 'TREND_WEDGE_REVERSAL' },
     { value: 'TRND-50-PB-RV', label: 'TREND_FIFTY_PULLBACK_REVERSAL' },
+    { value: 'TRND-TR-RV', label: 'TREND_TRADING_RANGE_REVERSAL' },
 
     { value: 'TR-T-S', label: 'TRADING_RANGE_TOWARDS_SUPPORT' },
     { value: 'TR-T-R', label: 'TRADING_RANGE_TOWARDS_RESISTANCE' },
@@ -72,7 +73,7 @@ export const tradestrategyoptions = [
     { value: 'TRND-PB-TRND', label: 'TREND_PULLBACK_RESUME' },
     { value: 'OPN-TR-S', label: 'OPENING_TRADING_RANGE_SUPPORT' },
     { value: 'OPN-TR-R', label: 'OPENING_TRADING_RANGE_RESISTANCE' },
-
+    { value: 'OPN-RV', label: 'OPENING_REVERSAL' },
     { value: 'TWD-YES-CLS', label: 'TOWARDS_YESTERDAYS_CLOSE' },
     { value: 'all', label: 'all' },
 ]
