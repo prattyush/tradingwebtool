@@ -335,7 +335,7 @@ const LabelStrategy = () => {
                 <h5>True Cases</h5>
                 {entryOptionsIndexList.map((item, idx) => (
                     <div>
-                        <label style={{float:"left", marginTop:'1%'}}>Entry Strat:: </label>
+                        <label style={{clear:"both", float:"left", marginTop:'1%'}}>Entry Strat:: </label>
                         <select style={{float:"left", marginTop:'1%', fontSize:'.75rem'}} name="EntryStrategy" id={Math.random()} defaultValue="none" onChange={(e) => handleEntryStrategy(e, chartImageIdList[index], item.id)}>
                             {tradestrategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
