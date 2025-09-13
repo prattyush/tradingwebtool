@@ -30,6 +30,7 @@ const LabelStrategy = () => {
     const tradeTypeExitStrategyMap = useRef(new Map())
     const falseTradeTypeEntryStrategyMap = useRef(new Map())
     const falseTradeTypeExitStrategyMap = useRef(new Map())
+    const chartWidthMultipler = 0.7
 
 
     const exitStrategyMap = useRef(new Map())
@@ -330,7 +331,7 @@ const LabelStrategy = () => {
 
     const getOptionsInput = (index) => {
         return (
-            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', width:'33%', height:'20%'}}>
+            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', width:'21%', height:'20%'}}>
                 <h5>True Cases</h5>
                 {entryOptionsIndexList.map((item, idx) => (
                     <div>
