@@ -2,7 +2,7 @@ import {useState, useCallback, useRef, useEffect, use} from "react";
 import {useLocation} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {CandlestickSeries, createChart, LineSeries, LineStyle} from "lightweight-charts";
-import {strategyoptions, optionstype, orderTypeOptions} from "./StrategyVariables";
+import {strategyoptions, optionstype, orderTypeOptions, tradestrategyoptions} from "./StrategyVariables";
 
 
 const TradeReplayer = () => {
@@ -11,6 +11,7 @@ const TradeReplayer = () => {
     const navigate = useNavigate();
     const ipAddress = location.state['ipAddress'];
     const [tradeDate, setTradeDate] = useState("")
+    const [tradeStrategy, setTradeStrategy] = useState("none")
     const timeBarCount = useRef(1);
     const currDayTotalBars = 120;
     const currentTotalPEQuantity = useRef(0);
@@ -451,6 +452,7 @@ const TradeReplayer = () => {
         const dataToSend = {
             'tradedate': tradeDate,
             'tradesList': tradeRecorder,
+            'strategy': tradeStrategy,
             'type':'tradesubmit'
         };
         const jsonString = JSON.stringify(dataToSend);
@@ -620,7 +622,16 @@ const TradeReplayer = () => {
 
                     <button type="button" onClick={handleBuyOptions} title="buyoptions" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Buy</button>
                     <button type="button" onClick={handleSellOptions} title="selloptions" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Sell</button>
+                    <label style={{clear:"both", float:"left", marginTop:'1%'}}>Strategy:: </label>
+                    <select style={{float:"left", marginTop:'1%', fontSize:'.75rem'}} name="tradeStrategy" id="tradeStrategy" defaultValue="none" onChange={(e) => setTradeStrategy(e.target.value)}>
+                        {tradestrategyoptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
                 </div>
+
                 <div style={{clear:"both", float:"left", width:"80%", marginTop:'3%'}}>
                     <button type="button" onClick={handleSubmitTradeData} title="submitTradeData" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Submit Trade Data</button>
                     <button type="button" onClick={handleSubmitTradeReset} title="submitTradeReset" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Reset Trade Data</button>

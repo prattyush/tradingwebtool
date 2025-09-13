@@ -210,12 +210,12 @@ const LabelStrategy = () => {
             'barEntryStrategyMap': barEntryStrategyMap.current,
             'barExitStrategyMap': barExitStrategyMap.current,
             'falseBarEntryStrategyMap': falseBarEntryStrategyMap.current,
-            'falseBarExitStrategyMap': falseBarEntryStrategyMap.current,
+            'falseBarExitStrategyMap': falseBarExitStrategyMap.current,
 
             'tradeTypeEntryStrategyMap': tradeTypeEntryStrategyMap.current,
             'tradeTypeExitStrategyMap': tradeTypeExitStrategyMap.current,
             'falseTradeTypeEntryStrategyMap': falseTradeTypeEntryStrategyMap.current,
-            'falseTradeTypeExitStrategyMap': falseTradeTypeEntryStrategyMap.current,
+            'falseTradeTypeExitStrategyMap': falseTradeTypeExitStrategyMap.current,
 
             'prevdaycondition': prevDayConditions,
             'daystartcondition': dayStartConditions,
@@ -330,12 +330,12 @@ const LabelStrategy = () => {
 
     const getOptionsInput = (index) => {
         return (
-            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', width:'24%', height:'20%'}}>
+            <div style={{float:"left", marginTop:'1%', marginBottom:'1%', width:'33%', height:'20%'}}>
                 <h5>True Cases</h5>
                 {entryOptionsIndexList.map((item, idx) => (
                     <div>
                         <label style={{float:"left", marginTop:'1%'}}>Entry Strat:: </label>
-                        <select style={{float:"left", marginTop:'1%'}} name="EntryStrategy" id={Math.random()} defaultValue="none" onChange={(e) => handleEntryStrategy(e, chartImageIdList[index], item.id)}>
+                        <select style={{float:"left", marginTop:'1%', fontSize:'.75rem'}} name="EntryStrategy" id={Math.random()} defaultValue="none" onChange={(e) => handleEntryStrategy(e, chartImageIdList[index], item.id)}>
                             {tradestrategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
                             ))}
@@ -348,14 +348,14 @@ const LabelStrategy = () => {
                             ))}
                         </select>
                         <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="TradeTypeEntryStrategy" id={'tradeTypeEntryStrategy1'} defaultValue="none" onChange={(e) => handleTradeTypeEntryStrategy(e, chartImageIdList[index], item.id)}>
-                            {tradeTypeOptions.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
+                            {tradeTypeOptions.map((ttoptione) => (
+                                <option key={ttoptione.value} value={ttoptione.value}>
+                                    {ttoptione.label}
                                 </option>
                             ))}
                         </select>
-                        <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strat:: </label>
-                        <select style={{float:"left", marginTop:'1%'}} name="ExitStrategy" id="exitStrategy1" defaultValue="none" onChange={(e) => handleExitStrategy(e, chartImageIdList[index], item.id)}>
+                        <label style={{clear:"both", float:"left", marginTop:'1%', }}>Exit Strat:: </label>
+                        <select style={{float:"left", marginTop:'1%', fontSize:'.75rem'}} name="ExitStrategy" id="exitStrategy1" defaultValue="none" onChange={(e) => handleExitStrategy(e, chartImageIdList[index], item.id)}>
                             {tradestrategyoptions.map((option) => (
                                 <option key={option.value} value={option.value}>
                                     {option.label}
@@ -363,24 +363,24 @@ const LabelStrategy = () => {
                             ))}
                         </select>
                         <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="BarExitStrategy" id={'barExitStrategy1'} defaultValue="none" onChange={(e) => handleBarExitStrategy(e, chartImageIdList[index], item.id)}>
-                            {getBarEndTimeOption().map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
+                            {getBarEndTimeOption().map((betoption) => (
+                                <option key={betoption.value} value={betoption.value}>
+                                    {betoption.label}
                                 </option>
                             ))}
                         </select>
                         <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="TradeTypeExitStrategy" id={'tradeTypeExitStrategy1'} defaultValue="none" onChange={(e) => handleTradeTypeExitStrategy(e, chartImageIdList[index], item.id)}>
-                        {tradeTypeOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
+                            {tradeTypeOptions.map((ttoption) => (
+                                <option key={ttoption.value} value={ttoption.value}>
+                                    {ttoption.label}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 ))}
                 <h5 style={{clear:"both", float:"left", marginTop:'5%'}}>FALSE TRAP Cases</h5>
                 <label style={{clear:"both", float:"left", marginTop:'1%'}}>Entry Strat:: </label>
-                <select style={{float:"left", marginTop:'1%'}} name="EntryStrategy" id="entryStrategy3" defaultValue="none" onChange={(e) => handleFalseEntryStrategy(e, chartImageIdList[index], 1)}>
+                <select style={{float:"left", marginTop:'1%', fontSize:'.75rem'}} name="EntryStrategy" id="entryStrategy3" defaultValue="none" onChange={(e) => handleFalseEntryStrategy(e, chartImageIdList[index], 1)}>
                     {tradestrategyoptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -402,7 +402,7 @@ const LabelStrategy = () => {
                     ))}
                 </select>
                 <label style={{clear:"both", float:"left", marginTop:'1%'}}>Exit Strat:: </label>
-                <select style={{float:"left", marginTop:'1%'}} name="ExitStrategy" id="exitStrategy3" defaultValue="none" onChange={(e) => handleFalseExitStrategy(e, chartImageIdList[index], 1)}>
+                <select style={{float:"left", marginTop:'1%', fontSize:'.75rem'}} name="ExitStrategy" id="exitStrategy3" defaultValue="none" onChange={(e) => handleFalseExitStrategy(e, chartImageIdList[index], 1)}>
                     {tradestrategyoptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
