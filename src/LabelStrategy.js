@@ -436,7 +436,7 @@ const LabelStrategy = () => {
                         <input type="text" value={tradeDate} style={{width:'30%'}} onChange={(e) => setTradeDate(e.target.value)}/>
                     </label>
                     <button type="button" id="getChartData" onClick={handleChartData} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Get Charts</button>
-                    <button type="button" id="getChartData" onClick={handleInputPageRedirection} title="inputPage" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Back to Input</button>
+                    <button type="button" id="inputPage" onClick={handleInputPageRedirection} title="inputPage" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Back to Input</button>
                 </div>
                 <div style={{float:"left", marginTop:'1%', marginBottom:'1%', width:'30%', height:'5%'}} >
                     <label style={{float:"left", marginLeft:'1%'}}>Previous Day Against Today Start Conditions</label>

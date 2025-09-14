@@ -533,6 +533,11 @@ const TradeReplayer = () => {
         }
     }
 
+    const handleInputPageRedirection = (event) => {
+        event.preventDefault();
+        navigate("/");
+    }
+
     const handleTimeNext = (event) => {
         event.preventDefault();
         timeBarCount.current = timeBarCount.current + 1
@@ -595,6 +600,7 @@ const TradeReplayer = () => {
 
                     <button type="button" onClick={handleTimePrev} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Prev</button>
                     <button type="button" onClick={handleTimeNext} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Next</button>
+                    <button type="button" id="inputPage" onClick={handleInputPageRedirection} title="inputPage" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Back to Input</button>
                 </div>
                 <div style={{float:"left", width:"80%",  border: '1px solid black'}}>
                     <div style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%'}}>
