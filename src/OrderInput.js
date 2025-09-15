@@ -422,7 +422,7 @@ const OrderInput = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, peStri
             <p></p>
             <div style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>
                 <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Trade Management Command :: </label>
-                <select  style={{float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} value={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
+                <select  style={{clear:"both", float:"left", marginTop:'1%'}} name="ManagementCmd" id="managementCmd" defaultValue={tdMngmtCmd} value={tdMngmtCmd} onChange={(e) => setTdMngmtCmd(e.target.value)}>
                     <option>L</option>
                     <option>LT</option>
                     <option>LTO</option>

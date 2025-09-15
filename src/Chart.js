@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import OrderInput from "./OrderInput";
 import {useLocation} from 'react-router-dom';
 import {useReactMediaRecorder} from "react-media-recorder";
+import {getWindowDimensions} from "./StrategyVariables";
 
 const Chart = () => {
 
     const location = useLocation();
     const ipAddress = location.state['ipAddress'];
     const chartTime = useRef(null);
+    const {width, height} = getWindowDimensions()
     const tradingStyle = location.state['tradingStyle'];
     const replaySpeed = location.state['replaySpeed'];
     const websocketPort = location.state['port'];
@@ -21,10 +23,11 @@ const Chart = () => {
     const isRecording = useRef(false);
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
 
-    const optionsChartWidth = 0.33
-    const stockChartWidth = 0.66
-    const optionsChartHeight = 0.45
-    const stockChartHeight = 0.45
+    const optionsChartWidth = 0.375
+    const stockChartWidth = 0.76
+
+    const optionsChartHeight = 0.465
+    const stockChartHeight = 0.465
 
     const nineEMALine = []
     const twentyOneEMALine = []
@@ -99,7 +102,7 @@ const Chart = () => {
 
     useEffect(() => {
         timeInfoLegend.current = document.createElement('div');
-        timeInfoLegend.current.style = `float:right; clear:both; z-index: 2; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300;`;
+        timeInfoLegend.current.style = `clear:both; float:right; z-index: 2; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300;`;
         chartContainerNifty.current.appendChild(timeInfoLegend.current);
 
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
@@ -558,12 +561,12 @@ const Chart = () => {
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onOrderOptionsChartCommandPlaced} title="OptionsOrderChart">OrderChart</button>
             <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
-            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'70%', height:'96%', border: '1px solid black'}}>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', width:'98%', height:'35%'}} id="stockChartContainer" ref={chartContainerNifty}></div>
-                <div style={{clear:"both", float:"left", marginLeft:'1%', marginTop:"1%", marginRight:'1%'}} ref={chartContainerCE} id="chartContainerCE"></div>
-                <div style={{float:"left", marginTop:"1%", marginLeft:'1%'}} ref={chartContainerPE} id="chartContainerPE"></div>
+            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'78%', height: height*0.96, border: '1px solid black'}}>
+                <div style={{clear:"both", float:"left", marginLeft:'0.5%', marginRight:'0.5%', width:'98%', height:height*stockChartHeight}} id="stockChartContainer" ref={chartContainerNifty}></div>
+                <div style={{clear:"both", float:"left", marginLeft:'0.5%', marginTop:"1.25%", marginRight:'0.5%', width:'48%',height:height*optionsChartHeight}} ref={chartContainerCE} id="chartContainerCE"></div>
+                <div style={{float:"left", marginTop:"1.25%", marginLeft:'0.2%', height:height*optionsChartHeight}} ref={chartContainerPE} id="chartContainerPE"></div>
             </div>
-            <div style={{float:"left", width:'24%', height:'96%', marginLeft:'1%'}} >
+            <div style={{float:"left", width:'18%', height:'96%', marginLeft:'1%'}} >
                 <OrderInput tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice} tradeDate={tradeDate}/>
             </div>
         </div>

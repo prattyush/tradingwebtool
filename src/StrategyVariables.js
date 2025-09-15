@@ -133,6 +133,14 @@ export const orderTypeOptions = [
     { value: 'COD', label: 'COD' },
 ];
 
+export function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height
+    };
+}
+
 export const getBarEndTimeOption = () => {
     const barEndTimeOption = []
     const chartTime = new Date(); // Gets current date and time
