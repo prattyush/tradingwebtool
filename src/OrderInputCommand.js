@@ -321,6 +321,28 @@ const OrderInputCommand = () =>{
         return () => clearInterval(orderStateInterval);
     }, []);
 
+    const onOpenOrderInfo = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/openorderstate/', {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setOrderInfo(data['response'])
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
     const onOrderInfo = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderstate/', {
@@ -449,6 +471,9 @@ const OrderInputCommand = () =>{
             <button style={{clear:"both", float:"left", marginTop:'1%', marginBottom:'1%'}} type="button"
                     onClick={onOrderInfo}
                     title="OrderState">OrderState</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%'}} type="button"
+                    onClick={onOpenOrderInfo}
+                    title="OpenOrderState">OpenOrders</button>
             <p></p>
             <label style={{clear:"both", float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
             <div style={{clear:"both", float:"left"}}>
