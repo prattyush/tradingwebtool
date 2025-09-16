@@ -379,6 +379,8 @@ const VerticalChart = () => {
                 lineSeriesNineCEEMA.current.setData(nineEMALineCE)
                 lineSeriesTwentyOneCEEMA.current.setData(twentyOneEMALineCE)
                 currentBarLastOpenCE.current = 0
+
+                chartCE.current.timeScale().fitContent();
                 // Handle data
             }).catch((err) => {
             console.log(err.message);
@@ -418,6 +420,8 @@ const VerticalChart = () => {
                 lineSeriesNinePEEMA.current.setData(nineEMALinePE)
                 lineSeriesTwentyOnePEEMA.current.setData(twentyOneEMALinePE)
                 currentBarLastOpenPE.current = 0
+
+                chartPE.current.timeScale().fitContent();
             }).catch((err) => {
             console.log(err.message);
         });
