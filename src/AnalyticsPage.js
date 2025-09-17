@@ -46,6 +46,7 @@ const AnalyticsPage = ({ipAddress}) => {
 
     const [historyInfo, setHistoryInfo] = useState("");
     const [reportSummary, setReportSummary] = useState("");
+    const [strategySummary, setStrategySummary] = useState("");
 
 
     const chartPropertiesNifty = {
@@ -384,7 +385,9 @@ const AnalyticsPage = ({ipAddress}) => {
             .then((data) => {
                 console.log(data);
                 setHistoryInfo(data['response']['history'])
-                setReportSummary(data['response']['report_summary'])
+                setReportSummary(data['response']['strategy_summary'] + "\n" + data['response']['report_summary'])
+                setStrategySummary(data['response']['strategy_summary'])
+                console.log(strategySummary)
                 // Handle data
             })
             .catch((err) => {
