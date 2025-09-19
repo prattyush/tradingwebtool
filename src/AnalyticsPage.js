@@ -411,6 +411,7 @@ const AnalyticsPage = ({ipAddress}) => {
                         <option>simtrading</option>
                         <option>papertrading</option>
                         <option>realtrading</option>
+                        <option>replaytool</option>
                     </select>
                     <label style={{float:"left", marginLeft:'1%', marginTop:'1%', marginRight: '1%'}}>Strategy :: </label>
                     <select style={{float:"left", marginLeft:'1%', marginTop:'1%'}} name="StrategyCmd" id="strategyCmd" defaultValue={analyticsStrategy} onChange={(e) => setAnalyticsStrategy(e.target.value)}>
