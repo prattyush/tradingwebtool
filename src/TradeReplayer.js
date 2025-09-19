@@ -2,7 +2,13 @@ import {useState, useCallback, useRef, useEffect, use} from "react";
 import {useLocation} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import {CandlestickSeries, createChart, LineSeries, LineStyle} from "lightweight-charts";
-import {strategyoptions, optionstype, orderTypeOptions, tradestrategyoptions} from "./StrategyVariables";
+import {
+    priceIntervalRangeMap,
+    optionstype,
+    orderTypeOptions,
+    tradestrategyoptions,
+    optionvaluerangeoptions
+} from "./StrategyVariables";
 
 
 const TradeReplayer = () => {
@@ -19,6 +25,8 @@ const TradeReplayer = () => {
     const currentTotalPEAvgPrice = useRef(0.0);
     const currentTotalCEAvgPrice = useRef(0.0);
     const maxTradeQuantity = useRef(0);
+
+    const [priceRange, setPriceRange] = useState("vlow")
 
     let ceBuyOrderPending = false;
     let ceBuyOrderPendingTrade = null;
@@ -155,7 +163,7 @@ const TradeReplayer = () => {
 
     const handleTradeReplayRequestSubmitted = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&forward=3&tradedate=' + tradeDate, {
+        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&forward=3&tradedate=' + tradeDate + "&opmaxv=" + priceIntervalRangeMap.get(priceRange)[1] + "&opminv=" + priceIntervalRangeMap.get(priceRange)[0], {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -605,6 +613,16 @@ const TradeReplayer = () => {
                         </label>
                         <input style={{clear:"both", float:"left", marginTop:'1%', marginLeft:'1%'}} type="submit"/>
                     </form>
+
+                    <label style={{clear:"both", float:"left", marginLeft:'1%'}}>Price Interval
+                        <select name="PriceRange" id="optionType" defaultValue={priceRange} onChange={(e) => setPriceRange(e.target.value)}>
+                            {optionvaluerangeoptions.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
 
                     <button type="button" onClick={handleTimePrev} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Prev</button>
                     <button type="button" onClick={handleTimeNext} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Next</button>
