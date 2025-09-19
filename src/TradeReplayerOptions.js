@@ -300,11 +300,23 @@ const TradeReplayerOptions = () => {
 
     function getTradeInfoContent() {
         let infoContent = '';
+        let cePresent = false;
+        let pePresent = false;
         for (let i = 0; i < tradeRecorder.length; i++) {
             const tradeData = tradeRecorder[i];
+            if (tradeData['type'] === "Call") {
+                cePresent = true;
+            }
+            if (tradeData['type'] === "Put") {
+                pePresent = true;
+            }
             infoContent = infoContent + "\n" + tradeData['type'] + " " + tradeData['quantity'] + " " + tradeData['price'] + " " + tradeData['stoploss'] + " " + formatTimeLocale(tradeData['rawTime']);
         }
-        return infoContent;
+        if (cePresent)
+            infoContent += '\nAvg CE Price :: ' + currentTotalCEAvgPrice.current + ' \n';
+        if (pePresent)
+            infoContent += '\nAvg PE Price :: ' + currentTotalPEAvgPrice.current + ' \n';
+        return infoContent
     }
 
     const handleBuyOptions = (event) => {
