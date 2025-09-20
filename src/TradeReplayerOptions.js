@@ -243,6 +243,7 @@ const TradeReplayerOptions = () => {
     const handleTimePrev = (event) => {
         event.preventDefault();
         timeBarCount.current = timeBarCount.current - 1
+        timeBarCountOneMin.current = timeBarCount.current*3
         drawChart()
     }
 
