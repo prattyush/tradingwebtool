@@ -75,6 +75,7 @@ export const tradestrategyoptions = [
     { value: 'OPN-TR-R', label: 'OPENING_TRADING_RANGE_RESISTANCE' },
     { value: 'OPN-RV', label: 'OPENING_REVERSAL' },
     { value: 'TWD-YES-CLS', label: 'TOWARDS_YESTERDAYS_CLOSE' },
+    { value: 'SL-HIT-REV', label: 'STOPLOSS_HIT_REVERSAL' },
     { value: 'all', label: 'all' },
 ]
 
