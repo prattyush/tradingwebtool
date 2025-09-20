@@ -330,16 +330,20 @@ const TradeReplayerOptions = () => {
         event.preventDefault();
 
         const optionDataArray = optionType === "Call" ? ceDataArray : peDataArray;
+        const optionDataArrayOneMin = optionType === "Call" ? ceDataArrayOneMin : peDataArrayOneMin;
         const quantityType = optionType === "Call" ? "cequantity" : "pequantity";
         const strikePrice = optionType === "Call" ? ceStrikePrice : peStrikePrice;
 
         const currentBarData = optionDataArray.current[optionDataArray.current.length-currDayTotalBars+timeBarCount.current-1+1];
-        let buyPrice = currentBarData['open']+0.5
+        const currentBarDataOneMin = optionDataArrayOneMin.current[optionDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1];
+        //let buyPrice = currentBarData['open']+0.5
+        let buyPrice = currentBarDataOneMin['close'] + 0.15
         if (orderType === "RL") {
             buyPrice = targetPrice;
         } else if (orderType === "RT") {
-            buyPrice = targetPrice + 0.5;
+            buyPrice = targetPrice + 0.15;
         }
+
         console.log("Buy Price :: " + buyPrice);
         fetch('http://' + ipAddress + ':9060/tools?name=replay&type=' + quantityType + '&stoploss=' + stoploss + "&riskreward=" + rrRatio + "&price=" + buyPrice + "&tradedate=" + tradeDate, {
             method: 'GET',
@@ -391,18 +395,25 @@ const TradeReplayerOptions = () => {
     const handleSellOptions = (event) => {
         event.preventDefault();
 
-        let optionDataArray = peDataArray;
-        if (optionType === "Call") {
-            optionDataArray = ceDataArray;
-        }
+        const optionDataArray = optionType === "Call" ? ceDataArray : peDataArray;
+        const optionDataArrayOneMin = optionType === "Call" ? ceDataArrayOneMin : peDataArrayOneMin;
 
         const optionCurrentBarData = optionDataArray.current[optionDataArray.current.length - currDayTotalBars + timeBarCount.current-1];
         const optionNextBarData = optionDataArray.current[optionDataArray.current.length - currDayTotalBars + timeBarCount.current];
-        let sellPrice = optionCurrentBarData['close']-0.5
 
-        if (optionCurrentBarData['low'] <= stoploss && optionCurrentBarData['high'] >= stoploss) {
-            sellPrice = stoploss - 0.5;
-        }
+        const optionCurrentOneMinBarData = optionDataArrayOneMin.current[optionDataArrayOneMin.current.length - currDayTotalBarsOneMin + timeBarCountOneMin.current-1];
+        const optionNextOneMinBarData = optionDataArrayOneMin.current[optionDataArrayOneMin.current.length - currDayTotalBarsOneMin + timeBarCountOneMin.current];
+        //let sellPrice = optionCurrentBarData['close']-0.15
+        let sellPrice = optionCurrentOneMinBarData['close']-0.15
+
+        //if (optionCurrentBarData['low'] <= stoploss && optionCurrentBarData['high'] >= stoploss) {
+        //if (optionNextOneMinBarData['low'] <= stoploss && optionCurrentOneMinBarData['high'] >= stoploss) {
+        //    sellPrice = stoploss - 0.15;
+        //}
+
+        //if (optionCurrentBarData['low'] <= stoploss && optionCurrentBarData['high'] >= stoploss) {
+        //    sellPrice = stoploss - 0.5;
+        //}
         performSellAction(sellPrice, optionType, optionNextBarData['time']-1)
     }
 
