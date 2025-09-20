@@ -19,7 +19,7 @@ const TradeReplayer = () => {
     const [tradeDate, setTradeDate] = useState("")
     const [tradeStrategy, setTradeStrategy] = useState("none")
     const timeBarCount = useRef(1);
-    const timeBarCountOneMin = useRef(1);
+    const timeBarCountOneMin = useRef(3);
     const currDayTotalBars = 120;
     const currDayTotalBarsOneMin = 120*3;
     const currentTotalPEQuantity = useRef(0);
@@ -450,7 +450,7 @@ const TradeReplayer = () => {
     }
 
     function formatDateTimeLocale(barTime) {
-        const barDate = new Date((barTime - (5.5*60*60)) *1000)
+        const barDate = new Date((barTime - (5.5*60*60))*1000)
         const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
         const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false, second:'2-digit' }; // Use hour12: false for 24-hour format
 
@@ -569,7 +569,7 @@ const TradeReplayer = () => {
             return barArray[0];
         } else if (barArray.length === 2) {
             const resultData = barArray[0];
-            resultData['time'] = barArray[0];
+            resultData['time'] = barArray[0]['time'];
             resultData['low'] = Math.min(barArray[0]['low'], barArray[1]['low']);
             resultData['high'] = Math.max(barArray[0]['high'], barArray[1]['high']);
             resultData['open'] = barArray[0]['open']
@@ -594,6 +594,7 @@ const TradeReplayer = () => {
         const ceDataOneMinArray = []
         const peDataOneMinArray = []
 
+
         if  (timeBarCountOneMin.current % 3 === 1) {
             stockDataOneMinArray.push(stockDataArrayOneMin.current[stockDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
             ceDataOneMinArray.push(ceDataArrayOneMin.current[ceDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
@@ -607,7 +608,7 @@ const TradeReplayer = () => {
 
             peDataOneMinArray.push(peDataArrayOneMin.current[peDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-2])
             peDataOneMinArray.push(peDataArrayOneMin.current[peDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
-        } else if (timeBarCountOneMin.current % 3 === 3) {
+        } else if (timeBarCountOneMin.current % 3 === 0) {
             stockDataOneMinArray.push(stockData)
             ceDataOneMinArray.push(ceData)
             peDataOneMinArray.push(peData)
