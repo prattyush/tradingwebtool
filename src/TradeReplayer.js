@@ -19,7 +19,9 @@ const TradeReplayer = () => {
     const [tradeDate, setTradeDate] = useState("")
     const [tradeStrategy, setTradeStrategy] = useState("none")
     const timeBarCount = useRef(1);
+    const timeBarCountOneMin = useRef(1);
     const currDayTotalBars = 120;
+    const currDayTotalBarsOneMin = 120*3;
     const currentTotalPEQuantity = useRef(0);
     const currentTotalCEQuantity = useRef(0);
     const currentTotalPEAvgPrice = useRef(0.0);
@@ -39,6 +41,9 @@ const TradeReplayer = () => {
     const stockDataArray = useRef(null);
     const ceDataArray = useRef(null);
     const peDataArray = useRef(null);
+    const stockDataArrayOneMin = useRef(null);
+    const ceDataArrayOneMin = useRef(null);
+    const peDataArrayOneMin = useRef(null);
 
     const [tradeInfo, setTradeInfo] = useState("");
     const [historyInfo, setHistoryInfo] = useState("");
@@ -46,7 +51,8 @@ const TradeReplayer = () => {
     const [optionType, setOptionType] = useState("Call");
 
     const [rrRatio, setRRRatio] = useState("l");
-    const [stoploss, setStoploss] = useState(45.0);
+    const [stoploss, setStoploss] = useState(3.0);
+    const [manageTarget, setManageTarget] = useState("0.0");
     const [targetPrice, setTargetPrice] = useState(0.0);
 
     const [tradeRecorder, setTradeRecorder] = useState([]);
@@ -178,6 +184,10 @@ const TradeReplayer = () => {
                 stockDataArray.current = tradeReplayResponse['price_action']['stock']
                 ceDataArray.current = tradeReplayResponse['price_action']['ce'];
                 peDataArray.current = tradeReplayResponse['price_action']['pe']
+
+                stockDataArrayOneMin.current = tradeReplayResponse['price_action']['stock_1']
+                ceDataArrayOneMin.current = tradeReplayResponse['price_action']['ce_1']
+                peDataArrayOneMin.current = tradeReplayResponse['price_action']['pe_1']
 
                 setCEStrikePrice(tradeReplayResponse['strike_price']['ce'])
                 setPEStrikePrice(tradeReplayResponse['strike_price']['pe'])
@@ -554,9 +564,101 @@ const TradeReplayer = () => {
         navigate("/");
     }
 
+    function getAggregatedBar(barArray) {
+        if (barArray.length === 1) {
+            return barArray[0];
+        } else if (barArray.length === 2) {
+            const resultData = barArray[0];
+            resultData['time'] = barArray[0];
+            resultData['low'] = Math.min(barArray[0]['low'], barArray[1]['low']);
+            resultData['high'] = Math.max(barArray[0]['high'], barArray[1]['high']);
+            resultData['open'] = barArray[0]['open']
+            resultData['close'] = barArray[1]['close']
+            return resultData
+        }
+        return barArray[0]
+    }
+
+    const handleTimeNextOneMin = (event) => {
+        event.preventDefault();
+
+        timeBarCountOneMin.current = timeBarCountOneMin.current + 1
+        if (timeBarCountOneMin.current % 3 === 0) {
+            timeBarCount.current = timeBarCount.current + 1
+        }
+        const stockData = stockDataArray.current[stockDataArray.current.length-currDayTotalBars+timeBarCount.current-1];
+        const ceData = ceDataArray.current[ceDataArray.current.length-currDayTotalBars+timeBarCount.current-1];
+        const peData = peDataArray.current[peDataArray.current.length-currDayTotalBars+timeBarCount.current-1];
+
+        const stockDataOneMinArray = []
+        const ceDataOneMinArray = []
+        const peDataOneMinArray = []
+
+        if  (timeBarCountOneMin.current % 3 === 1) {
+            stockDataOneMinArray.push(stockDataArrayOneMin.current[stockDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
+            ceDataOneMinArray.push(ceDataArrayOneMin.current[ceDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
+            peDataOneMinArray.push(peDataArrayOneMin.current[peDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
+        } else if (timeBarCountOneMin.current % 3 === 2) {
+            stockDataOneMinArray.push(stockDataArrayOneMin.current[stockDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-2])
+            stockDataOneMinArray.push(stockDataArrayOneMin.current[stockDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
+
+            ceDataOneMinArray.push(ceDataArrayOneMin.current[ceDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-2])
+            ceDataOneMinArray.push(ceDataArrayOneMin.current[ceDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
+
+            peDataOneMinArray.push(peDataArrayOneMin.current[peDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-2])
+            peDataOneMinArray.push(peDataArrayOneMin.current[peDataArrayOneMin.current.length-currDayTotalBarsOneMin+timeBarCountOneMin.current-1])
+        } else if (timeBarCountOneMin.current % 3 === 3) {
+            stockDataOneMinArray.push(stockData)
+            ceDataOneMinArray.push(ceData)
+            peDataOneMinArray.push(peData)
+        }
+
+        const stockDataAgg = getAggregatedBar(stockDataOneMinArray)
+        const ceDataAgg = getAggregatedBar(ceDataOneMinArray)
+        const peDataAgg = getAggregatedBar(peDataOneMinArray)
+
+        analyticsCandlestickSeriesNifty.current.update(stockDataAgg, false);
+        analyticsCandlestickSeriesCE.current.update(ceDataAgg, false);
+        analyticsCandlestickSeriesPE.current.update(peDataAgg, false);
+
+        if (ceBuyOrderPending === true || peBuyOrderPending === true) {
+            if (ceBuyOrderPending === true && ceBuyOrderPendingTrade['targetPrice'] <= ceDataAgg['high'] && ceBuyOrderPendingTrade['targetPrice'] >= ceDataAgg['low']) {
+                performBuyAction(ceBuyOrderPendingTrade, ceDataAgg['time'])
+                ceBuyOrderPending = false;
+                ceBuyOrderPendingTrade = null;
+            } else if (peBuyOrderPending === true && peBuyOrderPendingTrade['targetPrice'] <= peDataAgg['high'] && peBuyOrderPendingTrade['targetPrice'] >= peDataAgg['low']) {
+                performBuyAction(peBuyOrderPendingTrade, peDataAgg['time'])
+                peBuyOrderPending = false;
+                peBuyOrderPendingTrade = null;
+            }
+        }
+
+        console.log(stoploss)
+        console.log(currentTotalPEQuantity.current)
+        if (currentTotalPEQuantity.current > 0 || currentTotalCEQuantity.current > 0) {
+            if (currentTotalCEQuantity.current > 0 && ceDataAgg['low'] <= stoploss && ceDataAgg['high'] >= stoploss) {
+                performSellAction(stoploss-0.5, "Call", ceDataAgg['time']-1)
+            } else if (currentTotalPEQuantity.current > 0 && peDataAgg['low'] <= stoploss && peDataAgg['high'] >= stoploss) {
+                performSellAction(stoploss-0.5, "Put", peDataAgg['time']-1)
+            }
+        }
+
+        if (timeBarCountOneMin.current % 3 === 0) {
+            analyticsNineEMALineChartStock.current.update(nineEMALineStock.current[nineEMALineStock.current.length - currDayTotalBars + timeBarCount.current - 1], false);
+            analyticsTwentyOneEMALineChartStock.current.update(twentyOneEMALineStock.current[twentyOneEMALineStock.current.length - currDayTotalBars + timeBarCount.current - 1], false);
+
+            analyticsNineEMALineChartCE.current.update(nineEMALineCE.current[nineEMALineCE.current.length - currDayTotalBars + timeBarCount.current - 1], false);
+            analyticsTwentyOneEMALineChartCE.current.update(twentyOneEMALineCE.current[twentyOneEMALineCE.current.length - currDayTotalBars + timeBarCount.current - 1], false);
+
+            analyticsNineEMALineChartPE.current.update(nineEMALinePE.current[nineEMALinePE.current.length - currDayTotalBars + timeBarCount.current - 1], false);
+            analyticsTwentyOneEMALineChartPE.current.update(twentyOneEMALinePE.current[twentyOneEMALinePE.current.length - currDayTotalBars + timeBarCount.current - 1], false);
+        }
+    }
+
     const handleTimeNext = (event) => {
         event.preventDefault();
         timeBarCount.current = timeBarCount.current + 1
+        timeBarCountOneMin.current = timeBarCountOneMin.current + 3
 
         const stockData = stockDataArray.current[stockDataArray.current.length-currDayTotalBars+timeBarCount.current-1];
         analyticsCandlestickSeriesNifty.current.update(stockData, false);
@@ -626,6 +728,7 @@ const TradeReplayer = () => {
 
                     <button type="button" onClick={handleTimePrev} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Prev</button>
                     <button type="button" onClick={handleTimeNext} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Next</button>
+                    <button type="button" onClick={handleTimeNextOneMin} title="timeNext" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Next-1</button>
                     <button type="button" id="inputPage" onClick={handleInputPageRedirection} title="inputPage" style={{float:"left", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>Back to Input</button>
                 </div>
                 <div style={{float:"left", width:"80%",  border: '1px solid black'}}>
@@ -662,6 +765,8 @@ const TradeReplayer = () => {
                             </option>
                         ))}
                     </select>
+                    <label style={{clear:"both", float:"left", marginTop:'1%'}}>Manage Trade :: </label>
+                    <input type="text" style={{width:'25%', float:"left", marginLeft:"1%"}} onChange={(e) => setManageTarget(e.target.value)}/>
                 </div>
 
                 <div style={{clear:"both", float:"left", width:"80%", marginTop:'3%'}}>
