@@ -600,9 +600,9 @@ const TradeReplayerOptions = () => {
         console.log(currentTotalPEQuantity.current)
         if (currentTotalPEQuantity.current > 0 || currentTotalCEQuantity.current > 0) {
             if (currentTotalCEQuantity.current > 0 && ceDataAgg['low'] <= stoploss && ceDataAgg['high'] >= stoploss) {
-                performSellAction(stoploss-0.5, "Call", ceDataAgg['time']-1)
+                performSellAction(stoploss-0.15, "Call", ceDataAgg['time']-1)
             } else if (currentTotalPEQuantity.current > 0 && peDataAgg['low'] <= stoploss && peDataAgg['high'] >= stoploss) {
-                performSellAction(stoploss-0.5, "Put", peDataAgg['time']-1)
+                performSellAction(stoploss-0.15, "Put", peDataAgg['time']-1)
             }
         }
 
@@ -640,9 +640,9 @@ const TradeReplayerOptions = () => {
         console.log(currentTotalPEQuantity.current)
         if (currentTotalPEQuantity.current > 0 || currentTotalCEQuantity.current > 0) {
             if (currentTotalCEQuantity.current > 0 && ceData['low'] <= stoploss && ceData['high'] >= stoploss) {
-                performSellAction(stoploss-0.5, "Call", ceData['time']-1)
+                performSellAction(stoploss-0.15, "Call", ceData['time']-1)
             } else if (currentTotalPEQuantity.current > 0 && peData['low'] <= stoploss && peData['high'] >= stoploss) {
-                performSellAction(stoploss-0.5, "Put", peData['time']-1)
+                performSellAction(stoploss-0.15, "Put", peData['time']-1)
             }
         }
 
