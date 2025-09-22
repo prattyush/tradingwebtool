@@ -155,7 +155,8 @@ const TradeReplayerOptions = () => {
 
                 const tradeReplayResponse = data['response']
                 ceDataArray.current = tradeReplayResponse['price_action']['ce'];
-                peDataArray.current = tradeReplayResponse['price_action']['pe']
+                peDataArray.current = tradeReplayResponse['price_action']['pe'];
+
                 ceDataArrayOneMin.current = tradeReplayResponse['price_action']['ce_1']
                 peDataArrayOneMin.current = tradeReplayResponse['price_action']['pe_1']
 
@@ -194,7 +195,10 @@ const TradeReplayerOptions = () => {
 
                 const tradeReplayResponse = data['response']
                 ceDataArray.current = tradeReplayResponse['price_action']['ce'];
-                peDataArray.current = tradeReplayResponse['price_action']['pe']
+                peDataArray.current = tradeReplayResponse['price_action']['pe'];
+
+                ceDataArrayOneMin.current = tradeReplayResponse['price_action']['ce_1']
+                peDataArrayOneMin.current = tradeReplayResponse['price_action']['pe_1']
 
                 setCEStrikePrice(tradeReplayResponse['strike_price']['ce'])
                 setPEStrikePrice(tradeReplayResponse['strike_price']['pe'])
