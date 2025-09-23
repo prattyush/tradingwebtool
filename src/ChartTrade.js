@@ -497,12 +497,12 @@ const ChartTrade = () => {
                     shape: shape,
                     text: text
                 }
+                if (orderIdMarkerPrimitiveMap.current.has(ordersData[i]['order_id'])) {
+                    orderIdMarkerPrimitiveMap.current[ordersData[i]['order_id']].detach
+                }
                 orderIdMarkerPrimitiveMap.current[ordersData[i]['order_id']] = createSeriesMarkers(candlestickSeriesPE.current, [orderMarker])
             }
-            orderIdMarkerPrimitiveMap.current[ordersData[i]['order_id']] = createSeriesMarkers()
         }
-        createSeriesMarkers(candlestickSeriesCE.current, orderCEMarkers);
-        createSeriesMarkers(candlestickSeriesPE.current, orderPEMarkers);
     }
 
     const onOrderOptionsChartCommandPlaced = (event) => {
