@@ -110,6 +110,8 @@ const InputPage = () => {
             return "/optionschart"
         } else if (chartType === "VerticalStockCEPE") {
             return "/verticalchart"
+        } else if (chartType === "ChartTrade") {
+            return "/charttrade"
         }
 
         return "/chart"
@@ -240,6 +242,7 @@ const InputPage = () => {
                         <option>Options</option>
                         <option>Stock</option>
                         <option>VerticalStockCEPE</option>
+                        <option>ChartTrade</option>
                     </select>
                 </label>
                     <button type="button" onClick={handleSimulationInfoSubmit} title="simtrading" style={{float:"left", clear:"both", marginTop:"1%", marginRight:'1%', marginLeft:'1%'}}>SIM TRADING</button>
