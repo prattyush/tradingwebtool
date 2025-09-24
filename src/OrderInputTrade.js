@@ -395,7 +395,7 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
                     <option>scalp</option>
                     <option>e</option>
                 </select>
-                <button style={{clear:"both", float:"left", marginTop:'1%', border: '1px solid black'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
+                <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdManagementCommandPlaced} title="ManageTrade">ManageTrade</button>
                 <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLNManagementCommandPlaced} title="LN">LN</button>
                 <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN1ManagementCommandPlaced} title="LN-1">LN-1</button>
                 <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onLN2ManagementCommandPlaced} title="LN-2">LN-2</button>

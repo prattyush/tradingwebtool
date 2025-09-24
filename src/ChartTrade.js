@@ -27,8 +27,8 @@ const ChartTrade = () => {
     const isRecording = useRef(false);
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
 
-    const optionsChartWidth = 0.45
-    const stockChartWidth = 0.93
+    const optionsChartWidth = 0.48
+    const stockChartWidth = 0.97
 
     const optionsChartHeight = 0.40
     const stockChartHeight = 0.40
@@ -455,16 +455,21 @@ const ChartTrade = () => {
 
         for (let i = 0; i < ordersData.length; i++) {
             let shape = 'circle'
-            let color = '#2196F3'
+            let color = '#0000FF'
             let text = 'Buy'
             let stockText = 'Buy'
-            let stockColor = '#2196F3'
+            let stockColor = '#0000FF'
             let orderMarker = null
+            const orderId = parseInt(ordersData[i]['order_id']).toString()
             if (ordersData[i]['action'] === 'Sell') {
                 shape = 'circle';
+                if (ordersData[i]['status'] === "Ordered") {
+                    text = 'SL'
+                } else {
+                    text = 'Sell'
+                }
                 color = '#ffffff'
                 stockColor = '#ffffff'
-                text = 'Sell'
                 stockText = 'Sell'
             }
             if (ordersData[i]['action'] === 'Sell' && ordersData[i]['type'] === 'Put') {
@@ -485,8 +490,15 @@ const ChartTrade = () => {
                     shape: shape,
                     text: text
                 }
-
-                orderIdMarkerPrimitiveMap.current[ordersData[i]['order_id']] = createSeriesMarkers(candlestickSeriesCE.current, [orderMarker])
+                console.log("Order Id " + orderId)
+                console.log("CE Markers Map")
+                console.log(orderIdMarkerPrimitiveMap.current)
+                if (orderIdMarkerPrimitiveMap.current.has(orderId)) {
+                    console.log("Deleting Old CE Markers")
+                    orderIdMarkerPrimitiveMap.current.get(orderId).setMarkers([]);
+                    orderIdMarkerPrimitiveMap.current.get(orderId).detach();
+                }
+                orderIdMarkerPrimitiveMap.current.set(orderId, createSeriesMarkers(candlestickSeriesCE.current, [orderMarker]))
             } else if (ordersData[i]['type'] === 'Put' && parseInt(ordersData[i]['strike_price']) === parseInt(peStrikePrice)) {
                 orderMarker = {
                     time: ordersData[i]['time'],
@@ -497,10 +509,15 @@ const ChartTrade = () => {
                     shape: shape,
                     text: text
                 }
-                if (orderIdMarkerPrimitiveMap.current.has(ordersData[i]['order_id'])) {
-                    orderIdMarkerPrimitiveMap.current[ordersData[i]['order_id']].detach
+                console.log("Order Id " + orderId)
+                console.log("PE Markers Map")
+                console.log(orderIdMarkerPrimitiveMap.current)
+                if (orderIdMarkerPrimitiveMap.current.has(orderId)) {
+                    console.log("Deleting Old PE Markers")
+                    orderIdMarkerPrimitiveMap.current.get(orderId).setMarkers([]);
+                    orderIdMarkerPrimitiveMap.current.get(orderId).detach();
                 }
-                orderIdMarkerPrimitiveMap.current[ordersData[i]['order_id']] = createSeriesMarkers(candlestickSeriesPE.current, [orderMarker])
+                orderIdMarkerPrimitiveMap.current.set(orderId, createSeriesMarkers(candlestickSeriesPE.current, [orderMarker]))
             }
         }
     }
@@ -632,9 +649,9 @@ const ChartTrade = () => {
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onOrderOptionsChartCommandPlaced} title="OptionsOrderChart">OrderChart</button>
             <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
-            <div style={{clear:"both", float:"left", marginLeft:'1%', width:'96%', height: height*0.84, border: '1px solid black'}}>
+            <div style={{clear:"both", float:"left", width:width*0.99, height: height*0.84, border: '1px solid black'}}>
                 <div style={{clear:"both", float:"left", marginLeft:'0.5%', marginRight:'0.5%', width:'98%', height:height*stockChartHeight}} id="stockChartContainer" ref={chartContainerNifty}></div>
-                <div style={{clear:"both", float:"left", marginLeft:'0.5%', marginTop:"1.25%", marginRight:'0.5%', width:'48%',height:height*optionsChartHeight}} ref={chartContainerCE} id="chartContainerCE"></div>
+                <div style={{clear:"both", float:"left", marginLeft:'0.5%', marginTop:"1.25%", marginRight:'0.5%', width:'49%',height:height*optionsChartHeight}} ref={chartContainerCE} id="chartContainerCE"></div>
                 <div style={{float:"left", marginTop:"1.25%", marginLeft:'0.2%', height:height*optionsChartHeight}} ref={chartContainerPE} id="chartContainerPE"></div>
             </div>
             <div style={{float:"left", width:'96%', height:'10%', marginLeft:'1%',  border: '1px solid black'}} >
