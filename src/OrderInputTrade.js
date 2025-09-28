@@ -264,6 +264,50 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
             });
     }
 
+    const onOpenOrderInfo = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/openorderstate/', {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setTradeInfo(data['response']);
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const onOrderInfo = (event) => {
+        event.preventDefault();
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/orderstate/', {
+            method: 'POST',
+            body: JSON.stringify({
+                // Add parameters here
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin':'true'
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setTradeInfo(data['response']);
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
     const onTdInfoCommandPlaced = (event) => {
         event.preventDefault();
         fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/tradeinfo?command=' + tdInfoCmd, {
@@ -412,8 +456,11 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
                         <option>P</option>
                         <option>R</option>
                         <option>RS</option>
+                        <option>OpnTrd</option>
                     </select>
                     <button style={{clear:"both", float:"left", marginTop:'1%'}} type="button" onClick={onTdInfoCommandPlaced} title="TradeInfo">TradeInfo</button>
+                    <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderInfo} title="OrderState">OrderState</button>
+                    <button style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%'}} type="button" onClick={onOpenOrderInfo} title="OpenOrderState">OpenOrders</button>
                 </div>
                 <textarea style={{float:"right", marginTop:'1%', marginRight: '1%', fontSize:'0.6rem', width:"57%"}} name="tradeInfo" rows={6} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
 
