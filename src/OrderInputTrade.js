@@ -462,7 +462,7 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
                     <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderInfo} title="OrderState">OrderState</button>
                     <button style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%'}} type="button" onClick={onOpenOrderInfo} title="OpenOrderState">OpenOrders</button>
                 </div>
-                <textarea style={{float:"right", marginTop:'1%', marginRight: '1%', fontSize:'0.6rem', width:"57%", height:"90%"}} name="tradeInfo" rows={6} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
+                <textarea style={{float:"right", marginTop:'1%', marginRight: '1%', fontSize:'0.6rem', width:"57%", height:"80%"}} name="tradeInfo" rows={6} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
             </div>
         </div>
     );
