@@ -448,7 +448,7 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
                 <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
                 <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             </div>
-            <div style={{float:"right", marginTop:'1%', marginRight: '1%', width:"45%",  height:"90%", border: '1px solid black'}}>
+            <div style={{float:"right", marginTop:'1%', marginRight: '1%', width:"45%",  height:"81%", border: '1px solid black'}}>
                 <div style={{float:"left", marginTop:'1%', marginRight: '1%', width:"40%", border: '1px solid black'}}>
                     <label style={{float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
                     <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
