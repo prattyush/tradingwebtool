@@ -391,7 +391,7 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
     }, []);
 
     return (
-        <div style={{float:"left", marginTop:'1%', marginRight: '1%', marginLeft: '1%', width:"96%", height:"81%", border: '1px solid black' }}>
+        <div style={{float:"left", marginTop:'1%', marginRight: '1%', marginLeft: '1%', width:"96%", height:"84%", border: '1px solid black' }}>
             <div style={{float:"left", marginTop:'1%', marginRight: '1%', marginLeft: '1%',  border: '1px solid black' }}>
                 <label style={{float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Order Type :: </label>
                 <div style={{clear:"both", float:"left"}}>
@@ -448,7 +448,7 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
                 <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onABSManagementCommandPlaced} title="ABS">ABS</button>
                 <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onStrategyCommandPlaced} title="Strategy">STRATGY</button>
             </div>
-            <div style={{float:"right", marginTop:'1%', marginRight: '1%', width:"45%",  height:"75%", border: '1px solid black'}}>
+            <div style={{float:"right", marginTop:'1%', marginRight: '1%', width:"45%",  height:"90%", border: '1px solid black'}}>
                 <div style={{float:"left", marginTop:'1%', marginRight: '1%', width:"40%", border: '1px solid black'}}>
                     <label style={{float:"left", marginTop:'1%', marginRight: '1%'}}>Choose Info Command :: </label>
                     <select style={{float:"left", marginTop:'1%'}} name="InfoCmd" id="infoCmd" defaultValue={tdInfoCmd} onChange={(e) => setTdInfoCmd(e.target.value)}>
@@ -462,7 +462,7 @@ const OrderInputTrade = ({tradingStyle, ipAddress, replaySpeed, ceStrikePrice, p
                     <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button" onClick={onOrderInfo} title="OrderState">OrderState</button>
                     <button style={{float:"left", marginTop:'1%', marginLeft:'1%', marginBottom:'1%'}} type="button" onClick={onOpenOrderInfo} title="OpenOrderState">OpenOrders</button>
                 </div>
-                <textarea style={{float:"right", marginTop:'1%', marginRight: '1%', fontSize:'0.75rem', width:"57%", height:"75%"}} name="tradeInfo" rows={6} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
+                <textarea style={{float:"right", marginTop:'1%', marginRight: '1%', fontSize:'0.75rem', width:"57%", height:"90%"}} name="tradeInfo" rows={6} cols={40} value={tradeInfo} readOnly={true}>info</textarea>
             </div>
         </div>
     );

@@ -654,7 +654,7 @@ const ChartTrade = () => {
                 <div style={{clear:"both", float:"left", marginLeft:'0.5%', marginTop:"1.25%", marginRight:'0.5%', width:'49%',height:height*optionsChartHeight}} ref={chartContainerCE} id="chartContainerCE"></div>
                 <div style={{float:"left", marginTop:"1.25%", marginLeft:'0.2%', height:height*optionsChartHeight}} ref={chartContainerPE} id="chartContainerPE"></div>
             </div>
-            <div style={{float:"left", width:width*0.96, height:height*0.12, marginLeft:'1%',  border: '1px solid black'}} >
+            <div style={{float:"left", width:width*0.96, height:height*0.135, marginLeft:'1%',  border: '1px solid black'}} >
                 <OrderInputTrade tradingStyle={tradingStyle} ipAddress={ipAddress} replaySpeed={replaySpeed} ceStrikePrice={ceStrikePrice} peStrikePrice={peStrikePrice} tradeDate={tradeDate}/>
             </div>
         </div>
