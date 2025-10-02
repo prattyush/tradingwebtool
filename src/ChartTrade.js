@@ -447,7 +447,6 @@ const ChartTrade = () => {
     }
 
     function plotOrders(ordersData) {
-        console.log(ordersData)
 
         const orderCEMarkers = []
         const orderPEMarkers = []
@@ -455,10 +454,10 @@ const ChartTrade = () => {
 
         for (let i = 0; i < ordersData.length; i++) {
             let shape = 'circle'
-            let color = '#0000FF'
+            let color = '#C27E79'
             let text = 'Buy'
             let stockText = 'Buy'
-            let stockColor = '#0000FF'
+            let stockColor = '#C27E79'
             let orderMarker = null
             const orderId = parseInt(ordersData[i]['order_id']).toString()
             if (ordersData[i]['action'] === 'Sell') {
@@ -490,9 +489,6 @@ const ChartTrade = () => {
                     shape: shape,
                     text: text
                 }
-                console.log("Order Id " + orderId)
-                console.log("CE Markers Map")
-                console.log(orderIdMarkerPrimitiveMap.current)
                 if (orderIdMarkerPrimitiveMap.current.has(orderId)) {
                     console.log("Deleting Old CE Markers")
                     orderIdMarkerPrimitiveMap.current.get(orderId).setMarkers([]);
@@ -509,9 +505,6 @@ const ChartTrade = () => {
                     shape: shape,
                     text: text
                 }
-                console.log("Order Id " + orderId)
-                console.log("PE Markers Map")
-                console.log(orderIdMarkerPrimitiveMap.current)
                 if (orderIdMarkerPrimitiveMap.current.has(orderId)) {
                     console.log("Deleting Old PE Markers")
                     orderIdMarkerPrimitiveMap.current.get(orderId).setMarkers([]);
