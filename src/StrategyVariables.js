@@ -150,7 +150,7 @@ export const getBarEndTimeOption = () => {
     chartTime.setSeconds(0); // Sets seconds to 0
     chartTime.setMilliseconds(0);
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 120; i++) {
         const entryMap = new Map();
         let hours = chartTime.getHours().toString();
         let minutes = chartTime.getMinutes().toString();
