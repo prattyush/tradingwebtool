@@ -14,6 +14,7 @@ const ChartTrade = () => {
     const chartTime = useRef(null);
     const [orderInfo, setOrderInfo] = useState("OrderInfo")
     const orderIdMarkerPrimitiveMap = useRef(new Map());
+    const orderChartFlip = useRef(false);
 
     const {width, height} = getWindowDimensions()
     const tradingStyle = location.state['tradingStyle'];
@@ -27,6 +28,8 @@ const ChartTrade = () => {
     const isRecording = useRef(false);
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({ screen: true, video:true }); // Set screen: true for screen recording
 
+    const openOrdersMap = useRef(new Map());
+    const ordersMap = useRef(new Map());
     const optionsChartWidth = 0.48
     const stockChartWidth = 0.97
 
@@ -51,6 +54,7 @@ const ChartTrade = () => {
     const lineSeriesTwentyOnePEEMA = useRef(null);
 
     const timeInfoLegend = useRef(null);
+    const pointsInfoLegend = useRef(null);
 
     const navigate = useNavigate();
     const chartContainerNifty = useRef(null);
@@ -105,9 +109,15 @@ const ChartTrade = () => {
     };
 
     useEffect(() => {
+
         timeInfoLegend.current = document.createElement('div');
         timeInfoLegend.current.style = `clear:both; float:right; z-index: 2; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300;`;
+
+        pointsInfoLegend.current = document.createElement('div');
+        pointsInfoLegend.current.style = `float:right; z-index: 3; font-size: 14px; font-family: sans-serif; line-height: 18px; font-weight: 300; margin-right:3px;`;
+
         chartContainerNifty.current.appendChild(timeInfoLegend.current);
+        chartContainerNifty.current.appendChild(pointsInfoLegend.current);
 
         chartNifty.current = createChart(chartContainerNifty.current, chartPropertiesNifty);
         chartNifty.current.resize(window.innerWidth*stockChartWidth, window.innerHeight*stockChartHeight)
@@ -325,6 +335,7 @@ const ChartTrade = () => {
                     };
                 candlestickSeriesNifty.current.update(candleDataUpdateNifty, false);
                 timeInfoLegend.current.innerHTML = formatTimeLocale(stockData['time'])
+                pointsInfoLegend.current.innerHTML = getCurrentTradePointsText(ceData['close'], peData['close'])
 
                 const candleDataUpdatePE =
                     {
@@ -347,7 +358,19 @@ const ChartTrade = () => {
                 candlestickSeriesCE.current.update(candleDataUpdateCE, false);
 
                 if (ordersData !== null) {
-                    console.log(ordersData)
+                    for (let m=0;m<ordersData.length; m++) {
+                        ordersMap.current.set(parseInt(ordersData[m]['order_id']).toString(), ordersData[m]);
+                    }
+                    for (let m=0;m<ordersData.length; m++) {
+                        if (ordersData[m]['action'] === 'Sell'){
+                            if (ordersData[m]['status'] === 'Ordered') {
+                                openOrdersMap.current.set(parseInt(ordersData[m]['parent_order_id']).toString(),
+                                    ordersMap.current.get(parseInt(ordersData[m]['parent_order_id']).toString()))
+                            } else {
+                                openOrdersMap.current.delete(parseInt(ordersData[m]['parent_order_id']).toString())
+                            }
+                        }
+                    }
                     plotOrders(ordersData)
                 }
             } catch (error) {
@@ -355,6 +378,45 @@ const ChartTrade = () => {
             }
         }
     };
+
+    function getCurrentTradePointsText(currentCEPrice, currentPEPrice) {
+        if (openOrdersMap.current.size === 0) {
+            return "0.00 "
+        }
+        let maxQuantity = 0;
+        let ceQuantity = 0;
+        let peQuantity = 0;
+        let totalCEPrice = 0.0;
+        let totalPEPrice = 0.0;
+        for(let orderId of openOrdersMap.current.keys()) {
+            let buyOrder = openOrdersMap.current.get(orderId);
+            console.log(buyOrder)
+            maxQuantity = buyOrder['max_quantity'];
+            if (buyOrder['type'] === 'Put') {
+                peQuantity = peQuantity + parseInt(buyOrder['quantity'])
+                totalPEPrice = totalPEPrice + parseFloat(buyOrder['price'])*parseInt(buyOrder['quantity'])
+            } else {
+                ceQuantity = ceQuantity + parseInt(buyOrder['quantity'])
+                totalCEPrice = totalCEPrice + parseFloat(buyOrder['price'])*parseInt(buyOrder['quantity'])
+            }
+        }
+        let netPnL = 0.0
+        if (ceQuantity > 0) {
+            netPnL = (currentCEPrice - totalCEPrice/ceQuantity)*(ceQuantity/maxQuantity);
+        }
+        if (peQuantity > 0) {
+            netPnL = (currentPEPrice - totalPEPrice/peQuantity)*(peQuantity/maxQuantity);
+        }
+        console.log("Open Orders")
+        console.log(openOrdersMap)
+        console.log("Net PnL")
+        console.log(netPnL.toFixed(2));
+        console.log("ceQuantity")
+        console.log(ceQuantity);
+        console.log(maxQuantity);
+        console.log(totalCEPrice);
+        return netPnL.toFixed(2).toString() + " "
+    }
 
     function formatTimeLocale(barTime) {
         const barDate = new Date((barTime - (5.5*60*60)) *1000)
@@ -446,6 +508,13 @@ const ChartTrade = () => {
         });
     }
 
+    function clearOrderMarkers() {
+        for (let orderId of orderIdMarkerPrimitiveMap.current.keys()) {
+            orderIdMarkerPrimitiveMap.current.get(orderId).setMarkers([]);
+            orderIdMarkerPrimitiveMap.current.get(orderId).detach();
+        }
+    }
+
     function plotOrders(ordersData) {
 
         const orderCEMarkers = []
@@ -528,7 +597,18 @@ const ChartTrade = () => {
             .then((data) => {
                 const ordersData = data['response']['orders']
                 console.log(ordersData)
-                plotOrders(ordersData)
+
+                for (let m=0;m<ordersData.length; m++) {
+                    ordersMap.current.set(parseInt(ordersData[m]['order_id']).toString(), ordersData[m]);
+                }
+
+                if (orderChartFlip.current) {
+                    orderChartFlip.current = false;
+                    clearOrderMarkers();
+                } else {
+                    orderChartFlip.current = true;
+                    plotOrders(ordersData)
+                }
                 // Handle data
             }).then()
             .catch((err) => {
