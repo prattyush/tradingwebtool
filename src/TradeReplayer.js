@@ -169,7 +169,7 @@ const TradeReplayer = () => {
 
     const handleTradeReplayRequestSubmitted = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&forward=3&tradedate=' + tradeDate + "&opmaxv=" + priceIntervalRangeMap.get(priceRange)[1] + "&opminv=" + priceIntervalRangeMap.get(priceRange)[0], {
+        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=alldata&forward=3&quantity=2400&tradedate=' + tradeDate + "&opmaxv=" + priceIntervalRangeMap.get(priceRange)[1] + "&opminv=" + priceIntervalRangeMap.get(priceRange)[0], {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
