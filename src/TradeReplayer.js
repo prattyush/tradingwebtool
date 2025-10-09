@@ -702,6 +702,10 @@ const TradeReplayer = () => {
                 performSellAction(stoploss-0.15, "Call", ceData['time']-1)
             } else if (currentTotalPEQuantity.current > 0 && peData['low'] <= stoploss && peData['high'] >= stoploss) {
                 performSellAction(stoploss-0.15, "Put", peData['time']-1)
+            } else if (currentTotalPEQuantity.current > 0 && peDataAgg['low'] <= manageTarget+0.15 && peDataAgg['high'] >= manageTarget+0.15) {
+                performSellAction(manageTarget-0.15, "Put", peDataAgg['time']-1)
+            } else if (currentTotalCEQuantity.current > 0 && ceDataAgg['low'] <= manageTarget+0.15 && ceDataAgg['high'] >= manageTarget+0.15) {
+                performSellAction(manageTarget-0.15, "Call", ceDataAgg['time']-1)
             }
         }
 
