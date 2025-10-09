@@ -35,6 +35,8 @@ const TradeReplayer = () => {
     let peBuyOrderPending = false;
     let peBuyOrderPendingTrade = null;
 
+    let stoplossTarget = 0.0;
+
     const [ceStrikePrice, setCEStrikePrice] = useState(1);
     const [peStrikePrice, setPEStrikePrice] = useState(1);
 
@@ -52,7 +54,7 @@ const TradeReplayer = () => {
 
     const [rrRatio, setRRRatio] = useState("l");
     const [stoploss, setStoploss] = useState(3.0);
-    const [manageTarget, setManageTarget] = useState("0.0");
+    const [manageTarget, setManageTarget] = useState(0.0);
     const [targetPrice, setTargetPrice] = useState(0.0);
 
     const [tradeRecorder, setTradeRecorder] = useState([]);
@@ -645,13 +647,15 @@ const TradeReplayer = () => {
             }
         }
 
-        console.log(stoploss)
-        console.log(currentTotalPEQuantity.current)
         if (currentTotalPEQuantity.current > 0 || currentTotalCEQuantity.current > 0) {
             if (currentTotalCEQuantity.current > 0 && ceDataAgg['low'] <= stoploss && ceDataAgg['high'] >= stoploss) {
                 performSellAction(stoploss-0.15, "Call", ceDataAgg['time']-1)
             } else if (currentTotalPEQuantity.current > 0 && peDataAgg['low'] <= stoploss && peDataAgg['high'] >= stoploss) {
                 performSellAction(stoploss-0.15, "Put", peDataAgg['time']-1)
+            } else if (currentTotalPEQuantity.current > 0 && peDataAgg['low'] <= manageTarget+0.15 && peDataAgg['high'] >= manageTarget+0.15) {
+                performSellAction(manageTarget-0.15, "Put", peDataAgg['time']-1)
+            } else if (currentTotalCEQuantity.current > 0 && ceDataAgg['low'] <= manageTarget+0.15 && ceDataAgg['high'] >= manageTarget+0.15) {
+                performSellAction(manageTarget-0.15, "Call", ceDataAgg['time']-1)
             }
         }
 
@@ -778,7 +782,7 @@ const TradeReplayer = () => {
                         ))}
                     </select>
                     <label style={{clear:"both", float:"left", marginTop:'1%'}}>Manage Trade :: </label>
-                    <input type="text" style={{width:'25%', float:"left", marginLeft:"1%"}} onChange={(e) => setManageTarget(e.target.value)}/>
+                    <input type="text" style={{width:'25%', float:"left", marginLeft:"1%"}} onChange={(e) => setManageTarget(parseInt(e.target.value))}/>
                 </div>
 
                 <div style={{clear:"both", float:"left", width:"80%", marginTop:'3%'}}>
