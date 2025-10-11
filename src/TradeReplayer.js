@@ -387,7 +387,7 @@ const TradeReplayer = () => {
         console.log(currentBarDataOneMin);
         console.log(timeBarCountOneMin.current);
         console.log("Buy Price :: " + buyPrice);
-        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=' + quantityType + '&stoploss=' + stoploss + "&riskreward=" + rrRatio + "&price=" + buyPrice + "&tradedate=" + tradeDate, {
+        fetch('http://' + ipAddress + ':9060/tools?name=replay&type=' + quantityType + '&stoploss=' + 3.0 + "&riskreward=" + rrRatio + "&price=" + buyPrice + "&tradedate=" + tradeDate, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
