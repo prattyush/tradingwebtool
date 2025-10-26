@@ -102,8 +102,14 @@ const ChartTrade = () => {
 
     const chartPropertiesOptions = {
         layout: {
-            textColor: "white",
             background: { type: "solid", color: "black" },
+            textColor: 'rgba(255, 255, 0, 0.9)', // Optional: Change text color
+            // You can use a custom font family and size here
+            // Note: Lightweight Charts uses the `fontSize` and `fontFamily` properties
+            // directly within the priceScale options for label styling.
+            // There isn't a separate `labels` object for font customization within priceScale.
+            fontSize: 16, // Set the desired font size
+            fontFamily: 'Arial, sans-serif',
         },
         autosize: true,
     };
