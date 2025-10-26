@@ -18,7 +18,7 @@ const InputPage = () => {
     const [forwardMinutes, setForwardMinutes] = useState(0)
     const [tradeQuantity, setTradeQuantity] = useState(0)
     const [priceRange, setPriceRange] = useState("vlow")
-    const [chartType, setChartType] = useState("stockCEPE")
+    const [chartType, setChartType] = useState("ChartTrade")
     const navigate = useNavigate();
     const tradingStyle = useRef("simtrading")
     const [ipAddress, setIpAddress] = useState("43.205.27.227");
