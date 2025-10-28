@@ -396,7 +396,6 @@ const ChartTrade = () => {
         let totalPEPrice = 0.0;
         for(let orderId of openOrdersMap.current.keys()) {
             let buyOrder = openOrdersMap.current.get(orderId);
-            console.log(buyOrder)
             maxQuantity = buyOrder['max_quantity'];
             if (buyOrder['type'] === 'Put') {
                 peQuantity = peQuantity + parseInt(buyOrder['quantity'])
@@ -413,14 +412,6 @@ const ChartTrade = () => {
         if (peQuantity > 0) {
             netPnL = (currentPEPrice - totalPEPrice/peQuantity)*(peQuantity/maxQuantity);
         }
-        console.log("Open Orders")
-        console.log(openOrdersMap)
-        console.log("Net PnL")
-        console.log(netPnL.toFixed(2));
-        console.log("ceQuantity")
-        console.log(ceQuantity);
-        console.log(maxQuantity);
-        console.log(totalCEPrice);
         return netPnL.toFixed(2).toString() + " "
     }
 
@@ -677,11 +668,8 @@ const ChartTrade = () => {
 
     const onOpenOrderInfo = (event) => {
         event.preventDefault();
-        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/openorderstate/', {
-            method: 'POST',
-            body: JSON.stringify({
-                // Add parameters here
-            }),
+        fetch('http://' + ipAddress + ':9060/' + tradingStyle + '/openorderinfo/', {
+            method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 'Access-Control-Allow-Origin':'true'
@@ -689,7 +677,23 @@ const ChartTrade = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setOrderInfo(data['response'])
+                const orders_list = data['response']
+                console.log(orders_list)
+                for (let m=0;m<orders_list.length; m++) {
+                    ordersMap.current.set(parseInt(orders_list[m]['order_id']).toString(), orders_list[m]);
+                }
+                // Resetting Open Orders Map
+                openOrdersMap.current.clear();
+                for (let m=0;m<orders_list.length; m++) {
+                    if (orders_list[m]['action'] === 'Sell') {
+                        if (orders_list[m]['status'] === 'Ordered') {
+                            openOrdersMap.current.set(parseInt(orders_list[m]['parent_order_id']).toString(),
+                                ordersMap.current.get(parseInt(orders_list[m]['parent_order_id']).toString()))
+                        }
+                    } else {
+                        openOrdersMap.current.set(parseInt(orders_list[m]['order_id']).toString(), orders_list[m])
+                    }
+                }
                 // Handle data
             })
             .catch((err) => {
@@ -727,6 +731,7 @@ const ChartTrade = () => {
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onCEFeedReset} title="CEReset">CEFeedReset</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onPEFeedReset} title="PEReset">PEFeedReset</button>
             <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onOrderOptionsChartCommandPlaced} title="OptionsOrderChart">OrderChart</button>
+            <button style={{float:"left", marginTop:'1%', marginLeft:'1%'}} type="button"  onClick={onOpenOrderInfo} title="OpenOrderInfo">OpenOrdersInfo</button>
             <label style={{float:"left", marginTop:'1%', marginLeft:'1%'}}>CE :: {ceStrikePrice} PE :: {peStrikePrice}</label>
             <div style={{clear:"both", float:"left", width:width*0.99, height: height*0.84, border: '1px solid black'}}>
                 <div style={{clear:"both", float:"left", marginLeft:'0.5%', marginRight:'0.5%', width:'98%', height:height*stockChartHeight}} id="stockChartContainer" ref={chartContainerNifty}></div>
