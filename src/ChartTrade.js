@@ -396,6 +396,7 @@ const ChartTrade = () => {
         let totalPEPrice = 0.0;
         for(let orderId of openOrdersMap.current.keys()) {
             let buyOrder = openOrdersMap.current.get(orderId);
+            console.log("Order :: " + buyOrder);
             maxQuantity = buyOrder['max_quantity'];
             if (buyOrder['type'] === 'Put') {
                 peQuantity = peQuantity + parseInt(buyOrder['quantity'])
